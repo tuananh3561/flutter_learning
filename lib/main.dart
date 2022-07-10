@@ -16,22 +16,38 @@ class Home extends StatelessWidget {
         backgroundColor: Colors.red[600],
       ),
       body: Center(
-        // child: Text(
-        //   'hello tuan anh',
-        //   style: TextStyle(
-        //     fontSize: 20.0,
-        //     fontWeight: FontWeight.bold,
-        //     letterSpacing: 2.0,
-        //     color: Colors.grey,
-        //     fontFamily: "IndieFlower",
-        //   ),
+        // child: Icon(
+        //   Icons.ac_unit,
+        //   color: Colors.red,
+        //   size: 50.0,
         // ),
-        // child: Image(
-        //   // image: NetworkImage("https://upanh123.com/wp-content/uploads/2021/04/anh-dep-tren-mang1.jpg"),
-        //   image: AssetImage("assets/space-1.jpg"),
+        // child: RaisedButton(
+        //   onPressed: () {},
+        //   child: Text("Click me"),
+        //   color: Colors.lightBlue,
         // ),
-        // child: Image.asset('assets/space-3.jpg'),
-        // child: Image.network("https://upanh123.com/wp-content/uploads/2021/04/anh-dep-tren-mang1.jpg"),
+        // child: FlatButton(
+        //   onPressed: () {
+        //     print("you click me");
+        //   },
+        //   child: Text("Click me"),
+        //   color: Colors.lightBlue,
+        // ),
+        // child: RaisedButton.icon(
+        //   onPressed: () {
+        //     print("you click me");
+        //   },
+        //   icon: Icon(Icons.mail),
+        //   label: Text("click me"),
+        //   color: Colors.lightBlue,
+        // ),
+        child: IconButton(
+          onPressed: () {
+            print("you click me");
+          },
+          icon: Icon(Icons.mail),
+          color: Colors.lightBlue,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
