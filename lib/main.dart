@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ninja_id/quote.dart';
 import 'package:ninja_id/quote_card.dart';
@@ -33,7 +35,17 @@ class _QuoteListState extends State<QuoteList> {
         backgroundColor: Colors.redAccent,
       ),
       body: Column(
-        children: quotes.map((quote) => QuoteCard(quote: quote)).toList(),
+        children: quotes
+            .map((quote) => QuoteCard(
+                  quote: quote,
+                  delete: () {
+                    debugPrint('movieTitle');
+                    setState() {
+                      quotes.remove(quote);
+                    }
+                  },
+                ))
+            .toList(),
       ),
     );
   }
