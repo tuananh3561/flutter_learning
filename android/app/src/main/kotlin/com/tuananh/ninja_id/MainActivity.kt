@@ -1,6 +1,0 @@
-package com.tuananh.ninja_id
-
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity: FlutterActivity() {
-}
