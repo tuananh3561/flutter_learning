@@ -8,13 +8,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   @override
   Widget build(BuildContext context) {
+
+    final Map args = ModalRoute.of(context)!.settings.arguments as Map;
+    print(args);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Text("home screen"),
             FlatButton.icon(
               onPressed: () {
                 Navigator.pushNamed(context, "/location");

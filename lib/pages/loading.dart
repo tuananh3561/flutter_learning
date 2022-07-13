@@ -18,6 +18,11 @@ class _LoadingState extends State<Loading> {
     setState((){
       time = instance.time;
     });
+    Navigator.pushReplacementNamed(context, '/home', arguments: {
+      'location': instance.location,
+      'time': instance.time,
+      'flag': instance.flag,
+    });
   }
 
   @override
