@@ -6,14 +6,18 @@ class WorldTime {
   late String location; // location name for the UI
   late String time; // the time in that location
   late String flag; // url to an asset flag icon
-  late String url;
+  late String url; // location url for api endpoint
+  bool isDayTime = false; // true or false if daytime or not
 
-  WorldTime({required this.location, required this.flag, required this.url}); // location url for api
+  WorldTime(
+      {required this.location,
+      required this.flag,
+      required this.url}); // location url for api
 
   Future<void> getTime() async {
     try {
-      Uri urlTimezone = Uri.https(
-          'worldtimeapi.org', '/api/timezone/$url', {'q': '{http}'});
+      Uri urlTimezone =
+          Uri.https('worldtimeapi.org', '/api/timezone/$url', {'q': '{http}'});
 
       // make the request
       Response response = await get(urlTimezone);
@@ -27,6 +31,7 @@ class WorldTime {
         now = now.add(Duration(hours: int.parse(offset)));
 
         //set the time property
+        isDayTime = now.hour > 6 && now.hour < 20 ? true : false;
         time = DateFormat.jm().format(now);
       } else {
         print('Request failed with status: ${response.statusCode}.');
