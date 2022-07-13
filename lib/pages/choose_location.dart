@@ -9,7 +9,6 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-
   List<WorldTime> locations = [
     WorldTime(url: 'Europe/London', location: 'London', flag: 'uk.png'),
     WorldTime(url: 'Europe/Berlin', location: 'Athens', flag: 'greece.png'),
@@ -21,7 +20,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
     WorldTime(url: 'Asia/Jakarta', location: 'Jakarta', flag: 'indonesia.png'),
   ];
 
-
   int counter = 0;
 
   void getData() async {
@@ -30,7 +28,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
       return "tuananh";
     });
 
-    String bio =  await Future.delayed(Duration(seconds: 2), () {
+    String bio = await Future.delayed(Duration(seconds: 2), () {
       print('getData 1');
       return "121212";
     });
@@ -42,6 +40,18 @@ class _ChooseLocationState extends State<ChooseLocation> {
     super.initState();
     getData();
     print('initState function ran');
+  }
+
+  void updateTime(index) async {
+    WorldTime instance = locations[index];
+    await instance.getTime();
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context, {
+      'location': instance.location,
+      'time': instance.time,
+      'isDayTime': instance.isDayTime,
+      'flag': instance.flag,
+    });
   }
 
   @override
@@ -59,19 +69,22 @@ class _ChooseLocationState extends State<ChooseLocation> {
           itemCount: locations.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
               child: Card(
                 child: ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    updateTime(index);
+                  },
                   title: Text(locations[index].location),
                   leading: CircleAvatar(
-                    backgroundImage: AssetImage('assets/${locations[index].flag}'),
+                    backgroundImage:
+                        AssetImage('assets/${locations[index].flag}'),
                   ),
                 ),
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }
