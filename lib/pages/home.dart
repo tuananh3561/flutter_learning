@@ -51,6 +51,7 @@ class _HomeState extends State<Home> {
                       style: const TextStyle(
                         fontSize: 28.0,
                         letterSpacing: 2.0,
+                        color: Colors.white,
                       ),
                     )
                   ],
@@ -62,6 +63,7 @@ class _HomeState extends State<Home> {
                   args['time'],
                   style: const TextStyle(
                     fontSize: 66.0,
+                    color: Colors.white,
                   ),
                 )
               ],
