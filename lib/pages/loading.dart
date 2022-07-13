@@ -11,15 +11,21 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
   
-  void getData() async{
-    var url = Uri.https('jsonplaceholder.typicode.com', '/todos/1', {'q': '{http}'});
+  void getTime() async{
+    var url = Uri.https('worldtimeapi.org', '/api/timezone/Europe/London', {'q': '{http}'});
 
+    // make the request
     Response response = await get(url);
     if (response.statusCode == 200) {
-      print(response.body);
-      var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-      var userId = jsonResponse['userId'];
-      print('Number of books about http: $userId.');
+      Map jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+      //get properties from data
+      String datetime = jsonResponse['datetime'];
+      String offset = jsonResponse['utc_offset'].substring(1,3);
+      //create DateTime object
+      DateTime now = DateTime.parse(datetime);
+      now = now.add(Duration(hours: int.parse(offset)));
+      print(now);
+
     } else {
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -29,7 +35,7 @@ class _LoadingState extends State<Loading> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getData();
+    getTime();
   }
   
   @override
