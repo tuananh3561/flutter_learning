@@ -18,6 +18,7 @@ class _LoadingState extends State<Loading> {
     setState((){
       time = instance.time;
     });
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, '/home', arguments: {
       'location': instance.location,
       'time': instance.time,
