@@ -45,3 +45,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.dart_tool/package_config_subset
+.dart_tool/package_config.json
+build/9ffe3fb9e2063e195ddfbcea0cabcfef.cache.dill.track.dill
+build/flutter_assets/NOTICES
