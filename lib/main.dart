@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_learning/avatar_glow/demoavatarglow.dart';
+// import 'package:flutter_learning/avatar_glow/demoavatarglow.dart';
+import 'package:flutter_learning/google_fonts/demogooglefonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,14 +12,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const DemoAvatarGlow(),
+      // home: const DemoAvatarGlow(),
+      home: DemoGoogleFonts(),
     );
   }
 }
