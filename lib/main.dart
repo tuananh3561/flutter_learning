@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_learning/percent_indicator/demopercentindicator.dart';
+import 'package:flutter_learning/lottie/demolottie.dart';
+// import 'package:flutter_learning/percent_indicator/demopercentindicator.dart';
 // import 'package:flutter_learning/avatar_glow/demoavatarglow.dart';
 // import 'package:flutter_learning/google_fonts/demogooglefonts.dart';
 // import 'package:flutter_learning/liquid_pull_to_refresh/demoliquidpulltorefresh.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       // home: const DemoAvatarGlow(),
       // home: DemoGoogleFonts(),
       // home: DemoLiquidPullToRefresh(),
-      home: DemoPercentIndicator(),
+      // home: DemoPercentIndicator(),
+      home: DemoLottie(),
     );
   }
 }
