@@ -13,7 +13,7 @@ class WeathPage extends StatefulWidget {
 class _WeathPageState extends State<WeathPage> {
   // api key from openweathermap.org
   final _weatherService =
-      WeatherService(apiKey: '23474f85c629386115d08f2d30942d65e');
+      WeatherService(apiKey: '23251d4ceb001dd3c0d16567cf076732');
   Weather? _weather;
 
   _fetchWeather() async {
