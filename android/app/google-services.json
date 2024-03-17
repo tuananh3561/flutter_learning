@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "58903924540",
+    "project_id": "chatapp-b5d93",
+    "storage_bucket": "chatapp-b5d93.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58903924540:android:2f98427402254da3b89839",
+        "android_client_info": {
+          "package_name": "com.example.flutter_learning"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbhFQ3nWwhszLxDYcxZl4DZqDtk3oY384"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

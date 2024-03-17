@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/services/auth/auth_service.dart';
 import 'package:flutter_learning/compoments/my_buttom.dart';
 import 'package:flutter_learning/compoments/my_textfield.dart';
 
@@ -7,12 +8,33 @@ class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginPage({Key? key});
+  // tap to go to register page
+  void Function()? onTap;
+
+  LoginPage({super.key, required this.onTap});
 
   // login function
-  void login() {
-    print("Email: ${_emailController.text}");
-    print("Password: ${_passwordController.text}");
+  void login(BuildContext context) async {
+    // auth service
+    final authService = AuthService();
+
+    // try login
+    try {
+      await authService.signInWithEmailPassword(
+        _emailController.text,
+        _passwordController.text,
+      );
+    }
+
+    // catch any errors
+    catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
+        ),
+      );
+    }
   }
 
   @override
@@ -28,9 +50,11 @@ class LoginPage extends StatelessWidget {
             size: 60,
             color: Theme.of(context).colorScheme.primary,
           ),
+
           const SizedBox(
             height: 50,
           ),
+
           // welcome text
           Text(
             "Welcome back, you've been missed!",
@@ -39,33 +63,64 @@ class LoginPage extends StatelessWidget {
               fontSize: 20,
             ),
           ),
+
           const SizedBox(
             height: 25,
           ),
+
           // email textfield
           MyTextField(
             hintText: "Email",
             obscureText: false,
             controller: _emailController,
           ),
+
           const SizedBox(
             height: 10,
           ),
+
           // password textfield
           MyTextField(
             hintText: "Password",
             obscureText: true,
             controller: _passwordController,
           ),
+
           const SizedBox(
             height: 25,
           ),
+
           // login button
           MyButtom(
             text: "Login",
-            onTap: login,
+            onTap: () => login(context),
+          ),
+
+          const SizedBox(
+            height: 25,
           ),
           // register now
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Not a menber? ",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              GestureDetector(
+                onTap: onTap,
+                child: Text(
+                  "Register now!",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
