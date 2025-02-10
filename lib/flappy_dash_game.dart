@@ -44,6 +44,7 @@ class FlappyDashWorld extends World
   @override
   void onLoad() {
     super.onLoad();
+    debugMode = true;
     add(FlameBlocProvider<GameCubit, GameState>(
       create: () => game.gameCubit,
       children: [

@@ -3,7 +3,7 @@ part of 'game_cubit.dart';
 class GameState extends Equatable {
   const GameState({
     this.currentScore = 0,
-    this.currentPlayingState = PlayingState.none,
+    this.currentPlayingState = PlayingState.idle,
   });
 
   final int currentScore;
@@ -15,7 +15,7 @@ class GameState extends Equatable {
   }) {
     return GameState(
       currentScore: currentScore ?? this.currentScore,
-      currentPlayingState: currentplayingState ?? this.currentPlayingState,
+      currentPlayingState: currentplayingState ?? currentPlayingState,
     );
   }
 
@@ -27,8 +27,20 @@ class GameState extends Equatable {
 }
 
 enum PlayingState {
-  none,
+  idle,
   playing,
   paused,
-  gameOver,
+  gameOver;
+
+  bool get isPlaying => this == PlayingState.playing;
+
+  bool get isNotPlaying => !isPlaying;
+
+  bool get isPaused => this == PlayingState.paused;
+
+  bool get isGameOver => this == PlayingState.gameOver;
+
+  bool get isNotGameOver => !isGameOver;
+
+  bool get isIdle => this == PlayingState.idle;
 }

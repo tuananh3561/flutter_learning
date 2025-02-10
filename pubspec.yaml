@@ -1,6 +1,6 @@
 name: flappy_dash
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -13,6 +13,7 @@ dependencies:
   flame_bloc: ^1.12.6
   equatable: ^2.0.7
   flutter_bloc: ^9.0.0
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +26,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/background/
+
+  fonts:
+    - family: Chewy
+      fonts:
+        - asset: assets/fonts/Chewy-Regular.ttf

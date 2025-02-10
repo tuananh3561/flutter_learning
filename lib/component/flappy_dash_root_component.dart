@@ -14,7 +14,6 @@ class FlappyDashRootComponent extends Component
   late Dash _dash;
   late PipePair _lastPipe;
   static const double _pipesDistance = 400.0;
-  late TextComponent _scoreText;
 
   @override
   Future<void> onLoad() async {
@@ -23,12 +22,6 @@ class FlappyDashRootComponent extends Component
     add(_dash = Dash());
     _generatePipe(
       fromX: 350.0,
-    );
-    game.camera.viewfinder.add(
-      _scoreText = TextComponent(
-        text: bloc.state.currentScore.toString(),
-        position: Vector2(0, -(game.size.y / 2)),
-      ),
     );
   }
 
@@ -44,7 +37,7 @@ class FlappyDashRootComponent extends Component
     }
   }
 
-  void _removePipe() {
+  void _removeLastPipe() {
     final pipes = children.whereType<PipePair>();
     final shouldBeRemoved = max(pipes.length - 5, 0);
     pipes.take(shouldBeRemoved).forEach((pipe) {
@@ -63,7 +56,7 @@ class FlappyDashRootComponent extends Component
   }
 
   void _checkToStart() {
-    if (bloc.state.currentPlayingState == PlayingState.none) {
+    if (bloc.state.currentPlayingState.isIdle) {
       bloc.startPlaying();
     }
   }
@@ -71,12 +64,11 @@ class FlappyDashRootComponent extends Component
   @override
   void update(double dt) {
     super.update(dt);
-    _scoreText.text = bloc.state.currentScore.toString();
     if (_dash.x > _lastPipe.x) {
       _generatePipe(
         fromX: _pipesDistance,
       );
-      _removePipe();
+      _removeLastPipe();
     }
     game.camera.viewfinder.zoom = 1;
   }

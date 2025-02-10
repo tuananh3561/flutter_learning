@@ -2,7 +2,10 @@ import 'package:flame/game.dart';
 import 'package:flappy_dash/bloc/game/game_cubit.dart';
 import 'package:flappy_dash/flappy_dash_game.dart';
 import 'package:flappy_dash/widget/game_over_widget.dart';
+import 'package:flappy_dash/widget/tap_to_play.dart';
+import 'package:flappy_dash/widget/top_score.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainPage extends StatefulWidget {
@@ -30,8 +33,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<GameCubit, GameState>(
       listener: (context, state) {
-        if (state.currentPlayingState == PlayingState.none &&
-            _latestState == PlayingState.gameOver) {
+        if (state.currentPlayingState.isIdle &&
+            (_latestState?.isGameOver ?? false)) {
           setState(() {
             _flappyDashGame = FlappyDashGame(gameCubit);
           });
@@ -50,20 +53,13 @@ class _MainPageState extends State<MainPage> {
                   );
                 },
               ),
-              if (state.currentPlayingState == PlayingState.gameOver)
-                const GameOverWidget(),
-              if (state.currentPlayingState == PlayingState.none)
+              if (state.currentPlayingState.isGameOver) const GameOverWidget(),
+              if (state.currentPlayingState.isIdle)
                 const Align(
                   alignment: Alignment(0, 0.2),
-                  child: Text(
-                    "PRESS TO START",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                    ),
-                  ),
+                  child: TapToPlay(),
                 ),
+              if (state.currentPlayingState.isNotGameOver) const TopScore(),
             ],
           ),
         );

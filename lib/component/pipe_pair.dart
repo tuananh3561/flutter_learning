@@ -20,7 +20,6 @@ class PipePair extends PositionComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    debugMode = true;
     addAll([
       Pipe(
         isFlipped: false,
@@ -42,7 +41,7 @@ class PipePair extends PositionComponent
       case PlayingState.playing:
         position.x -= speed * dt;
         break;
-      case PlayingState.none:
+      case PlayingState.idle:
       case PlayingState.paused:
       case PlayingState.gameOver:
         break;
