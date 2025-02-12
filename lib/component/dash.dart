@@ -74,7 +74,7 @@ class Dash extends PositionComponent
       return;
     }
     if (other is HiddenCoin) {
-      bloc.incrementScore();
+      bloc.increaseScore();
       other.removeFromParent();
     } else if (other is Pipe) {
       bloc.gameOver();

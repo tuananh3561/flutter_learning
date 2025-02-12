@@ -11,11 +11,11 @@ class GameState extends Equatable {
 
   GameState copyWith({
     int? currentScore,
-    PlayingState? currentplayingState,
+    PlayingState? currentPlayingState,
   }) {
     return GameState(
       currentScore: currentScore ?? this.currentScore,
-      currentPlayingState: currentplayingState ?? currentPlayingState,
+      currentPlayingState: currentPlayingState ?? this.currentPlayingState,
     );
   }
 

@@ -5,7 +5,6 @@ import 'package:flappy_dash/widget/game_over_widget.dart';
 import 'package:flappy_dash/widget/tap_to_play.dart';
 import 'package:flappy_dash/widget/top_score.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainPage extends StatefulWidget {
@@ -34,25 +33,19 @@ class _MainPageState extends State<MainPage> {
     return BlocConsumer<GameCubit, GameState>(
       listener: (context, state) {
         if (state.currentPlayingState.isIdle &&
-            (_latestState?.isGameOver ?? false)) {
+            _latestState == PlayingState.gameOver) {
           setState(() {
             _flappyDashGame = FlappyDashGame(gameCubit);
           });
         }
+
         _latestState = state.currentPlayingState;
       },
       builder: (context, state) {
         return Scaffold(
           body: Stack(
             children: [
-              GameWidget(
-                game: _flappyDashGame,
-                backgroundBuilder: (context) {
-                  return Container(
-                    color: Colors.grey,
-                  );
-                },
-              ),
+              GameWidget(game: _flappyDashGame),
               if (state.currentPlayingState.isGameOver) const GameOverWidget(),
               if (state.currentPlayingState.isIdle)
                 const Align(

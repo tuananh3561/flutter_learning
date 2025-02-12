@@ -3,9 +3,12 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flappy_dash/bloc/game/game_cubit.dart';
-import 'package:flappy_dash/component/flappy_dash_root_component.dart';
+import 'package:flappy_dash/service_locator.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+
+import 'audio_helper.dart';
+import 'component/flappy_dash_root_component.dart';
 
 class FlappyDashGame extends FlameGame<FlappyDashWorld>
     with KeyboardEvents, HasCollisionDetection {
@@ -42,22 +45,24 @@ class FlappyDashWorld extends World
   late FlappyDashRootComponent _rootComponent;
 
   @override
-  void onLoad() {
+  Future<void> onLoad() async {
     super.onLoad();
-    debugMode = true;
-    add(FlameBlocProvider<GameCubit, GameState>(
-      create: () => game.gameCubit,
-      children: [
-        _rootComponent = FlappyDashRootComponent(),
-      ],
-    ));
+    await getIt.get<AudioHelper>().initialize();
+    add(
+      FlameBlocProvider<GameCubit, GameState>(
+        create: () => game.gameCubit,
+        children: [
+          _rootComponent = FlappyDashRootComponent(),
+        ],
+      ),
+    );
   }
+
+  void onSpaceDown() => _rootComponent.onSpaceDown();
 
   @override
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
     _rootComponent.onTapDown(event);
   }
-
-  void onSpaceDown() => _rootComponent.onSpaceDown();
 }
