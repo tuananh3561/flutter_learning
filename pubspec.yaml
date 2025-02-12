@@ -17,6 +17,7 @@ dependencies:
   flutter_soloud: ^2.1.7
   get_it: ^8.0.3
   nakama: ^1.2.0
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,7 @@ flutter:
     - assets/images/
     - assets/images/background/
     - assets/audio/
+    - assets/icons/
 
   fonts:
     - family: Chewy

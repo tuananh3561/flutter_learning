@@ -1,11 +1,16 @@
 import 'package:flame/game.dart';
-import 'package:flappy_dash/bloc/game/game_cubit.dart';
-import 'package:flappy_dash/flappy_dash_game.dart';
-import 'package:flappy_dash/widget/game_over_widget.dart';
-import 'package:flappy_dash/widget/tap_to_play.dart';
-import 'package:flappy_dash/widget/top_score.dart';
+import 'package:flappy_dash/presentation/app_style.dart';
+import 'package:flappy_dash/presentation/bloc/game/game_cubit.dart';
+import 'package:flappy_dash/presentation/flappy_dash_game.dart';
+import 'package:flappy_dash/presentation/widget/best_score_overlay.dart';
+import 'package:flappy_dash/presentation/widget/box_overlay.dart';
+import 'package:flappy_dash/presentation/widget/game_over_widget.dart';
+import 'package:flappy_dash/presentation/widget/profile_overlay.dart';
+import 'package:flappy_dash/presentation/widget/tap_to_play.dart';
+import 'package:flappy_dash/presentation/widget/top_score.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -45,7 +50,14 @@ class _MainPageState extends State<MainPage> {
         return Scaffold(
           body: Stack(
             children: [
-              GameWidget(game: _flappyDashGame),
+              GameWidget(
+                game: _flappyDashGame,
+                backgroundBuilder: (_) {
+                  return Container(
+                    color: AppColors.backgroundColor,
+                  );
+                },
+              ),
               if (state.currentPlayingState.isGameOver) const GameOverWidget(),
               if (state.currentPlayingState.isIdle)
                 const Align(
@@ -53,6 +65,20 @@ class _MainPageState extends State<MainPage> {
                   child: TapToPlay(),
                 ),
               if (state.currentPlayingState.isNotGameOver) const TopScore(),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    BoxOverlay(
+                      child: ProfileOverlay(),
+                    ),
+                    SizedBox(height: 8),
+                    BoxOverlay(
+                      child: BestScoreOverlay(),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         );

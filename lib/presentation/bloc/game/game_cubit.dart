@@ -28,12 +28,12 @@ class GameCubit extends Cubit<GameState> {
     );
     print("Session is: ${session.token}");
 
-    final group = await client.createGroup(
-      session: session,
-      name: "Flutter devs",
-      description: 'This is a cool group for Flutter devs!',
-    );
-    print("Group is created: ${group.id}");
+    // final group = await client.createGroup(
+    //   session: session,
+    //   name: "Flutter devs",
+    //   description: 'This is a cool group for Flutter devs!',
+    // );
+    // print("Group is created: ${group.id}");
   }
 
   void startPlaying() {

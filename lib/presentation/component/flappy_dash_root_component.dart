@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:flappy_dash/bloc/game/game_cubit.dart';
-import 'package:flappy_dash/component/dash.dart';
-import 'package:flappy_dash/component/dash_parallax_background.dart';
-import 'package:flappy_dash/component/pipe_pair.dart';
-import 'package:flappy_dash/flappy_dash_game.dart';
+import 'package:flappy_dash/presentation/bloc/game/game_cubit.dart';
+import 'package:flappy_dash/presentation/component/dash.dart';
+import 'package:flappy_dash/presentation/component/dash_parallax_background.dart';
+import 'package:flappy_dash/presentation/component/pipe_pair.dart';
+import 'package:flappy_dash/presentation/flappy_dash_game.dart';
 
 class FlappyDashRootComponent extends Component
     with HasGameRef<FlappyDashGame>, FlameBlocReader<GameCubit, GameState> {
