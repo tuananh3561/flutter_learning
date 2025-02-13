@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flappy_dash/presentation/dialogs/app_dialogs.dart';
 import 'package:flappy_dash/presentation/app_style.dart';
 import 'package:flappy_dash/presentation/bloc/game/game_cubit.dart';
 import 'package:flappy_dash/presentation/flappy_dash_game.dart';
@@ -65,16 +66,17 @@ class _MainPageState extends State<MainPage> {
                   child: TapToPlay(),
                 ),
               if (state.currentPlayingState.isNotGameOver) const TopScore(),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BoxOverlay(
-                      child: ProfileOverlay(),
-                    ),
-                    SizedBox(height: 8),
-                    BoxOverlay(
-                      child: BestScoreOverlay(),
+                    const ProfileOverlay(),
+                    const SizedBox(height: 8),
+                    BestScoreOverlay(
+                      onTap: () {
+                        AppDialogs.showLeaderboard(context);
+                      },
                     ),
                   ],
                 ),
