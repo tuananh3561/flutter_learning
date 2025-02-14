@@ -10,12 +10,14 @@ class LeaderboardRow extends StatelessWidget {
     required this.name,
     required this.score,
     required this.isMine,
+    required this.onMyProfileTap,
   });
 
   final int rank;
   final String name;
   final int score;
   final bool isMine;
+  final VoidCallback onMyProfileTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class LeaderboardRow extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: isMine ? () {} : null,
+        onTap: isMine ? onMyProfileTap : null,
         child: Container(
           color: isMine ? Colors.white10 : Colors.transparent,
           height: 64,

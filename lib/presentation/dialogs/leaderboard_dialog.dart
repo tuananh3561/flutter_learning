@@ -1,4 +1,5 @@
 import 'package:flappy_dash/presentation/app_style.dart';
+import 'package:flappy_dash/presentation/dialogs/app_dialogs.dart';
 import 'package:flappy_dash/presentation/dialogs/leaderboard_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -70,6 +71,9 @@ class LeaderBoardDialog extends StatelessWidget {
                     name: 'Player $index',
                     score: (10 - index) * 100,
                     isMine: index == 3,
+                    onMyProfileTap: () {
+                      AppDialogs.showNicknameDialog(context);
+                    },
                   );
                 },
                 separatorBuilder: (context, index) {
