@@ -4,14 +4,12 @@ import 'package:flappy_dash/presentation/app_style.dart';
 import 'package:flappy_dash/presentation/bloc/game/game_cubit.dart';
 import 'package:flappy_dash/presentation/flappy_dash_game.dart';
 import 'package:flappy_dash/presentation/widget/best_score_overlay.dart';
-import 'package:flappy_dash/presentation/widget/box_overlay.dart';
 import 'package:flappy_dash/presentation/widget/game_over_widget.dart';
 import 'package:flappy_dash/presentation/widget/profile_overlay.dart';
 import 'package:flappy_dash/presentation/widget/tap_to_play.dart';
 import 'package:flappy_dash/presentation/widget/top_score.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});

@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flappy_dash/audio_helper.dart';
@@ -27,6 +28,13 @@ class GameCubit extends Cubit<GameState> {
       username: 'tuananh',
     );
     print("Session is: ${session.token}");
+
+    // final list = await client.listLeaderboardRecords(
+    //   session: session,
+    //   leaderboardName: "main_leaderboard",
+    // );
+
+    // print("Leaderboard records: $list");
 
     // final group = await client.createGroup(
     //   session: session,
