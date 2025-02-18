@@ -41,6 +41,7 @@ lib/
 │   │   │
 │   │   ├── card_game/        # Card flipping game
 │   │   └── quiz_game/        # Quiz game
+│   │   └── flip_card/        # Flip card game
 │   │
 │   ├── profile/              # User profile feature
 │   └── settings/             # App settings feature
@@ -52,59 +53,3 @@ lib/
 │   └── services/             # Shared services
 │
 └── routes/                   # App routing
-
-
-project_root/
-├── lib/
-│   ├── core/                           # Core functionality
-│   │   ├── constants/                  # App constants
-│   │   ├── theme/                      # App theme
-│   │   ├── routes/                     # Route management
-│   │   └── services/                   # Core services
-│   │       ├── auth_service.dart       
-│   │       ├── storage_service.dart
-│   │       └── audio_service.dart
-│   │
-│   ├── data/                          # Data layer
-│   │   ├── models/                    # Data models
-│   │   │   ├── user.dart
-│   │   │   ├── game_progress.dart
-│   │   │   └── settings.dart
-│   │   ├── repositories/             # Data repositories
-│   │   └── datasources/             # Data sources (API, local storage)
-│   │
-│   ├── domain/                       # Domain layer
-│   │   ├── entities/                # Business entities
-│   │   ├── repositories/            # Repository interfaces
-│   │   └── usecases/               # Business logic use cases
-│   │
-│   ├── presentation/                # UI layer
-│   │   ├── auth/                   # Authentication screens
-│   │   │   ├── login_screen.dart
-│   │   │   └── register_screen.dart
-│   │   ├── home/                   # Home and navigation
-│   │   ├── settings/               # Settings screens
-│   │   └── widgets/                # Shared widgets
-│   │
-│   ├── games/                      # Games module
-│   │   ├── shared/                 # Shared game components
-│   │   │   ├── base_game.dart
-│   │   │   ├── game_wrapper.dart
-│   │   │   └── sprites/
-│   │   │
-│   │   ├── egg_breaker/           # Egg breaker game
-│   │   │   ├── components/
-│   │   │   ├── screens/
-│   │   │   └── egg_breaker_game.dart
-│   │   │
-│   │   ├── card_flip/             # Card flip game
-│   │   │   ├── components/
-│   │   │   ├── screens/
-│   │   │   └── card_flip_game.dart
-│   │   │
-│   │   └── quiz/                  # Quiz game
-│   │       ├── components/
-│   │       ├── screens/
-│   │       └── quiz_game.dart
-│   │
-│   └── main.dart
