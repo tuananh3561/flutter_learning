@@ -16,18 +16,20 @@ class GameCubit extends Cubit<GameState> {
   final AudioHelper _audioHelper;
 
   void _initializeNakama() async {
-    final client = getNakamaClient(
-      host: '127.0.0.1',
-      ssl: false,
-      serverKey: 'defaultkey',
-      grpcPort: 7349, // optional
-      httpPort: 7350, // optional
-    );
-    final session = await client.authenticateDevice(
-      deviceId: 'test-device-id',
-      username: 'tuananh',
-    );
-    print("Session is: ${session.token}");
+    // final client = getNakamaClient(
+    //   host: '127.0.0.1',
+    //   ssl: false,
+    //   serverKey: 'defaultkey',
+    //   grpcPort: 7349, // optional
+    //   httpPort: 7350, // optional
+    // );
+
+    // final session = await client.authenticateDevice(
+    //   deviceId: 'test-device-id',
+    //   username: 'tuananh',
+    // );
+
+    // print("Session is: ${session.token}");
 
     // final list = await client.listLeaderboardRecords(
     //   session: session,

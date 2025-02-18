@@ -77,9 +77,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   List<CardEntity> _generateCards() {
     const images = [
-      'assets/images/dog.png',
-      'assets/images/cat.png',
-      'assets/images/bird.png',
+      'assets/images/word/dog.png',
+      'assets/images/word/cat.png',
+      'assets/images/word/bird.png',
     ];
 
     final cards = <CardEntity>[];
@@ -91,7 +91,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           id: id++,
           imagePath: image,
           soundPath:
-              'assets/sounds/${image.split('/').last.split('.').first}.mp3',
+              'assets/audio/word/${image.split('/').last.split('.').first}.mp3',
         ));
       }
     }
