@@ -33,62 +33,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.12.0"
-  audioplayers:
-    dependency: "direct main"
-    description:
-      name: audioplayers
-      sha256: "24edca44cef02fa113bdded2f104aa6027a8fc5ed1e4d7a89c68d7c19d3312d8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.2"
-  audioplayers_android:
-    dependency: transitive
-    description:
-      name: audioplayers_android
-      sha256: "5a09cf83ac1a1a8e4392eafa5f66ddc21fc435a605d37542dd9c2f838d516e26"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.2"
-  audioplayers_darwin:
-    dependency: transitive
-    description:
-      name: audioplayers_darwin
-      sha256: e507887f3ff18d8e5a10a668d7bedc28206b12e10b98347797257c6ae1019c3b
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.0"
-  audioplayers_linux:
-    dependency: transitive
-    description:
-      name: audioplayers_linux
-      sha256: "9d3cb4e9533a12a462821e3f18bd282e0fa52f67ff96a06301d48dd48b82c2d1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.1"
-  audioplayers_platform_interface:
-    dependency: transitive
-    description:
-      name: audioplayers_platform_interface
-      sha256: "6834dd48dfb7bc6c2404998ebdd161f79cd3774a7e6779e1348d54a3bfdcfaa5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.0.0"
-  audioplayers_web:
-    dependency: transitive
-    description:
-      name: audioplayers_web
-      sha256: "3609bdf0e05e66a3d9750ee40b1e37f2a622c4edb796cc600b53a90a30a2ace4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.1"
-  audioplayers_windows:
-    dependency: transitive
-    description:
-      name: audioplayers_windows
-      sha256: "8605762dddba992138d476f6a0c3afd9df30ac5b96039929063eceed416795c2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0"
   bloc:
     dependency: transitive
     description:
@@ -213,10 +157,10 @@ packages:
     dependency: "direct main"
     description:
       name: flame
-      sha256: "75eb2b2814a0af2686e9f36649f72249f1921b565d11d5bf956d17f9d8cfa67f"
+      sha256: "8b5abd3fe76b8b3357ba777513900fa4f1c0dc5b46ab07ad7c38e8b290773bb9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.24.0"
+    version: "1.25.0"
   flame_bloc:
     dependency: "direct main"
     description:
@@ -225,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.6"
+  flame_spine:
+    dependency: "direct main"
+    description:
+      name: flame_spine
+      sha256: "8f8663fc895a18ab97401496092325df6e46eeb07b6fa5d75918b8e8d7c61ad4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2+6"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -254,14 +206,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  flutter_riverpod:
-    dependency: "direct main"
-    description:
-      name: flutter_riverpod
-      sha256: "9532ee6db4a943a1ed8383072a2e3eeda041db5657cdf6d2acecf3c21ecbe7e1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.1"
   flutter_shaders:
     dependency: transitive
     description:
@@ -360,6 +304,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
+  inject_js:
+    dependency: transitive
+    description:
+      name: inject_js
+      sha256: "849eacfd4b7e9182a7e743843a820d74bf1abcb692bdbe09e34ef0f753ad7227"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.7"
   json_annotation:
     dependency: transitive
     description:
@@ -576,14 +536,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.4.2"
-  riverpod:
-    dependency: transitive
-    description:
-      name: riverpod
-      sha256: "59062512288d3056b2321804332a13ffdd1bf16df70dcc8e506e411280a72959"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -653,6 +605,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
+  spine_flutter:
+    dependency: transitive
+    description:
+      name: spine_flutter
+      sha256: "21f8448a1b0cd19ec1c8b264182280b2d76e51a6f2bb832ce37eddc2ddd151e7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.33"
   sprintf:
     dependency: transitive
     description:
@@ -669,14 +629,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
-  state_notifier:
-    dependency: transitive
-    description:
-      name: state_notifier
-      sha256: b8677376aa54f2d7c58280d5a007f9e8774f1968d1fb1c096adcb4792fba29bb
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   stream_channel:
     dependency: transitive
     description:
@@ -693,14 +645,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
-  synchronized:
-    dependency: transitive
-    description:
-      name: synchronized
-      sha256: "0669c70faae6270521ee4f05bffd2919892d42d1276e6c495be80174b6bc0ef6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.1"
   term_glyph:
     dependency: transitive
     description:
@@ -781,6 +725,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  web_ffi_fork:
+    dependency: transitive
+    description:
+      name: web_ffi_fork
+      sha256: "7466228b7fc6a29ee1b5f6ab7ee2473847367a70fb523eb1a7c1d7a6a9841589"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.4"
   web_socket:
     dependency: transitive
     description:
@@ -830,5 +782,5 @@ packages:
     source: hosted
     version: "6.5.0"
 sdks:
-  dart: ">=3.7.0 <4.0.0"
+  dart: ">=3.7.0-0 <4.0.0"
   flutter: ">=3.27.1"

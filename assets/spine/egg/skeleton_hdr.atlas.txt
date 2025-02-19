@@ -1,0 +1,97 @@
+
+skeleton_hdr.png
+size: 1928,744
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Egg_A1
+  rotate: true
+  xy: 388, 19
+  size: 337, 383
+  orig: 380, 440
+  offset: 22, 28
+  index: -1
+Egg_A2
+  rotate: false
+  xy: 994, 358
+  size: 211, 384
+  orig: 221, 410
+  offset: 5, 12
+  index: -1
+Egg_A3
+  rotate: true
+  xy: 2, 2
+  size: 217, 384
+  orig: 221, 410
+  offset: 2, 12
+  index: -1
+Egg_B1
+  rotate: true
+  xy: 773, 19
+  size: 337, 383
+  orig: 380, 440
+  offset: 22, 28
+  index: -1
+Egg_B2
+  rotate: false
+  xy: 1207, 358
+  size: 211, 384
+  orig: 221, 410
+  offset: 5, 12
+  index: -1
+Egg_B3
+  rotate: false
+  xy: 337, 358
+  size: 217, 384
+  orig: 221, 410
+  offset: 2, 12
+  index: -1
+Egg_C1
+  rotate: true
+  xy: 1158, 19
+  size: 337, 383
+  orig: 380, 440
+  offset: 22, 28
+  index: -1
+Egg_C2
+  rotate: false
+  xy: 1420, 358
+  size: 211, 384
+  orig: 221, 410
+  offset: 5, 12
+  index: -1
+Egg_C3
+  rotate: false
+  xy: 556, 358
+  size: 217, 384
+  orig: 221, 410
+  offset: 2, 12
+  index: -1
+Egg_D1
+  rotate: true
+  xy: 1543, 19
+  size: 337, 383
+  orig: 380, 440
+  offset: 22, 28
+  index: -1
+Egg_D2
+  rotate: false
+  xy: 1633, 358
+  size: 211, 384
+  orig: 221, 410
+  offset: 5, 12
+  index: -1
+Egg_D3
+  rotate: false
+  xy: 775, 358
+  size: 217, 384
+  orig: 221, 410
+  offset: 2, 12
+  index: -1
+text
+  rotate: false
+  xy: 2, 221
+  size: 333, 521
+  orig: 420, 570
+  offset: 44, 24
+  index: -1

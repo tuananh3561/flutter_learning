@@ -1,0 +1,4903 @@
+{
+"skeleton": {
+	"hash": "8M+VPmCyxmu1VHkSJMwhG9iPAOA",
+	"spine": "3.8.99",
+	"x": -190,
+	"y": -27,
+	"width": 380,
+	"height": 440,
+	"images": "../Image/",
+	"audio": "D:/Game/Monkey Junior/Egg cracking/Anim/Egg/Spine/../../../SFX/SFX chuan"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "Rotate", "parent": "root" },
+	{ "name": "Egg", "parent": "Rotate" },
+	{ "name": "break_1", "parent": "Egg", "x": -7.91, "y": 339.32 },
+	{ "name": "break_2", "parent": "Egg", "x": 1.57, "y": 288.25 },
+	{ "name": "break_3", "parent": "Egg", "x": -1.68, "y": 238.44 },
+	{ "name": "break_4", "parent": "Egg", "x": -1.89, "y": 192.84, "scaleX": 1.1131, "scaleY": 1.1131 },
+	{ "name": "Egg_1", "parent": "Egg" },
+	{ "name": "text", "parent": "Rotate", "y": 185 },
+	{ "name": "Egg_2", "parent": "Egg" },
+	{ "name": "Egg_3", "parent": "Egg" }
+],
+"slots": [
+	{ "name": "Egg_B1", "bone": "Egg_1", "attachment": "Egg_B1" },
+	{ "name": "Egg_C1", "bone": "Egg_1", "attachment": "Egg_C1" },
+	{ "name": "Egg_D1", "bone": "Egg_1", "attachment": "Egg_D1" },
+	{ "name": "Egg_B2", "bone": "Egg_2", "attachment": "Egg_B2" },
+	{ "name": "Egg_C2", "bone": "Egg_2", "attachment": "Egg_C2" },
+	{ "name": "Egg_D2", "bone": "Egg_2", "attachment": "Egg_D2" },
+	{ "name": "Egg_B3", "bone": "Egg_3", "attachment": "Egg_B3" },
+	{ "name": "Egg_C3", "bone": "Egg_3", "attachment": "Egg_C3" },
+	{ "name": "Egg_D3", "bone": "Egg_3", "attachment": "Egg_D3" },
+	{ "name": "Egg_A2", "bone": "Egg_2", "attachment": "Egg_A2" },
+	{ "name": "Egg_A3", "bone": "Egg_3", "attachment": "Egg_A3" },
+	{ "name": "Egg_A1", "bone": "Egg_1", "attachment": "Egg_A1" },
+	{ "name": "text", "bone": "text", "attachment": "text" },
+	{ "name": "break_A1", "bone": "break_1" },
+	{ "name": "break_A2", "bone": "break_2" },
+	{ "name": "break_A3", "bone": "break_3" },
+	{ "name": "break_A4", "bone": "break_4" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"Egg_A1": {
+				"Egg_A1": { "y": 193, "width": 380, "height": 440 }
+			},
+			"Egg_A2": {
+				"Egg_A2": { "x": -60.1, "y": 194, "width": 221, "height": 410 }
+			},
+			"Egg_A3": {
+				"Egg_A3": { "x": 65.07, "y": 194, "width": 221, "height": 410 }
+			},
+			"Egg_B1": {
+				"Egg_B1": { "y": 193, "width": 380, "height": 440 }
+			},
+			"Egg_B2": {
+				"Egg_B2": { "x": -60.1, "y": 194, "width": 221, "height": 410 }
+			},
+			"Egg_B3": {
+				"Egg_B3": { "x": 65.07, "y": 194, "width": 221, "height": 410 }
+			},
+			"Egg_C1": {
+				"Egg_C1": { "y": 193, "width": 380, "height": 440 }
+			},
+			"Egg_C2": {
+				"Egg_C2": { "x": -60.1, "y": 194, "width": 221, "height": 410 }
+			},
+			"Egg_C3": {
+				"Egg_C3": { "x": 65.07, "y": 194, "width": 221, "height": 410 }
+			},
+			"Egg_D1": {
+				"Egg_D1": { "y": 193, "width": 380, "height": 440 }
+			},
+			"Egg_D2": {
+				"Egg_D2": { "x": -60.1, "y": 194, "width": 221, "height": 410 }
+			},
+			"Egg_D3": {
+				"Egg_D3": { "x": 65.07, "y": 194, "width": 221, "height": 410 }
+			},
+			"text": {
+				"text": { "scaleX": 0.3, "scaleY": 0.3, "width": 420, "height": 570 }
+			}
+		}
+	}
+],
+"events": {
+	"SFX trung vo": { "audio": "SFX trung vo.mp3" }
+},
+"animations": {
+	"Egg A - Tap 1": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{ "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.1, "angle": -8.84, "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg A - Tap 1 - normal": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg A - Tap 2": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{ "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.1, "angle": -8.84, "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg A - Tap 2 - normal": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg A - Tap 3": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"break_3": {
+				"translate": [
+					{ "y": -0.37 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{ "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.1, "angle": -8.84, "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg A - Tap 3 - normal": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"break_3": {
+				"translate": [
+					{ "y": -0.37 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg A - Tap 4": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"break_3": {
+				"translate": [
+					{ "y": -0.37 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{ "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.1, "angle": -8.84, "curve": 0.046, "c2": 0.31, "c3": 0.75 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg A - Tap 4 - normal": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg A - Tap 5": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_A2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": "Egg_A2" }
+				]
+			},
+			"Egg_A3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": "Egg_A3" }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": "Egg_B2" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": "Egg_B3" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": "Egg_C2" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": "Egg_C3" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": "Egg_D2" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": "Egg_D3" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg_2": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.2, "angle": 34.6, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.3333, "angle": 28.58 }
+				],
+				"translate": [
+					{ "time": 0.0333, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.2, "x": -51.53, "y": 22.15, "curve": "stepped" },
+					{ "time": 0.3333, "x": -51.53, "y": 22.15 }
+				]
+			},
+			"Egg_3": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.2, "angle": -45.59, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.3333, "angle": -41.43 }
+				],
+				"translate": [
+					{ "time": 0.0333, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.2, "x": 50.36, "y": 51.07 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg A - normal": {
+		"slots": {
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg B - Tap 1": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg B - Tap 1 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "bf916dff" }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg B - Tap 2": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg B - Tap 2 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg B - Tap 3": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"break_3": {
+				"translate": [
+					{ "y": -0.37 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg B - Tap 3 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"break_3": {
+				"translate": [
+					{ "y": -0.37 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg B - Tap 4": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"break_3": {
+				"translate": [
+					{ "y": -0.37 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg B - Tap 4 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"break_3": {
+				"translate": [
+					{ "y": -0.37 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg B - Tap 5": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_A2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": "Egg_B1" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_B2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_B2" }
+				]
+			},
+			"Egg_B3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_B3" }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ba3000ff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg_2": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.2, "angle": 34.6, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.3333, "angle": 28.58 }
+				],
+				"translate": [
+					{ "time": 0.0333 },
+					{ "time": 0.2, "x": -51.53, "y": 22.15, "curve": "stepped" },
+					{ "time": 0.3333, "x": -51.53, "y": 22.15 }
+				]
+			},
+			"Egg_3": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.2, "angle": -45.59, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.3333, "angle": -41.43 }
+				],
+				"translate": [
+					{ "time": 0.0333 },
+					{ "time": 0.2, "x": 50.36, "y": 51.07 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg B - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg C - Tap 1": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg C - Tap 1 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "601400ff" }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg C - Tap 2": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "601400ff", "curve": "stepped" },
+					{ "time": 0.0333, "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg C - Tap 2 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "601400ff" }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg C - Tap 3": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "601400ff", "curve": "stepped" },
+					{ "time": 0.0333, "color": "601400ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "601400ff", "curve": "stepped" },
+					{ "time": 0.0333, "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg C - Tap 3 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "601400ff" }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg C - Tap 4": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "601400ff", "curve": "stepped" },
+					{ "time": 0.0333, "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "601400ff", "curve": "stepped" },
+					{ "time": 0.0333, "color": "601400ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg C - Tap 4 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "601400ff" }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg_2": {
+				"rotate": [
+					{}
+				]
+			},
+			"Egg_3": {
+				"rotate": [
+					{}
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg C - Tap 5": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_A2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_B2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_B2" }
+				]
+			},
+			"Egg_B3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_B3" }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_C2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_C2" }
+				]
+			},
+			"Egg_C3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_C3" }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "601400ff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg_2": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.2, "angle": 34.6, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.3333, "angle": 28.58 }
+				],
+				"translate": [
+					{ "time": 0.0333 },
+					{ "time": 0.2, "x": -51.53, "y": 22.15, "curve": "stepped" },
+					{ "time": 0.3333, "x": -51.53, "y": 22.15 }
+				]
+			},
+			"Egg_3": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.2, "angle": -45.59, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.3333, "angle": -41.43 }
+				],
+				"translate": [
+					{ "time": 0.0333 },
+					{ "time": 0.2, "x": 50.36, "y": 51.07 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg C - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": "Egg_C1" }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "ffffffff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg D - Tap 1": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg D - Tap 1 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "5b002eff" }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg D - Tap 2": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg D - Tap 2 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "5b002eff" }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg D - Tap 3": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "5b002eff", "curve": "stepped" },
+					{ "time": 0.0333, "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg D - Tap 3 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "5b002eff" }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg D - Tap 4": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "5b002eff", "curve": "stepped" },
+					{ "time": 0.0333, "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{},
+					{ "time": 0.1, "angle": -8.84 },
+					{ "time": 0.2 }
+				]
+			}
+		}
+	},
+	"Egg D - Tap 4 - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "5b002eff" }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg_2": {
+				"rotate": [
+					{}
+				]
+			},
+			"Egg_3": {
+				"rotate": [
+					{}
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg D - Tap 5": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_A2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_B2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_B2" }
+				]
+			},
+			"Egg_B3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_B3" }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_C2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_C2" }
+				]
+			},
+			"Egg_C3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_C3" }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" },
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"Egg_D2": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_D2" }
+				]
+			},
+			"Egg_D3": {
+				"color": [
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "Egg_D3" }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "5b002eff" }
+				],
+				"attachment": [
+					{ "time": 0.0333, "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg_2": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.2, "angle": 34.6, "curve": 0.25, "c3": 0.75 },
+					{ "time": 0.3333, "angle": 28.58 }
+				],
+				"translate": [
+					{ "time": 0.0333 },
+					{ "time": 0.2, "x": -51.53, "y": 22.15, "curve": "stepped" },
+					{ "time": 0.3333, "x": -51.53, "y": 22.15 }
+				]
+			},
+			"Egg_3": {
+				"rotate": [
+					{ "curve": "stepped" },
+					{ "time": 0.0333, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.2, "angle": -45.59, "curve": 0.104, "c2": 0.28, "c3": 0.75 },
+					{ "time": 0.3333, "angle": -41.43 }
+				],
+				"translate": [
+					{ "time": 0.0333 },
+					{ "time": 0.2, "x": 50.36, "y": 51.07 }
+				]
+			},
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			},
+			"Rotate": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	},
+	"Egg D - normal": {
+		"slots": {
+			"Egg_A1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_A3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_B3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C1": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_C3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D1": {
+				"attachment": [
+					{ "name": "Egg_D1" }
+				]
+			},
+			"Egg_D2": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"Egg_D3": {
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A1": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A2": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A3": {
+				"color": [
+					{ "color": "000000ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"break_A4": {
+				"color": [
+					{ "color": "bf916dff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			},
+			"text": {
+				"color": [
+					{ "color": "feff99ff" }
+				],
+				"attachment": [
+					{ "name": null }
+				]
+			}
+		},
+		"bones": {
+			"Egg": {
+				"rotate": [
+					{}
+				]
+			}
+		}
+	}
+}
+}
