@@ -1,51 +1,84 @@
-import 'package:flame/game.dart';
-import 'package:flame_spine/flame_spine.dart';
-import 'package:flappy_dash/features/games/commons/audio/audio_helper.dart';
-import 'package:flappy_dash/features/games/commons/service_locator.dart';
-import 'package:flappy_dash/features/games/commons/widget/background.dart';
-import 'package:flappy_dash/features/games/flappy_dash/bloc/game/game_cubit.dart';
-import 'package:flappy_dash/features/games/flappy_dash/flame_spine_example.dart';
-import 'package:flappy_dash/features/games/flappy_dash/pages/main_page.dart';
-import 'package:flappy_dash/features/games/flip_card_2/presentation/screens/flip_card_screen.dart';
+// import 'package:flame/game.dart';
+// import 'package:flame_spine/flame_spine.dart';
+// import 'package:flappy_dash/features/games/commons/audio/audio_helper.dart';
+// import 'package:flappy_dash/features/games/commons/service_locator.dart';
+// import 'package:flappy_dash/features/games/commons/widget/background.dart';
+// import 'package:flappy_dash/features/games/flappy_dash/bloc/game/game_cubit.dart';
+// import 'package:flappy_dash/features/games/flappy_dash/flame_spine_example.dart';
+// import 'package:flappy_dash/features/games/flappy_dash/pages/main_page.dart';
+// import 'package:flappy_dash/features/games/flip_card_2/presentation/screens/flip_card_screen.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// import 'core/di/injection.dart';
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   // Dependencies
+//   await configureDependencies();
+//   // Spine
+//   await initSpineFlutter();
+//   // Service locator
+//   // await setupServiceLocator();
+//   // runApp(const GameWidget.controlled(gameFactory: FlameSpineExample.new));
+//   runApp(const MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // return BlocProvider(
+//     //   create: (BuildContext context) => GameCubit(
+//     //     getIt.get<AudioHelper>(),
+//     //   ),
+//     //   child: MaterialApp(
+//     //     title: 'Flappy Dash',
+//     //     theme: ThemeData(fontFamily: 'Chewy'),
+//     //     home: const Stack(
+//     //       children: [
+//     //         Background(),
+//     //         FlipCardScreen(),
+//     //       ],
+//     //     ),
+//     //   ),
+//     // );
+
+//     return MaterialApp(
+//       title: 'Flip Card Game',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: const Background(),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/di/injection.dart';
+import 'routes/app_router.dart';
+import 'routes/route_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initSpineFlutter();
-  // runApp(const GameWidget.controlled(gameFactory: FlameSpineExample.new));
-
-  await setupServiceLocator();
+  await configureDependencies();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => GameCubit(
-        getIt.get<AudioHelper>(),
+    return MaterialApp(
+      title: 'Your App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      child: MaterialApp(
-        title: 'Flappy Dash',
-        theme: ThemeData(fontFamily: 'Chewy'),
-        home: const Stack(
-          children: [
-            Background(),
-            FlipCardScreen(),
-          ],
-        ),
-      ),
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: RouteConstants.splash,
     );
-
-    // return MaterialApp(
-    //   title: 'Flip Card Game',
-    //   theme: ThemeData(
-    //     primarySwatch: Colors.blue,
-    //   ),
-    //   home: const FlipCardScreen(),
-    // );
   }
 }
