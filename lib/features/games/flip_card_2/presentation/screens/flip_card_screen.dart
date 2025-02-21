@@ -20,7 +20,9 @@ class FlipCardScreen extends StatelessWidget {
         audioService: getIt.get<AudioService>(),
       )..add(GameInitialized()),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           title: const Text('Flip Card Game'),
         ),
         body: BlocBuilder<GameBloc, GameState>(

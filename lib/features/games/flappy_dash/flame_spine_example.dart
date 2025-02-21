@@ -26,8 +26,8 @@ class FlameSpineExample extends FlameGame with TapDetector {
     // and create a SpineComponent from them, scaled down and
     // centered on the screen
     spineboy = await SpineComponent.fromAssets(
-      atlasFile: 'assets/spine/mix-and-match.atlas',
-      skeletonFile: 'assets/spine/mix-and-match-pro.skel',
+      atlasFile: 'assets/spine/spineboy.atlas',
+      skeletonFile: 'assets/spine/spineboy-pro.json',
       scale: Vector2(0.4, 0.4),
       anchor: Anchor.center,
       position: Vector2(size.x / 2, size.y / 2),
