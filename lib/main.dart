@@ -58,27 +58,27 @@
 import 'package:flutter/material.dart';
 import 'core/di/injection.dart';
 import 'routes/app_router.dart';
-import 'routes/route_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Your App',
+      routerConfig: _appRouter.config(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: RouteConstants.splash,
     );
   }
 }

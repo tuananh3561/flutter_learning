@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../storage/database/app_database.dart';
 import './injection.config.dart';
 
@@ -19,6 +20,10 @@ Future<void> configureDependencies() async {
   final database = await AppDatabase.init();
   getIt.registerSingleton(database);
   getIt.registerSingleton(database.deviceInfoDao);
+
+  // SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  getIt.registerSingleton(prefs);
 
   getIt.init();
 }

@@ -9,70 +9,85 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   # Game Engine  
   flame: ^1.23.0
   flame_bloc: ^1.12.6
+  flame_spine: ^0.2.2+6
   flutter_animate: ^4.5.2
   flutter_soloud: ^2.1.7
-  flutter_svg: ^2.0.17
-  nakama: ^1.2.0
 
-  flame_spine: ^0.2.2+6
+  
+  # Backend Services
+  nakama: ^1.2.0
 
   # State Management
   flutter_bloc: ^9.0.0
   equatable: ^2.0.7
+  dartz: ^0.10.1
 
-  # Local Storage
+  # Local Storage & Database
+  flutter_secure_storage: ^9.0.0
   shared_preferences: ^2.5.2
-
-  # Database
   floor: ^1.4.2
-  floor_generator: ^1.4.2
   sqflite: ^2.3.0
 
-  # Secure Storage
-  flutter_secure_storage: ^9.0.0
-
   # Network
-  internet_connection_checker: ^1.0.0+1
   dio: ^5.4.0
+  internet_connection_checker: ^1.0.0+1
 
   # Device  
   android_id: ^0.4.0
   device_info_plus: ^11.3.0
+  uuid: ^4.5.1
 
   # Utils
-  uuid: ^4.5.1
   get_it: ^8.0.3
   injectable: ^2.5.0
+
+  # Code Generation & Annotations
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
-  dartz: ^0.10.1
 
   # Navigation
-  auto_route: ^9.3.0+1
+  auto_route: ^9.0.0
+
+  # Validation & Formatting
+  phone_number: ^2.1.0
+  form_validator: ^2.1.1
 
   # UI Components
   smooth_page_indicator: ^1.2.0+3
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # Linting & Analysis  
   flutter_lints: ^4.0.0
 
   # Code generation
   build_runner: ^2.4.15
+  floor_generator: ^1.4.2
   injectable_generator: ^2.6.2
   freezed: ^2.5.7
   json_serializable: ^6.9.0
   auto_route_generator: ^9.0.0
 
+  # Testing
+  bloc_test: ^10.0.0
+  mockito: ^5.4.5
+
+# Flutter Configuration
 flutter:
   uses-material-design: true
 
+  # Assets
   assets:
     - assets/images/
+    - assets/images/onboarding/
     - assets/images/background/
     - assets/images/word/
     - assets/audio/
@@ -85,6 +100,7 @@ flutter:
     - assets/spine/Shark/
     - assets/spine/
 
+  # Fonts
   fonts:
     - family: Chewy
       fonts:

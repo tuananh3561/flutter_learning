@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/usecases/check_first_time_usecase.dart';
 import '../../domain/usecases/complete_onboarding_usecase.dart';
 import '../../domain/usecases/get_onboarding_items_usecase.dart';
@@ -35,11 +34,11 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     try {
       emit(const OnboardingState.loading());
 
-      final isFirstTime = await _checkFirstTime();
-      if (!isFirstTime) {
-        emit(const OnboardingState.completed());
-        return;
-      }
+      // final isFirstTime = await _checkFirstTime();
+      // if (!isFirstTime) {
+      //   emit(const OnboardingState.completed());
+      //   return;
+      // }
 
       final items = await _getOnboardingItems();
       if (items.isEmpty) {
@@ -103,28 +102,3 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     }
   }
 }
-
-// Example of using BLoC in widget
-/*
-class OnboardingScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<OnboardingBloc, OnboardingState>(
-      builder: (context, state) {
-        return state.map(
-          initial: (_) => const SizedBox(),
-          loading: (_) => const LoadingIndicator(),
-          success: (state) => OnboardingContent(
-            items: state.items,
-            currentPage: state.currentPage,
-            isLastPage: state.isLastPage,
-            progress: state.progress,
-          ),
-          error: (state) => ErrorView(message: state.message),
-          completed: (_) => const LoginScreen(),
-        );
-      },
-    );
-  }
-}
-*/

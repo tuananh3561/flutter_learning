@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 
 class OnboardingButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
   final bool isLastPage;
+  final VoidCallback onPressed;
 
   const OnboardingButton({
     Key? key,
-    required this.text,
+    required this.isLastPage,
     required this.onPressed,
-    this.isLastPage = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      width: isLastPage ? 200 : 150,
-      height: 50,
+      width: isLastPage ? 200 : 160,
+      height: 56,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(30),
           ),
+          elevation: 2,
         ),
-        child: Text(text),
+        child: Text(
+          isLastPage ? 'Get Started' : 'Next',
+          style: const TextStyle(fontSize: 16),
+        ),
       ),
     );
   }

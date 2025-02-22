@@ -1,11 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../routes/route_constants.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_state.dart';
 import '../bloc/splash_event.dart';
 
+@RoutePage()
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -26,17 +29,15 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
-        print("SplashState: $state");
         state.whenOrNull(
           navigateToOnboarding: () {
-            Navigator.of(context)
-                .pushReplacementNamed(RouteConstants.onboarding);
+            context.router.replaceNamed(RouteConstants.onboarding);
           },
           navigateToLogin: () {
-            Navigator.of(context).pushReplacementNamed(RouteConstants.login);
+            context.router.replaceNamed(RouteConstants.login);
           },
           navigateToHome: () {
-            Navigator.of(context).pushReplacementNamed(RouteConstants.home);
+            context.router.replaceNamed(RouteConstants.home);
           },
           error: (message) {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -23,6 +23,7 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
   @override
   Future<List<OnboardingItem>> getOnboardingItems() async {
     final itemsData = await _localDataSource.getOnboardingItems();
+    print(itemsData);
     return itemsData
         .map((data) => OnboardingItemModel.fromJson(data).toEntity())
         .toList();
