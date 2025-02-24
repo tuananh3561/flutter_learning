@@ -55,6 +55,7 @@ dependencies:
   # Validation & Formatting
   phone_number: ^2.1.0
   form_validator: ^2.1.1
+  email_validator: ^3.0.0
 
   # UI Components
   smooth_page_indicator: ^1.2.0+3

@@ -9,9 +9,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flappy_dash/features/home/presentation/home_screen.dart' as _i1;
-import 'package:flappy_dash/features/login/presentation/screens/login_screen.dart'
+import 'package:flappy_dash/features/auth/presentation/screens/login_screen.dart'
     as _i2;
+import 'package:flappy_dash/features/home/presentation/home_screen.dart' as _i1;
 import 'package:flappy_dash/features/onboarding/presentation/screens/onboarding_screen.dart'
     as _i3;
 import 'package:flappy_dash/features/splash/presentation/screens/splash_screen.dart'

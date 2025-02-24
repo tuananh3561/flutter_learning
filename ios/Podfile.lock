@@ -9,6 +9,10 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - phone_number (2.0.1):
+    - Flutter
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.6.6)
+  - PhoneNumberKit/PhoneNumberKitCore (3.6.6)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -24,9 +28,14 @@ DEPENDENCIES:
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_soloud (from `.symlinks/plugins/flutter_soloud/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - phone_number (from `.symlinks/plugins/phone_number/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - spine_flutter (from `.symlinks/plugins/spine_flutter/ios`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
+
+SPEC REPOS:
+  trunk:
+    - PhoneNumberKit
 
 EXTERNAL SOURCES:
   device_info_plus:
@@ -39,6 +48,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_soloud/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  phone_number:
+    :path: ".symlinks/plugins/phone_number/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   spine_flutter:
@@ -47,15 +58,17 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
 
 SPEC CHECKSUMS:
-  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
+  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
-  flutter_soloud: ceb463dfdba562ed9e3798855eca9a4ecc72d23c
-  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
-  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
-  spine_flutter: 946c9b7aa6878d41940d50892f2b55c28ca788aa
-  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
+  flutter_soloud: 12a37f5fb426c94671d762cbb059bbeb1b46ad97
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  phone_number: 567a167933138df1080eb0d8ecb0ea44f1dee1ed
+  PhoneNumberKit: 5b1be7ee4955dfeeb855f51eecdd829ab24b3484
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  spine_flutter: 029584e4272785b636238b7ce1a475f85d9ada08
+  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
 
 PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.14.3
