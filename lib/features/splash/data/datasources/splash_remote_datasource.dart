@@ -15,7 +15,7 @@ class SplashRemoteDataSourceImpl implements SplashRemoteDataSource {
 
   @override
   Future<DeviceInfoModel> registerDevice(String deviceId) async {
-    return DeviceInfoModel(
+    return const DeviceInfoModel(
       deviceId: "1212124",
       isFirstTime: false,
       lastLoginDate: "1111",

@@ -10,14 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Game Engine  
+  # Game Engine
   flame: ^1.23.0
   flame_bloc: ^1.12.6
   flame_spine: ^0.2.2+6
   flutter_animate: ^4.5.2
   flutter_soloud: ^2.1.7
 
-  
   # Backend Services
   nakama: ^1.2.0
 
@@ -31,12 +30,13 @@ dependencies:
   shared_preferences: ^2.5.2
   floor: ^1.4.2
   sqflite: ^2.3.0
+  sqflite_common_ffi_web: ^0.4.5+4
 
   # Network
   dio: ^5.4.0
   internet_connection_checker: ^1.0.0+1
 
-  # Device  
+  # Device
   android_id: ^0.4.0
   device_info_plus: ^11.3.0
   uuid: ^4.5.1
@@ -61,12 +61,13 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.17
+  http: ^1.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # Linting & Analysis  
+  # Linting & Analysis
   flutter_lints: ^4.0.0
 
   # Code generation

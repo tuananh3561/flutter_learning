@@ -61,6 +61,18 @@ class AppRouter extends RootStackRouter {
           page: LoginRoute.page,
         ),
         AutoRoute(
+          path: RouteConstants.registration,
+          page: RegistrationRoute.page,
+        ),
+        AutoRoute(
+          path: RouteConstants.phoneVerification,
+          page: PhoneVerificationRoute.page,
+        ),
+        AutoRoute(
+          path: RouteConstants.profileCreation,
+          page: PhoneVerificationRoute.page,
+        ),
+        AutoRoute(
           path: RouteConstants.home,
           page: HomeRoute.page,
         ),

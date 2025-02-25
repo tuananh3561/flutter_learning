@@ -20,7 +20,7 @@ import '../widgets/login_button.dart';
 /// follows clean architecture principles.
 @RoutePage()
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class LoginView extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    // context.router.push(const RegisterRoute());
+                    context.router.replaceNamed(RouteConstants.registration);
                   },
                   child: const Text('Đăng ký tài khoản mới'),
                 ),

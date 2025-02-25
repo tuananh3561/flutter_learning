@@ -60,6 +60,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       },
     );
 
-    emit(await failureOrSuccess);
+    emit(failureOrSuccess);
   }
 }

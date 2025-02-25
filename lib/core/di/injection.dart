@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,8 +14,10 @@ final getIt = GetIt.instance;
   asExtension: true, // default
 )
 Future<void> configureDependencies() async {
-  // Third party dependencies
-  getIt.registerLazySingleton(() => InternetConnectionChecker());
+  if (!kIsWeb) {
+    // Third party dependencies
+    getIt.registerLazySingleton(() => InternetConnectionChecker());
+  }
 
   // Database
   final database = await AppDatabase.init();

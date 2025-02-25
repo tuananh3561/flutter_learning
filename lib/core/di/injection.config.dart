@@ -10,8 +10,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:internet_connection_checker/internet_connection_checker.dart'
-    as _i973;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import '../../features/auth/data/datasources/auth_local_datasource.dart'
@@ -98,10 +96,9 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i557.ApiClient(gh<_i619.SecureStorage>()));
     gh.factory<_i992.AuthLocalDataSource>(
         () => _i992.AuthLocalDataSource(gh<_i619.SecureStorage>()));
+    gh.factory<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl.create());
     gh.factory<_i220.ValidatePhoneUseCase>(
         () => _i220.ValidatePhoneUseCase(gh<_i632.PhoneValidator>()));
-    gh.factory<_i932.NetworkInfo>(
-        () => _i932.NetworkInfoImpl(gh<_i973.InternetConnectionChecker>()));
     gh.factory<_i220.SplashRemoteDataSource>(
         () => _i220.SplashRemoteDataSourceImpl(gh<_i557.ApiClient>()));
     gh.factory<_i430.OnboardingRepository>(() =>
