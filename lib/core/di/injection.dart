@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -19,14 +20,24 @@ Future<void> configureDependencies() async {
     getIt.registerLazySingleton(() => InternetConnectionChecker());
   }
 
+  // Register FlutterSecureStorage
+  getIt.registerLazySingleton(() => const FlutterSecureStorage(
+        aOptions: AndroidOptions(
+          encryptedSharedPreferences: true,
+        ),
+        iOptions: IOSOptions(
+          accessibility: KeychainAccessibility.first_unlock,
+        ),
+      ));
+
+  // Register SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  getIt.registerSingleton(prefs);
+
   // Database
   final database = await AppDatabase.init();
   getIt.registerSingleton(database);
   getIt.registerSingleton(database.deviceInfoDao);
-
-  // SharedPreferences
-  final prefs = await SharedPreferences.getInstance();
-  getIt.registerSingleton(prefs);
 
   getIt.init();
 }

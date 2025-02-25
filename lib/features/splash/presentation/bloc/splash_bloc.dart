@@ -31,7 +31,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     final SplashState failureOrSuccess = await deviceResult.fold(
       (failure) async => const SplashState.error('Failed to initialize device'),
       (deviceInfo) async {
-        print('Device Info: $deviceInfo');
         // Check if first time
         final firstTimeResult = await _checkFirstTimeUseCase();
         return firstTimeResult.fold(

@@ -50,8 +50,8 @@ abstract class RegistrationLocalDataSource {
 
 @Injectable(as: RegistrationLocalDataSource)
 class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
-  final SharedPreferences sharedPreferences;
-  final FlutterSecureStorage secureStorage;
+  final SharedPreferences _sharedPreferences;
+  final FlutterSecureStorage _secureStorage;
 
   static const String CACHED_REGISTRATION_DATA = 'CACHED_REGISTRATION_DATA';
   static const String CACHED_USER_PROFILE = 'CACHED_USER_PROFILE';
@@ -61,18 +61,19 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
   static const String REFRESH_TOKEN_KEY = 'REFRESH_TOKEN';
 
   RegistrationLocalDataSourceImpl({
-    required this.sharedPreferences,
-    required this.secureStorage,
-  });
+    required SharedPreferences sharedPreferences,
+    required FlutterSecureStorage secureStorage,
+  })  : _sharedPreferences = sharedPreferences,
+        _secureStorage = secureStorage;
 
   @override
   Future<void> cacheRegistrationData(RegistrationRequestModel data) async {
     try {
-      await sharedPreferences.setString(
+      await _sharedPreferences.setString(
         CACHED_REGISTRATION_DATA,
         jsonEncode(data.toJson()),
       );
-      await sharedPreferences.setBool(REGISTRATION_INITIATED, true);
+      await _sharedPreferences.setBool(REGISTRATION_INITIATED, true);
     } catch (e) {
       throw CacheException('Failed to cache registration data');
     }
@@ -81,7 +82,7 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
   @override
   Future<RegistrationRequestModel?> getCachedRegistrationData() async {
     try {
-      final jsonString = sharedPreferences.getString(CACHED_REGISTRATION_DATA);
+      final jsonString = _sharedPreferences.getString(CACHED_REGISTRATION_DATA);
       if (jsonString == null) {
         return null;
       }
@@ -97,10 +98,10 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
   @override
   Future<void> clearRegistrationData() async {
     try {
-      await sharedPreferences.remove(CACHED_REGISTRATION_DATA);
-      await sharedPreferences.remove(REGISTRATION_INITIATED);
-      await sharedPreferences.remove(PHONE_VERIFIED);
-      await sharedPreferences.remove(CACHED_USER_PROFILE);
+      await _sharedPreferences.remove(CACHED_REGISTRATION_DATA);
+      await _sharedPreferences.remove(REGISTRATION_INITIATED);
+      await _sharedPreferences.remove(PHONE_VERIFIED);
+      await _sharedPreferences.remove(CACHED_USER_PROFILE);
     } catch (e) {
       throw CacheException('Failed to clear registration data');
     }
@@ -109,8 +110,8 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
   @override
   Future<void> saveAuthTokens(String token, String refreshToken) async {
     try {
-      await secureStorage.write(key: AUTH_TOKEN_KEY, value: token);
-      await secureStorage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+      await _secureStorage.write(key: AUTH_TOKEN_KEY, value: token);
+      await _secureStorage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
     } catch (e) {
       throw CacheException('Failed to save auth tokens');
     }
@@ -119,7 +120,7 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
   @override
   Future<void> cacheUserProfile(UserProfileModel profile) async {
     try {
-      await sharedPreferences.setString(
+      await _sharedPreferences.setString(
         CACHED_USER_PROFILE,
         jsonEncode(profile.toJson()),
       );
@@ -131,7 +132,7 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
   @override
   Future<UserProfileModel?> getCachedUserProfile() async {
     try {
-      final jsonString = sharedPreferences.getString(CACHED_USER_PROFILE);
+      final jsonString = _sharedPreferences.getString(CACHED_USER_PROFILE);
       if (jsonString == null) {
         return null;
       }
@@ -146,13 +147,13 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
 
   @override
   Future<bool> isRegistrationInitiated() async {
-    return sharedPreferences.getBool(REGISTRATION_INITIATED) ?? false;
+    return _sharedPreferences.getBool(REGISTRATION_INITIATED) ?? false;
   }
 
   @override
   Future<void> savePhoneVerificationStatus(bool verified) async {
     try {
-      await sharedPreferences.setBool(PHONE_VERIFIED, verified);
+      await _sharedPreferences.setBool(PHONE_VERIFIED, verified);
     } catch (e) {
       throw CacheException('Failed to save phone verification status');
     }
@@ -160,6 +161,6 @@ class RegistrationLocalDataSourceImpl implements RegistrationLocalDataSource {
 
   @override
   Future<bool> getPhoneVerificationStatus() async {
-    return sharedPreferences.getBool(PHONE_VERIFIED) ?? false;
+    return _sharedPreferences.getBool(PHONE_VERIFIED) ?? false;
   }
 }

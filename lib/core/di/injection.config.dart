@@ -8,6 +8,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -16,20 +17,52 @@ import '../../features/auth/data/datasources/auth_local_datasource.dart'
     as _i992;
 import '../../features/auth/data/datasources/auth_remote_datasource.dart'
     as _i161;
+import '../../features/auth/data/datasources/registration_local_datasource.dart'
+    as _i384;
+import '../../features/auth/data/datasources/registration_remote_datasource.dart'
+    as _i184;
 import '../../features/auth/data/repositories/auth_repository_impl.dart'
     as _i153;
+import '../../features/auth/data/repositories/registration_repository_impl.dart'
+    as _i125;
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
 import '../../features/auth/domain/repositories/password_validator.dart'
     as _i705;
 import '../../features/auth/domain/repositories/phone_validator.dart' as _i632;
+import '../../features/auth/domain/repositories/registration_repository.dart'
+    as _i386;
+import '../../features/auth/domain/repositories/validation_repository.dart'
+    as _i13;
 import '../../features/auth/domain/usecases/check_auth_status_usecase.dart'
     as _i52;
+import '../../features/auth/domain/usecases/check_registration_status_usecase.dart'
+    as _i159;
+import '../../features/auth/domain/usecases/clear_registration_data_usecase.dart'
+    as _i689;
+import '../../features/auth/domain/usecases/create_profile_usecase.dart'
+    as _i598;
+import '../../features/auth/domain/usecases/is_phone_verified_usecase.dart'
+    as _i289;
 import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
+import '../../features/auth/domain/usecases/register_user_usecase.dart'
+    as _i241;
+import '../../features/auth/domain/usecases/request_otp_usecase.dart' as _i29;
+import '../../features/auth/domain/usecases/validate_field_usecase.dart'
+    as _i484;
 import '../../features/auth/domain/usecases/validate_password_usecase.dart'
     as _i890;
 import '../../features/auth/domain/usecases/validate_phone_usecase.dart'
     as _i220;
+import '../../features/auth/domain/usecases/validate_user_input_usecase.dart'
+    as _i116;
+import '../../features/auth/domain/usecases/verify_phone_usecase.dart' as _i573;
+import '../../features/auth/domain/validation/field_validator.dart' as _i905;
+import '../../features/auth/domain/validation/form_validation_helper.dart'
+    as _i881;
+import '../../features/auth/domain/validation/validation_repository_impl.dart'
+    as _i490;
 import '../../features/auth/presentation/bloc/login_bloc.dart' as _i990;
+import '../../features/auth/presentation/bloc/registration_bloc.dart' as _i688;
 import '../../features/onboarding/data/datasources/onboarding_local_datasource.dart'
     as _i804;
 import '../../features/onboarding/data/repositories/onboarding_repository_impl.dart'
@@ -80,6 +113,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final authModule = _$AuthModule();
     gh.factory<_i845.DeviceInfoMapper>(() => _i845.DeviceInfoMapper());
+    gh.factory<_i116.ValidateUserInputUseCase>(
+        () => _i116.ValidateUserInputUseCase());
+    gh.factory<_i905.FieldValidator>(() => _i905.FieldValidator());
     gh.singleton<_i632.PhoneValidator>(() => authModule.phoneValidator);
     gh.singleton<_i705.PasswordValidator>(() => authModule.passwordValidator);
     gh.singleton<_i619.SecureStorage>(() => _i619.SecureStorage());
@@ -97,10 +133,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i992.AuthLocalDataSource>(
         () => _i992.AuthLocalDataSource(gh<_i619.SecureStorage>()));
     gh.factory<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl.create());
+    gh.factory<_i384.RegistrationLocalDataSource>(
+        () => _i384.RegistrationLocalDataSourceImpl(
+              sharedPreferences: gh<_i460.SharedPreferences>(),
+              secureStorage: gh<_i558.FlutterSecureStorage>(),
+            ));
     gh.factory<_i220.ValidatePhoneUseCase>(
         () => _i220.ValidatePhoneUseCase(gh<_i632.PhoneValidator>()));
+    gh.factory<_i184.RegistrationRemoteDataSource>(
+        () => _i184.RegistrationRemoteDataSourceImpl(gh<_i557.ApiClient>()));
     gh.factory<_i220.SplashRemoteDataSource>(
         () => _i220.SplashRemoteDataSourceImpl(gh<_i557.ApiClient>()));
+    gh.factory<_i13.ValidationRepository>(
+        () => _i490.ValidationRepositoryImpl(gh<_i905.FieldValidator>()));
     gh.factory<_i430.OnboardingRepository>(() =>
         _i452.OnboardingRepositoryImpl(gh<_i804.OnboardingLocalDataSource>()));
     gh.factory<_i161.AuthRemoteDataSource>(
@@ -121,6 +166,12 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i97.GetOnboardingItemsUseCase(gh<_i430.OnboardingRepository>()));
     gh.factory<_i733.CheckFirstTimeUseCase>(
         () => _i733.CheckFirstTimeUseCase(gh<_i430.OnboardingRepository>()));
+    gh.factory<_i386.RegistrationRepository>(
+        () => _i125.RegistrationRepositoryImpl(
+              remoteDataSource: gh<_i184.RegistrationRemoteDataSource>(),
+              localDataSource: gh<_i384.RegistrationLocalDataSource>(),
+              networkInfo: gh<_i932.NetworkInfo>(),
+            ));
     gh.factory<_i426.CheckFirstTimeUseCase>(
         () => _i426.CheckFirstTimeUseCase(gh<_i210.SplashRepository>()));
     gh.factory<_i239.InitializeDeviceUseCase>(
@@ -129,6 +180,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i895.CheckAuthStatusUseCase(gh<_i210.SplashRepository>()));
     gh.factory<_i52.CheckAuthStatusUseCase>(
         () => _i52.CheckAuthStatusUseCase(gh<_i787.AuthRepository>()));
+    gh.factory<_i484.ValidateFieldUseCase>(
+        () => _i484.ValidateFieldUseCase(gh<_i13.ValidationRepository>()));
+    gh.factory<_i881.FormValidationHelper>(
+        () => _i881.FormValidationHelper(gh<_i484.ValidateFieldUseCase>()));
     gh.factory<_i792.OnboardingBloc>(() => _i792.OnboardingBloc(
           gh<_i97.GetOnboardingItemsUseCase>(),
           gh<_i733.CheckFirstTimeUseCase>(),
@@ -144,10 +199,36 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i426.CheckFirstTimeUseCase>(),
           gh<_i895.CheckAuthStatusUseCase>(),
         ));
+    gh.factory<_i598.CreateProfileUseCase>(
+        () => _i598.CreateProfileUseCase(gh<_i386.RegistrationRepository>()));
+    gh.factory<_i689.ClearRegistrationDataUseCase>(() =>
+        _i689.ClearRegistrationDataUseCase(gh<_i386.RegistrationRepository>()));
+    gh.factory<_i241.RegisterUserUseCase>(
+        () => _i241.RegisterUserUseCase(gh<_i386.RegistrationRepository>()));
+    gh.factory<_i29.RequestOtpUseCase>(
+        () => _i29.RequestOtpUseCase(gh<_i386.RegistrationRepository>()));
+    gh.factory<_i289.IsPhoneVerifiedUseCase>(
+        () => _i289.IsPhoneVerifiedUseCase(gh<_i386.RegistrationRepository>()));
+    gh.factory<_i159.CheckRegistrationStatusUseCase>(() =>
+        _i159.CheckRegistrationStatusUseCase(
+            gh<_i386.RegistrationRepository>()));
+    gh.factory<_i573.VerifyPhoneUseCase>(
+        () => _i573.VerifyPhoneUseCase(gh<_i386.RegistrationRepository>()));
     gh.factory<_i990.LoginBloc>(() => _i990.LoginBloc(
           gh<_i188.LoginUseCase>(),
           gh<_i220.ValidatePhoneUseCase>(),
           gh<_i890.ValidatePasswordUseCase>(),
+        ));
+    gh.factory<_i688.RegistrationBloc>(() => _i688.RegistrationBloc(
+          registerUserUseCase: gh<_i241.RegisterUserUseCase>(),
+          requestOtpUseCase: gh<_i29.RequestOtpUseCase>(),
+          verifyPhoneUseCase: gh<_i573.VerifyPhoneUseCase>(),
+          checkRegistrationStatusUseCase:
+              gh<_i159.CheckRegistrationStatusUseCase>(),
+          clearRegistrationDataUseCase:
+              gh<_i689.ClearRegistrationDataUseCase>(),
+          validateFieldUseCase: gh<_i484.ValidateFieldUseCase>(),
+          formValidationHelper: gh<_i881.FormValidationHelper>(),
         ));
     return this;
   }

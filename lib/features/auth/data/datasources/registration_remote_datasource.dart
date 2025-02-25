@@ -41,12 +41,24 @@ class RegistrationRemoteDataSourceImpl implements RegistrationRemoteDataSource {
   Future<RegistrationResponseModel> register(
       RegistrationRequestModel request) async {
     try {
-      final response = await apiClient.post(
-        ApiEndpoints.register,
-        data: request.toJson(),
-      );
+      // final response = await apiClient.post(
+      //   ApiEndpoints.register,
+      //   data: request.toJson(),
+      // );
 
-      return RegistrationResponseModel.fromJson(response.data);
+      // return RegistrationResponseModel.fromJson(response.data);
+      return const RegistrationResponseModel(
+        token: "token",
+        refreshToken: "refreshToken",
+        user: UserModel2(
+          id: "id",
+          phone: "phone",
+          name: "name",
+          isActive: true,
+        ),
+        success: true,
+        message: "message",
+      );
     } on DioException catch (e) {
       throw ServerException(
         e.response?.statusCode ?? 500,
@@ -60,12 +72,13 @@ class RegistrationRemoteDataSourceImpl implements RegistrationRemoteDataSource {
   @override
   Future<bool> requestOtp(String phone) async {
     try {
-      final response = await apiClient.post(
-        ApiEndpoints.requestOtp,
-        data: {'phone': phone},
-      );
+      // final response = await apiClient.post(
+      //   ApiEndpoints.requestOtp,
+      //   data: {'phone': phone},
+      // );
 
-      return response.statusCode == 200;
+      // return response.statusCode == 200;
+      return true;
     } on DioException catch (e) {
       throw ServerException(
         e.response?.statusCode ?? 500,
@@ -79,15 +92,16 @@ class RegistrationRemoteDataSourceImpl implements RegistrationRemoteDataSource {
   @override
   Future<bool> verifyOtp(String phone, String otp) async {
     try {
-      final response = await apiClient.post(
-        ApiEndpoints.verifyOtp,
-        data: {
-          'phone': phone,
-          'otp': otp,
-        },
-      );
+      // final response = await apiClient.post(
+      //   ApiEndpoints.verifyOtp,
+      //   data: {
+      //     'phone': phone,
+      //     'otp': otp,
+      //   },
+      // );
 
-      return response.data['success'] ?? false;
+      // return response.data['success'] ?? false;
+      return true;
     } on DioException catch (e) {
       throw ServerException(
         e.response?.statusCode ?? 500,
@@ -102,17 +116,28 @@ class RegistrationRemoteDataSourceImpl implements RegistrationRemoteDataSource {
   Future<UserProfileModel> createProfile(
       UserProfileModel profile, String token) async {
     try {
-      final response = await apiClient.post(
-        ApiEndpoints.createProfile,
-        data: profile.toJson(),
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
+      // final response = await apiClient.post(
+      //   ApiEndpoints.createProfile,
+      //   data: profile.toJson(),
+      //   options: Options(
+      //     headers: {
+      //       'Authorization': 'Bearer $token',
+      //     },
+      //   ),
+      // );
 
-      return UserProfileModel.fromJson(response.data['data']);
+      // return UserProfileModel.fromJson(response.data['data']);
+      return const UserProfileModel(
+        id: "id",
+        phone: "phone",
+        name: "name",
+        email: "email",
+        avatar: "avatar",
+        isActive: true,
+        roles: ["roles"],
+        createdAt: "createdAt",
+        updatedAt: "updatedAt",
+      );
     } on DioException catch (e) {
       throw ServerException(
         e.response?.statusCode ?? 500,

@@ -1,10 +1,13 @@
 // lib/features/auth/domain/usecases/verify_phone_usecase.dart
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../repositories/registration_repository.dart';
+
+part 'verify_phone_usecase.freezed.dart';
+part 'verify_phone_usecase.g.dart';
 
 @injectable
 class VerifyPhoneUseCase implements UseCase<bool, VerifyPhoneParams> {
@@ -18,15 +21,13 @@ class VerifyPhoneUseCase implements UseCase<bool, VerifyPhoneParams> {
   }
 }
 
-class VerifyPhoneParams extends Equatable {
-  final String phone;
-  final String otp;
+@freezed
+class VerifyPhoneParams with _$VerifyPhoneParams {
+  const factory VerifyPhoneParams({
+    required String phone,
+    required String otp,
+  }) = _VerifyPhoneParams;
 
-  const VerifyPhoneParams({
-    required this.phone,
-    required this.otp,
-  });
-
-  @override
-  List<Object> get props => [phone, otp];
+  factory VerifyPhoneParams.fromJson(Map<String, dynamic> json) =>
+      _$VerifyPhoneParamsFromJson(json);
 }

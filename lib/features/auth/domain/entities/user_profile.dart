@@ -1,24 +1,22 @@
-import 'package:equatable/equatable.dart';
+// lib/features/auth/domain/entities/user_profile.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class UserProfile extends Equatable {
-  final String id;
-  final String phone;
-  final String name;
-  final String? email;
-  final String? avatar;
-  final bool isActive;
-  final List<String>? roles;
+part 'user_profile.freezed.dart';
+part 'user_profile.g.dart';
 
-  const UserProfile({
-    required this.id,
-    required this.phone,
-    required this.name,
-    this.email,
-    this.avatar,
-    required this.isActive,
-    this.roles,
-  });
+@freezed
+class UserProfile with _$UserProfile {
+  const factory UserProfile({
+    required String id,
+    required String phone,
+    required String name,
+    String? email,
+    String? avatar,
+    required bool isActive,
+    List<String>? roles,
+  }) = _UserProfile;
 
-  @override
-  List<Object?> get props => [id, phone, name, email, avatar, isActive, roles];
+  // Add JSON serialization
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileFromJson(json);
 }

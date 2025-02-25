@@ -1,60 +1,34 @@
-// lib/features/auth/data/models/registration_response_model.dart
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'registration_response_model.freezed.dart';
 part 'registration_response_model.g.dart';
 
-@JsonSerializable()
-class RegistrationResponseModel extends Equatable {
-  final String? token;
-  final String? refreshToken;
-  final UserModel? user;
-  final bool success;
-  final String? message;
-
-  const RegistrationResponseModel({
-    this.token,
-    this.refreshToken,
-    this.user,
-    required this.success,
-    this.message,
-  });
+@freezed
+class RegistrationResponseModel with _$RegistrationResponseModel {
+  const factory RegistrationResponseModel({
+    String? token,
+    String? refreshToken,
+    UserModel2? user,
+    required bool success,
+    String? message,
+  }) = _RegistrationResponseModel;
 
   factory RegistrationResponseModel.fromJson(Map<String, dynamic> json) =>
       _$RegistrationResponseModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$RegistrationResponseModelToJson(this);
-
-  @override
-  List<Object?> get props => [token, refreshToken, user, success, message];
 }
 
-@JsonSerializable()
-class UserModel extends Equatable {
-  final String id;
-  final String phone;
-  final String name;
-  final String? email;
-  final String? avatar;
-  final bool isActive;
-  final String? createdAt;
+@freezed
+class UserModel2 with _$UserModel2 {
+  const factory UserModel2({
+    required String id,
+    required String phone,
+    required String name,
+    String? email,
+    String? avatar,
+    required bool isActive,
+    String? createdAt,
+  }) = _UserModel2;
 
-  const UserModel({
-    required this.id,
-    required this.phone,
-    required this.name,
-    this.email,
-    this.avatar,
-    required this.isActive,
-    this.createdAt,
-  });
-
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
-
-  @override
-  List<Object?> get props =>
-      [id, phone, name, email, avatar, isActive, createdAt];
+  factory UserModel2.fromJson(Map<String, dynamic> json) =>
+      _$UserModel2FromJson(json);
 }

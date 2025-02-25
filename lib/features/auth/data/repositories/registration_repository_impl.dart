@@ -155,7 +155,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository {
     }
 
     try {
-      final profileModel = UserProfileModel.fromEntity(profile);
+      final profileModel = UserProfileModelX.fromEntity(profile);
       final result = await remoteDataSource.createProfile(profileModel, token);
       return Right(result.toEntity());
     } on ServerException catch (e) {

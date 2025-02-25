@@ -22,3 +22,9 @@ class UnknownException implements Exception {
 
   UnknownException(this.message);
 }
+
+class CacheException implements Exception {
+  final String message;
+
+  CacheException(this.message);
+}

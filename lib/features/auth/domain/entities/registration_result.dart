@@ -1,19 +1,20 @@
-import 'package:equatable/equatable.dart';
+// lib/features/auth/domain/entities/registration_result.dart
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'user_profile.dart';
 
-class RegistrationResult extends Equatable {
-  final bool success;
-  final UserProfile? user;
-  final String? message;
-  final String? token;
+part 'registration_result.freezed.dart';
+part 'registration_result.g.dart';
 
-  const RegistrationResult({
-    required this.success,
-    this.user,
-    this.message,
-    this.token,
-  });
+@freezed
+class RegistrationResult with _$RegistrationResult {
+  const factory RegistrationResult({
+    required bool success,
+    UserProfile? user,
+    String? message,
+    String? token,
+  }) = _RegistrationResult;
 
-  @override
-  List<Object?> get props => [success, user, message, token];
+  // Add JSON serialization
+  factory RegistrationResult.fromJson(Map<String, dynamic> json) =>
+      _$RegistrationResultFromJson(json);
 }
