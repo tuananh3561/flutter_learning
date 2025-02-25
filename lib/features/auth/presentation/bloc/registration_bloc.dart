@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../domain/entities/registration_result.dart';
 import '../../domain/usecases/check_registration_status_usecase.dart';
 import '../../domain/usecases/clear_registration_data_usecase.dart';
 import '../../domain/usecases/register_user_usecase.dart';
