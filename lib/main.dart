@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flame/game.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_learning/features/games/fruit_game/fruit_game.dart';
-import 'package:flutter_learning/features/games/fruit_game/bloc/game_bloc.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_learning/features/games/game_selection_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Tắt kiểm tra loại Provider để tránh lỗi với GameService và AIService
+  Provider.debugCheckInvalidValueType = null;
+
+  // Set preferred orientations
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -14,18 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Fruit Game',
-        theme: ThemeData(
-          colorScheme: const ColorScheme.dark(),
-          useMaterial3: true,
-        ),
-        home: BlocProvider(
-          create: (context) => GameBloc(),
-          child: Builder(
-            builder: (context) => GameWidget(
-              game: FruitGame(gameBloc: context.read<GameBloc>()),
-            ),
-          ),
-        ));
+      title: 'Flutter Games',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo),
+        useMaterial3: true,
+      ),
+      home: const GameSelectionScreen(),
+    );
   }
 }
