@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_learning/features/games/fruit_game_2/main.dart';
 import 'package:flutter_learning/features/games/game_selection_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,18 +19,18 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Games',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo),
-        useMaterial3: true,
-      ),
-      home: const GameSelectionScreen(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Games',
+//       theme: ThemeData(
+//         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo),
+//         useMaterial3: true,
+//       ),
+//       home: const GameSelectionScreen(),
+//     );
+//   }
+// }
