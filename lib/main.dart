@@ -55,30 +55,48 @@
 //   }
 // }
 
+// import 'package:flutter/material.dart';
+// import 'core/di/injection.dart';
+// import 'routes/app_router.dart';
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await configureDependencies();
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   MyApp({Key? key}) : super(key: key);
+
+//   final _appRouter = AppRouter();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp.router(
+//       title: 'Your App',
+//       routerConfig: _appRouter.config(),
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//         visualDensity: VisualDensity.adaptivePlatformDensity,
+//       ),
+//     );
+//   }
+// }
+
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'core/di/injection.dart';
-import 'routes/app_router.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();
-  runApp(MyApp());
-}
+import 'features/games/octopy_splash/octopy_splash_game.dart';
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  final _appRouter = AppRouter();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Your App',
-      routerConfig: _appRouter.config(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+void main() {
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        body: GameWidget(
+          game: OctopySplashGame(),
+        ),
       ),
-    );
-  }
+      debugShowCheckedModeBanner: false,
+    ),
+  );
 }
