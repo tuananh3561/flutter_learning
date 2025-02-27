@@ -12,10 +12,10 @@ class AudioButton extends PositionComponent with TapCallbacks, DragCallbacks {
   final Function() onTap;
 
   late SpriteComponent speakerIcon;
-  late CircleComponent background;
+  late DashedRoundedRectangleComponent background;
   late Vector2 originalPosition;
 
-  Color buttonColor = Colors.grey;
+  Color buttonColor = Colors.white;
   bool isDragging = false;
   Vector2 dragDelta = Vector2.zero();
   Vector2 startPosition = Vector2.zero();
@@ -33,16 +33,12 @@ class AudioButton extends PositionComponent with TapCallbacks, DragCallbacks {
 
     originalPosition = position.clone();
 
-    // Create circular background
-    // background = CircleComponent(
-    //   radius: size.x / 2,
-    //   paint: Paint()..color = buttonColor,
-    // );
-
-    final background = DashedRoundedRectangleComponent(
+    // Create rectangle background
+    background = DashedRoundedRectangleComponent(
       size: size,
       borderRadius: 16,
-      dashSpace: 0,
+      dashSpace: -1,
+      dashStrokeWidth: 2,
       backgroundColor: buttonColor,
     );
     background.anchor = Anchor.center;
@@ -51,8 +47,9 @@ class AudioButton extends PositionComponent with TapCallbacks, DragCallbacks {
     // Create speaker icon
     speakerIcon = SpriteComponent(
       sprite: await Sprite.load('speaker_icon.png'),
-      size: Vector2.all(size.x * 0.6),
-      paint: Paint()..color = Colors.blue,
+      size: Vector2.all(size.x * 0.4),
+      paint: Paint()
+        ..colorFilter = const ColorFilter.mode(Colors.blue, BlendMode.srcIn),
     );
     speakerIcon.anchor = Anchor.center;
     add(speakerIcon);
@@ -64,13 +61,26 @@ class AudioButton extends PositionComponent with TapCallbacks, DragCallbacks {
   // Set the button color
   void setColor(Color color) {
     buttonColor = color;
-    background.paint = Paint()..color = color;
+    // background.paint = Paint()..color = color;
   }
 
   // Handle tap
   @override
   bool onTapDown(TapDownEvent event) {
     onTap();
+    // Update background with new color
+    background.backgroundPaint.color = buttonColor = Colors.blue;
+    speakerIcon.paint.colorFilter =
+        const ColorFilter.mode(Colors.white, BlendMode.srcIn);
+    return false;
+  }
+
+  @override
+  bool onTapUp(TapUpEvent event) {
+    // Update background with new color
+    background.backgroundPaint.color = buttonColor = Colors.white;
+    speakerIcon.paint.colorFilter =
+        const ColorFilter.mode(Colors.blue, BlendMode.srcIn);
     return false;
   }
 
@@ -81,8 +91,10 @@ class AudioButton extends PositionComponent with TapCallbacks, DragCallbacks {
     isDragging = true;
     startPosition = position.clone();
     dragDelta = event.canvasPosition - position;
-    // priority = 10; // Bring to front while dragging
-    // scale = Vector2.all(1.2); // Scale up while dragging
+    // Update background with new color
+    background.backgroundPaint.color = buttonColor = Colors.blue;
+    speakerIcon.paint.colorFilter =
+        const ColorFilter.mode(Colors.white, BlendMode.srcIn);
     return false;
   }
 
@@ -103,6 +115,10 @@ class AudioButton extends PositionComponent with TapCallbacks, DragCallbacks {
     isDragging = false;
     // scale = Vector2.all(1.0); // Return to original scale
     // priority = 0; // Reset priority
+    // Update background with new color
+    background.backgroundPaint.color = buttonColor = Colors.white;
+    speakerIcon.paint.colorFilter =
+        const ColorFilter.mode(Colors.blue, BlendMode.srcIn);
     return false;
   }
 
@@ -111,9 +127,9 @@ class AudioButton extends PositionComponent with TapCallbacks, DragCallbacks {
   bool onDragCancel(DragCancelEvent event) {
     super.onDragCancel(event);
     isDragging = false;
-    returnToOriginalPosition();
+    // returnToOriginalPosition();
     // scale = Vector2.all(1.0);
-    position = startPosition;
+    // position = startPosition;
     // priority = 0;
     return true;
   }

@@ -7,6 +7,7 @@ class DashedRoundedRectangleComponent extends PositionComponent {
   final double borderRadius;
   final double dashWidth;
   final double dashSpace;
+  final double dashStrokeWidth;
   final Paint borderPaint;
   final Paint backgroundPaint;
 
@@ -15,11 +16,12 @@ class DashedRoundedRectangleComponent extends PositionComponent {
     this.borderRadius = 12.0,
     this.dashWidth = 10,
     this.dashSpace = 0,
+    this.dashStrokeWidth = 2,
     Color borderColor = Colors.blue,
     Color backgroundColor = Colors.white,
   })  : borderPaint = Paint()
           ..color = borderColor
-          ..strokeWidth = 2
+          ..strokeWidth = dashStrokeWidth
           ..style = PaintingStyle.stroke,
         backgroundPaint = Paint()
           ..color = backgroundColor
@@ -38,7 +40,7 @@ class DashedRoundedRectangleComponent extends PositionComponent {
     // Vẽ nền trắng trước
     canvas.drawRRect(rRect, backgroundPaint);
 
-    // Tạo viền nét đứt
+    // Tạo viền nét đứt nếu dashSpace > 0, ngược lại vẽ viền nét liền
     if (dashSpace > 0) {
       final Path path = Path()..addRRect(rRect);
       final Path dashedPath = Path();
@@ -55,6 +57,9 @@ class DashedRoundedRectangleComponent extends PositionComponent {
 
       // Vẽ viền nét đứt
       canvas.drawPath(dashedPath, borderPaint);
+    } else if (dashSpace < 0) {
+      // Vẽ viền nét liền
+      canvas.drawRRect(rRect, borderPaint);
     }
   }
 }
