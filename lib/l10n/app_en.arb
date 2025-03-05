@@ -1,0 +1,56 @@
+{
+  "@@locale": "en",
+  "appTitle": "Story Nighty Night",
+  
+  "onboardingWelcomeTitle": "Welcome to Story Nighty Night",
+  "onboardingWelcomeDescription": "1000 Bedtime Stories for your child",
+  "onboardingContinue": "Continue",
+  "onboardingSkip": "Skip",
+  
+  "homeTitle": "Bedtime Stories",
+  "homeSearchHint": "Search for stories",
+  "homeFavorites": "Favorites",
+  "homeRecentlyRead": "Recently Read",
+  "homePopular": "Popular Stories",
+  
+  "storyReadStart": "Start Reading",
+  "storyReadContinue": "Continue Reading",
+  "storyReadFinish": "Finish",
+  "storyAddToFavorites": "Add to Favorites",
+  "storyRemoveFromFavorites": "Remove from Favorites",
+  
+  "gameStart": "Start Game",
+  "gameInstructions": "Instructions",
+  "gameScore": "Score: {score}",
+  "@gameScore": {
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  
+  "loginTitle": "Login",
+  "loginPhoneNumber": "Phone Number",
+  "loginVerifyCode": "Verification Code",
+  "loginSubmit": "Submit",
+  "loginCreateAccount": "Create Account",
+  
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsTheme": "Theme",
+  "settingsNotifications": "Notifications",
+  "settingsParentalControls": "Parental Controls",
+  "settingsAbout": "About",
+  
+  "reportTitle": "Child Activity Report",
+  "reportReadingTime": "Reading Time",
+  "reportStoriesRead": "Stories Read",
+  "reportGamesPlayed": "Games Played",
+  "reportProgress": "Progress",
+  
+  "errorGeneric": "Something went wrong",
+  "errorNoInternet": "No internet connection",
+  "errorTryAgain": "Try Again"
+}

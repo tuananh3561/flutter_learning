@@ -1,0 +1,56 @@
+{
+  "@@locale": "vi",
+  "appTitle": "Story Nighty Night",
+  
+  "onboardingWelcomeTitle": "Chào mừng đến với Story Nighty Night",
+  "onboardingWelcomeDescription": "1000 Câu truyện Chúc Ngủ ngon cho bé",
+  "onboardingContinue": "Tiếp tục",
+  "onboardingSkip": "Bỏ qua",
+  
+  "homeTitle": "Truyện Chúc Ngủ Ngon",
+  "homeSearchHint": "Tìm kiếm truyện",
+  "homeFavorites": "Yêu thích",
+  "homeRecentlyRead": "Đọc gần đây",
+  "homePopular": "Truyện phổ biến",
+  
+  "storyReadStart": "Bắt đầu đọc",
+  "storyReadContinue": "Tiếp tục đọc",
+  "storyReadFinish": "Kết thúc",
+  "storyAddToFavorites": "Thêm vào yêu thích",
+  "storyRemoveFromFavorites": "Xóa khỏi yêu thích",
+  
+  "gameStart": "Bắt đầu trò chơi",
+  "gameInstructions": "Hướng dẫn",
+  "gameScore": "Điểm: {score}",
+  "@gameScore": {
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  
+  "loginTitle": "Đăng nhập",
+  "loginPhoneNumber": "Số điện thoại",
+  "loginVerifyCode": "Mã xác nhận",
+  "loginSubmit": "Gửi",
+  "loginCreateAccount": "Tạo tài khoản",
+  
+  "settingsTitle": "Cài đặt",
+  "settingsLanguage": "Ngôn ngữ",
+  "settingsTheme": "Giao diện",
+  "settingsNotifications": "Thông báo",
+  "settingsParentalControls": "Kiểm soát của phụ huynh",
+  "settingsAbout": "Thông tin",
+  
+  "reportTitle": "Báo cáo hoạt động của bé",
+  "reportReadingTime": "Thời gian đọc",
+  "reportStoriesRead": "Truyện đã đọc",
+  "reportGamesPlayed": "Trò chơi đã chơi",
+  "reportProgress": "Tiến độ",
+  
+  "errorGeneric": "Đã xảy ra lỗi",
+  "errorNoInternet": "Không có kết nối internet",
+  "errorTryAgain": "Thử lại"
+}
