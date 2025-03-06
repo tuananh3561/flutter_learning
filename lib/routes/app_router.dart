@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_learning/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:flutter_learning/presentation/screens/home/home_screen.dart';
+import 'package:flutter_learning/presentation/screens/story_reader/story_reader_screen.dart';
 
 /// Main router configuration for the Story Nighty Night app
 class AppRouter {
@@ -7,49 +10,51 @@ class AppRouter {
   static GoRouter get router => _router;
 
   static final _router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/onboarding',
     debugLogDiagnostics: true,
     routes: [
       // Main app shell route
       GoRoute(
         path: '/',
         name: 'home',
-        builder: (context, state) => const Placeholder(color: Colors.blue),
+        builder: (context, state) => const HomeScreen(),
         routes: [
           // Onboarding flow
           GoRoute(
             path: 'onboarding',
             name: 'onboarding',
-            builder: (context, state) => const Placeholder(color: Colors.green),
+            builder: (context, state) => const OnboardingScreen(),
           ),
-          
+
           // Story list (carousel)
           GoRoute(
             path: 'stories',
             name: 'stories',
-            builder: (context, state) => const Placeholder(color: Colors.orange),
+            builder: (context, state) =>
+                const Placeholder(color: Colors.orange),
           ),
-          
+
           // Story reader
           GoRoute(
             path: 'story/:id',
             name: 'story_reader',
             builder: (context, state) {
-              final storyId = state.pathParameters['id'];
-              return Placeholder(color: Colors.purple, child: Text('Story ID: $storyId'));
+              final storyId = state.pathParameters['id']!;
+              return StoryReaderScreen(storyId: storyId);
             },
           ),
-          
+
           // Games
           GoRoute(
             path: 'games/:storyId',
             name: 'games',
             builder: (context, state) {
               final storyId = state.pathParameters['storyId'];
-              return Placeholder(color: Colors.red, child: Text('Games for story: $storyId'));
+              return Placeholder(
+                  color: Colors.red, child: Text('Games for story: $storyId'));
             },
           ),
-          
+
           // Authentication
           GoRoute(
             path: 'auth',
@@ -59,16 +64,18 @@ class AppRouter {
               GoRoute(
                 path: 'login',
                 name: 'login',
-                builder: (context, state) => const Placeholder(color: Colors.amber),
+                builder: (context, state) =>
+                    const Placeholder(color: Colors.amber),
               ),
               GoRoute(
                 path: 'signup',
                 name: 'signup',
-                builder: (context, state) => const Placeholder(color: Colors.amber),
+                builder: (context, state) =>
+                    const Placeholder(color: Colors.amber),
               ),
             ],
           ),
-          
+
           // Parent dashboard
           GoRoute(
             path: 'parent',
@@ -78,12 +85,14 @@ class AppRouter {
               GoRoute(
                 path: 'reports',
                 name: 'reports',
-                builder: (context, state) => const Placeholder(color: Colors.teal),
+                builder: (context, state) =>
+                    const Placeholder(color: Colors.teal),
               ),
               GoRoute(
                 path: 'settings',
                 name: 'settings',
-                builder: (context, state) => const Placeholder(color: Colors.teal),
+                builder: (context, state) =>
+                    const Placeholder(color: Colors.teal),
               ),
             ],
           ),

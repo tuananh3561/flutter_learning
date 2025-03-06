@@ -52,5 +52,7 @@
   
   "errorGeneric": "Đã xảy ra lỗi",
   "errorNoInternet": "Không có kết nối internet",
-  "errorTryAgain": "Thử lại"
+  "errorTryAgain": "Thử lại",
+  
+  "noStoryData": "Không có dữ liệu truyện"
 }

@@ -21,7 +21,8 @@ class NavigationService {
 
   /// Navigate to a specific story reader screen
   static void navigateToStoryReader(BuildContext context, String storyId) {
-    GoRouter.of(context).goNamed('story_reader', pathParameters: {'id': storyId});
+    GoRouter.of(context)
+        .goNamed('story_reader', pathParameters: {'id': storyId});
   }
 
   /// Navigate to games for a specific story

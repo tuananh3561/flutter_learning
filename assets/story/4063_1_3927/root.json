@@ -1,0 +1,41 @@
+{
+    "fontname": "font/Linotte Regular.ttf",
+    "illustratedby": {
+      "audio": "desaudio/9r8mYeOzdOJC1KjXiC170H1673937995619.mp3",
+      "duration": 2.644,
+      "illustratedby": "Volcanoz"
+    },
+    "title": {
+      "audio": "desaudio/jCoZXJF2aYOqhKNJ3U4J2v1673938008105.mp3"
+    },
+    "sync_data": [
+      {
+        "e": 330,
+        "s": 0,
+        "te": 0,
+        "ts": 0,
+        "w": "I"
+      },
+      {
+        "e": 710,
+        "s": 330,
+        "te": 5,
+        "ts": 2,
+        "w": "Love"
+      },
+      {
+        "e": 1330,
+        "s": 710,
+        "te": 12,
+        "ts": 7,
+        "w": "Green."
+      }
+    ],
+    "title_text": "I Love Green",
+    "version_story": 3.928,
+    "writentby": {
+      "audio": "desaudio/jIp3ghfQNQ2NkuiNVXaBtK1673937995263.mp3",
+      "duration": 2.827,
+      "writentby": "Petrichor"
+    }
+  }

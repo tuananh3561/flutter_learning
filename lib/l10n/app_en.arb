@@ -52,5 +52,7 @@
   
   "errorGeneric": "Something went wrong",
   "errorNoInternet": "No internet connection",
-  "errorTryAgain": "Try Again"
+  "errorTryAgain": "Try Again",
+  
+  "noStoryData": "No story data available"
 }

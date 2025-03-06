@@ -7,27 +7,28 @@ import '../constants/theme_constants.dart';
 class ThemeProvider extends ChangeNotifier {
   // Theme mode state
   ThemeMode _themeMode = ThemeMode.light;
-  
+
   // Getter for current theme mode
   ThemeMode get themeMode => _themeMode;
-  
+
   // Check if dark mode is active
   bool get isDarkMode => _themeMode == ThemeMode.dark;
-  
+
   // Toggle between light and dark themes
   void toggleTheme() {
-    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _themeMode =
+        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     _updateSystemUI();
     notifyListeners();
   }
-  
+
   // Set specific theme mode
   void setThemeMode(ThemeMode mode) {
     _themeMode = mode;
     _updateSystemUI();
     notifyListeners();
   }
-  
+
   // Update system UI to match current theme
   void _updateSystemUI() {
     SystemChrome.setSystemUIOverlayStyle(
@@ -46,7 +47,7 @@ class ThemeProvider extends ChangeNotifier {
             ),
     );
   }
-  
+
   // Light theme configuration
   ThemeData get lightTheme {
     return ThemeData(
@@ -62,7 +63,8 @@ class ThemeProvider extends ChangeNotifier {
       ),
       scaffoldBackgroundColor: ThemeConstants.backgroundLight,
       cardColor: ThemeConstants.cardLight,
-      textTheme: _buildTextTheme(ThemeConstants.textDark, ThemeConstants.textSecondaryDark),
+      textTheme: _buildTextTheme(
+          ThemeConstants.textDark, ThemeConstants.textSecondaryDark),
       appBarTheme: AppBarTheme(
         backgroundColor: ThemeConstants.backgroundLight,
         foregroundColor: ThemeConstants.textDark,
@@ -131,7 +133,7 @@ class ThemeProvider extends ChangeNotifier {
       ),
     );
   }
-  
+
   // Dark theme configuration
   ThemeData get darkTheme {
     return ThemeData(
@@ -147,7 +149,8 @@ class ThemeProvider extends ChangeNotifier {
       ),
       scaffoldBackgroundColor: ThemeConstants.backgroundDark,
       cardColor: ThemeConstants.cardDark,
-      textTheme: _buildTextTheme(ThemeConstants.textLight, ThemeConstants.textSecondaryLight),
+      textTheme: _buildTextTheme(
+          ThemeConstants.textLight, ThemeConstants.textSecondaryLight),
       appBarTheme: AppBarTheme(
         backgroundColor: ThemeConstants.backgroundDark,
         foregroundColor: ThemeConstants.textLight,
@@ -216,7 +219,7 @@ class ThemeProvider extends ChangeNotifier {
       ),
     );
   }
-  
+
   // Build text theme with appropriate colors
   TextTheme _buildTextTheme(Color primaryTextColor, Color secondaryTextColor) {
     return TextTheme(

@@ -16,7 +16,7 @@ dependencies:
   # UI Components
   flutter_svg: ^2.0.5          # SVG rendering
   cached_network_image: ^3.2.3  # Image caching
-  carousel_slider: ^4.2.1       # Carousel for story list
+  carousel_slider: ^5.0.0       # Carousel for story list
   lottie: ^2.3.2                # Animation support
   flutter_screenutil: ^5.7.0    # Responsive UI
   cupertino_icons: ^1.0.2
@@ -60,6 +60,7 @@ dependencies:
   flutter_tts: ^3.6.3           # Text-to-speech
   dartz: ^0.10.1
   provider: ^6.1.2
+  page_flip: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -74,10 +75,42 @@ flutter:
 
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/story/4063_1_3927/
+    - assets/story/4063_1_3927/audio/
+    - assets/story/4063_1_3927/audio/0/
+    - assets/story/4063_1_3927/audio/1/
+    - assets/story/4063_1_3927/audio/7/
+    - assets/story/4063_1_3927/audio/8/
+    - assets/story/4063_1_3927/audio/9/
+    - assets/story/4063_1_3927/audio/a/
+    - assets/story/4063_1_3927/audio/b/
+    - assets/story/4063_1_3927/audio/d/
+    - assets/story/4063_1_3927/audio/f/
+    - assets/story/4063_1_3927/audio/g/
+    - assets/story/4063_1_3927/audio/k/
+    - assets/story/4063_1_3927/audio/l/
+    - assets/story/4063_1_3927/audio/m/
+    - assets/story/4063_1_3927/audio/n/
+    - assets/story/4063_1_3927/audio/p/
+    - assets/story/4063_1_3927/audio/q/
+    - assets/story/4063_1_3927/audio/s/
+    - assets/story/4063_1_3927/audio/t/
+    - assets/story/4063_1_3927/audio/u/
+    - assets/story/4063_1_3927/audio/v/
+    - assets/story/4063_1_3927/audio/w/
+    - assets/story/4063_1_3927/audio/y/
+    - assets/story/4063_1_3927/background/
+    - assets/story/4063_1_3927/background/3/
+    - assets/story/4063_1_3927/background/8/
+    - assets/story/4063_1_3927/background/c/
+    - assets/story/4063_1_3927/background/g/
+    - assets/story/4063_1_3927/background/h/
+    - assets/story/4063_1_3927/background/j/
+    - assets/story/4063_1_3927/background/m/
+    - assets/story/4063_1_3927/background/t/
+    - assets/story/4063_1_3927/desaudio/
+    - assets/story/4063_1_3927/font/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
