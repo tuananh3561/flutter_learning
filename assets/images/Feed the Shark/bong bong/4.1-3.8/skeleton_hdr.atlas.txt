@@ -1,0 +1,13 @@
+
+skeleton_hdr.png
+size: 53, 52
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+bong-bong
+  rotate: false
+  xy: 2, 2
+  size: 49, 48
+  orig: 55, 57
+  offset: 4, 4
+  index: -1

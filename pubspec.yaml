@@ -22,7 +22,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # State Management
-  flutter_bloc: ^8.1.2          # BLoC pattern implementation
+  flutter_bloc: ^8.1.4          # BLoC pattern implementation
   equatable: ^2.0.5             # Value equality
 
   # Navigation
@@ -38,8 +38,9 @@ dependencies:
   connectivity_plus: ^3.0.3     # Network connectivity
   
   # Game Engine
-  flame: ^1.7.3                 # 2D game engine
-  flame_audio: ^1.4.0           # Audio support for games
+  flame: ^1.25.0                 # 2D game engine
+  flame_audio: ^2.11.0           # Audio support for games
+  flame_spine: ^0.2.2+6          # Spine 2D animation support
 
   # Authentication
   # firebase_auth: ^4.4.2        # Phone authentication
@@ -76,6 +77,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    # Story assets
     - assets/story/4063_1_3927/
     - assets/story/4063_1_3927/audio/
     - assets/story/4063_1_3927/audio/0/
@@ -111,6 +113,26 @@ flutter:
     - assets/story/4063_1_3927/background/t/
     - assets/story/4063_1_3927/desaudio/
     - assets/story/4063_1_3927/font/
+    
+    # Feed the Shark game assets
+    - assets/Feed the Shark/
+    - assets/Feed the Shark/background_config.json
+    - assets/Feed the Shark/bong bong/
+    - assets/Feed the Shark/ca nho 1/
+    - assets/Feed the Shark/ca nho 2/
+    - assets/Feed the Shark/ca nho 3/
+    - assets/Feed the Shark/ca to 1/
+    - assets/Feed the Shark/ca to 2/
+    - assets/Feed the Shark/ca to 3/
+    - assets/Feed the Shark/rong bien 1/
+    - assets/Feed the Shark/rong bien 2/
+    - assets/Feed the Shark/shark/
+    - assets/Feed the Shark/star/
+    - assets/images/Feed the Shark/
+    - assets/Feed the Shark/spine/
+    - assets/audio/
+    - assets/audio/word/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

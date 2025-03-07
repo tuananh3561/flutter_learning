@@ -1,0 +1,5 @@
+skeleton_hdr.png
+size:116,255
+filter:Linear,Linear
+rong-bien-1
+bounds:2,2,112,251

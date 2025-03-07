@@ -6,8 +6,16 @@ import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/providers/providers.dart';
 import 'core/providers/theme_provider.dart';
+import 'package:flame_spine/flame_spine.dart';
+import 'core/services/services_initializer.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  initSpineFlutter();
+
+  // Khởi tạo tất cả các dịch vụ
+  await ServicesInitializer().initializeAllServices();
+
   runApp(const MyApp());
 }
 

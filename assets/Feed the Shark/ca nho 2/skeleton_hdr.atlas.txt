@@ -1,0 +1,47 @@
+skeleton_hdr.png
+size:389,763
+filter:Linear,Linear
+con-nguoi-1
+bounds:211,39,42,41
+offsets:17,16,75,75
+con-nguoi-2
+bounds:165,8,39,31
+offsets:19,21,75,75
+eye
+bounds:2,18,59,59
+offsets:9,7,75,75
+head
+bounds:148,41,61,102
+offsets:5,1,70,105
+moi
+bounds:125,2,37,38
+offsets:2,0,40,40
+rotate:90
+rau
+bounds:63,32,60,45
+ref
+bounds:2,348,413,239
+offsets:139,32,690,304
+rotate:90
+than hong
+bounds:243,494,267,144
+offsets:7,7,280,160
+rotate:90
+than vang
+bounds:243,225,267,144
+offsets:7,7,280,160
+rotate:90
+than xanh
+bounds:2,79,267,144
+offsets:7,7,280,160
+rotate:90
+vay-duoi
+bounds:148,145,89,88
+offsets:4,1,95,90
+vay-than-duoi
+bounds:148,235,111,83
+offsets:5,3,120,90
+rotate:90
+vay-tren
+bounds:239,82,141,141
+offsets:5,4,150,150

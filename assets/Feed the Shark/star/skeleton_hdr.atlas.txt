@@ -1,0 +1,13 @@
+skeleton_hdr.png
+size:634,358
+filter:Linear,Linear
+path
+bounds:579,188,168,53
+offsets:10,10,187,75
+rotate:90
+ref
+bounds:2,2,575,354
+offsets:76,36,726,427
+star
+bounds:579,144,42,42
+offsets:5,3,50,50

@@ -1,0 +1,6 @@
+skeleton_hdr.png
+size:53,52
+filter:Linear,Linear
+bong-bong
+bounds:2,2,49,48
+offsets:4,4,55,57

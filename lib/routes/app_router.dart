@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_learning/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter_learning/presentation/screens/home/home_screen.dart';
 import 'package:flutter_learning/presentation/screens/story_reader/story_reader_screen.dart';
+import 'package:flutter_learning/games/games/feed_the_shark/feed_the_shark_screen.dart';
 
 /// Main router configuration for the Story Nighty Night app
 class AppRouter {
@@ -53,6 +54,20 @@ class AppRouter {
               return Placeholder(
                   color: Colors.red, child: Text('Games for story: $storyId'));
             },
+            routes: [
+              GoRoute(
+                path: 'feed-the-shark',
+                name: 'feed_the_shark',
+                builder: (context, state) => const FeedTheSharkGameScreen(),
+              ),
+            ],
+          ),
+
+          // Direct game routes
+          GoRoute(
+            path: 'feed-the-shark',
+            name: 'feed_the_shark_direct',
+            builder: (context, state) => const FeedTheSharkGameScreen(),
           ),
 
           // Authentication
