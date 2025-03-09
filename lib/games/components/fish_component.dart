@@ -56,10 +56,16 @@ class FishComponent extends PositionComponent with TapCallbacks {
   static const double _defaultScale = 0.1;
 
   /// Scale factor per character
-  static const double _scaleFactorPerChar = 0.03;
+  static const double _scaleFactorPerChar = 0.02;
 
   /// Audio service instance
   final AudioService _audioService = AudioService();
+
+  /// Animation names for different states
+  static const String _swimAnimationName = 'Idie';
+  static const String _tapAnimationName = 'user tap';
+  static const String _untapAnimationName = 'user Untap';
+  static const String _untapLoopAnimationName = 'user Untap loop';
 
   /// Constructor
   FishComponent({
@@ -76,6 +82,13 @@ class FishComponent extends PositionComponent with TapCallbacks {
   }) : super(position: position, size: size) {
     // Store the animation component (we call it spineComponent for compatibility)
     _animationComponent = spineComponent;
+    _animationComponent?.priority = 80;
+
+    // Set initial animation to idle
+    _playAnimation(_swimAnimationName, loop: true);
+
+    // Set random skin
+    _setRandomSkin();
 
     // Set initial scale based on direction and text length
     _adjustAnimationScale();
@@ -92,6 +105,26 @@ class FishComponent extends PositionComponent with TapCallbacks {
 
     // Add text on fish belly
     _addTextComponent();
+  }
+
+  /// Set random skin for the fish
+  void _setRandomSkin() {
+    final skinsAvailable = _animationComponent?.skeleton.getData()?.getSkins();
+    final skinsName = skinsAvailable?.map((skin) => skin.getName()).toList();
+
+    if (skinsName != null && skinsName.isNotEmpty) {
+      // Create Random object
+      final random = Random();
+      // Create a new list excluding the first element (index 0)
+      final skinsExcludingFirst = skinsName.sublist(1);
+      // Randomly get an index within the range of the list
+      final randomIndex = random.nextInt(skinsExcludingFirst.length);
+      // Get skin name at random position
+      final randomSkinName = skinsExcludingFirst[randomIndex];
+      // Áp dụng skin này
+      _animationComponent?.skeleton.setSkinByName(randomSkinName);
+      _animationComponent?.skeleton.setSlotsToSetupPose();
+    }
   }
 
   /// Adjusts the animation scale based on text length
@@ -114,6 +147,7 @@ class FishComponent extends PositionComponent with TapCallbacks {
     if (_animationComponent!.size.x > 0 && _animationComponent!.size.y > 0) {
       size = _animationComponent!.size * scaleX;
     }
+    _animationComponent?.position = size / 2;
   }
 
   /// Add text component to display on fish belly
@@ -138,7 +172,7 @@ class FishComponent extends PositionComponent with TapCallbacks {
 
       // Center text
       _textComponent!.anchor = Anchor.center;
-
+      _textComponent!.priority = 90;
       // Add text component as a child
       add(_textComponent!);
     }
@@ -167,6 +201,9 @@ class FishComponent extends PositionComponent with TapCallbacks {
   void update(double dt) {
     super.update(dt);
 
+    // Kiểm tra component đã được mount chưa trước khi cập nhật
+    if (!isMounted) return;
+
     if (isEscaping) {
       // Move much faster when escaping
       position.x += direction * speed * dt * 5;
@@ -191,6 +228,9 @@ class FishComponent extends PositionComponent with TapCallbacks {
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
 
+    // Kiểm tra component đã được mount chưa
+    if (!isMounted) return;
+
     // Don't process taps when fish is escaping
     if (isEscaping) return;
 
@@ -199,17 +239,26 @@ class FishComponent extends PositionComponent with TapCallbacks {
 
   /// Play the audio associated with this fish
   Future<void> playAudio() async {
-    await _audioService.playSoundEffect(audioFile);
+    // Kiểm tra component đã được mount chưa
+    if (!isMounted) return;
+
+    await _audioService.playWordSound(audioFile);
   }
 
   /// Stun the fish (when correctly tapped)
   void stun() {
+    // Kiểm tra component đã được mount chưa
+    if (!isMounted) return;
+
     isStunned = true;
     _playAnimation('user tap');
   }
 
   /// Make the fish shake (when incorrectly tapped)
   void shake() {
+    // Kiểm tra component đã được mount chưa
+    if (!isMounted) return;
+
     isShaking = true;
     // Increment wrong tap counter
     wrongTapCount++;
@@ -220,24 +269,28 @@ class FishComponent extends PositionComponent with TapCallbacks {
       return;
     }
 
-    // _playAnimation('shake');
-
     // Start a timer to stop shaking after a short time
     Future.delayed(const Duration(milliseconds: 500), () {
+      // Kiểm tra component đã được mount chưa
+      if (!isMounted) return;
+
       isShaking = false;
       if (!isBeingEaten && !isStunned && !isEscaping) {
-        _playAnimation('Idie', loop: true);
+        _playAnimation(_swimAnimationName, loop: true);
       }
     });
   }
 
   /// Start escaping animation after 3 wrong taps
   void startEscaping() {
+    // Kiểm tra component đã được mount chưa
+    if (!isMounted) return;
+
     isEscaping = true;
     isShaking = false;
 
     // Optionally play a "scared" animation if available
-    _playAnimation('user tap', loop: true);
+    _playAnimation(_tapAnimationName, loop: true);
 
     // Play a sound effect for escaping
     _audioService.playSoundEffect(audioFile);
@@ -245,8 +298,22 @@ class FishComponent extends PositionComponent with TapCallbacks {
 
   /// Start the "being eaten" animation
   void startEatingAnimation() {
+    // Kiểm tra component đã được mount chưa
+    if (!isMounted) return;
+
     isBeingEaten = true;
     // We'll keep the stunned animation while being eaten
+  }
+
+  @override
+  void onRemove() {
+    // Dừng tất cả animations và callbacks
+    isShaking = false;
+    isEscaping = false;
+    isBeingEaten = false;
+    isStunned = false;
+
+    super.onRemove();
   }
 
   /// Check if fish is out of bounds

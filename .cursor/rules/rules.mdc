@@ -1,0 +1,387 @@
+---
+description: Quy tắc phát triển cho dự án Story Nighty Night
+globs: ["*.dart", "*.yaml"]
+alwaysApply: true
+---
+# Story Nighty Night - Coding Rules
+
+## Tổ chức codebase
+
+- Tuân thủ Clean Architecture với các layer rõ ràng (presentation, domain, data)
+- Mỗi feature được tổ chức trong thư mục riêng biệt
+- @lib/games chứa tất cả game engine và games
+- @lib/games/engine là nơi đặt các managers và services cho game
+- @lib/games/components chứa các components tái sử dụng giữa các games
+- @lib/games/games/{game_name} chứa code cụ thể cho mỗi game
+
+### Cấu trúc dự án tiêu chuẩn
+```
+lib/
+├── core/                     # Core functionality and utilities
+│   ├── constants/            # App constants, theme data, etc.
+│   ├── errors/               # Error handling
+│   ├── network/              # Network services
+│   ├── storage/              # Local storage services
+│   └── utils/                # Utility functions
+│
+├── data/                     # Data layer
+│   ├── datasources/          # Remote and local data sources
+│   │   ├── local/            # Local data sources
+│   │   └── remote/           # Remote API data sources
+│   ├── models/               # Data models
+│   └── repositories/         # Repository implementations
+│
+├── domain/                   # Domain layer
+│   ├── entities/             # Business entities
+│   ├── repositories/         # Repository interfaces
+│   └── usecases/             # Business logic use cases
+│
+├── presentation/             # Presentation layer
+│   ├── blocs/                # State management
+│   ├── common/               # Common widgets
+│   └── screens/              # App screens
+│       ├── onboarding/       # Onboarding screens
+│       ├── home/             # Home screen with story carousel
+│       ├── story_reader/     # Story reading interface
+│       ├── games/            # Post-story games
+│       ├── auth/             # Login/signup screens
+│       ├── parent/           # Parent dashboard
+│       │   ├── reports/      # Child activity reports
+│       │   └── settings/     # App settings
+│       └── profile/          # User profile
+│
+├── games/                    # Game engine components
+│   ├── engine/               # Flame engine setup
+│   ├── components/           # Reusable game components
+│   └── games/                # Individual games
+│
+├── l10n/                     # Localization resources
+├── config/                   # App configuration
+├── routes/                   # App navigation
+└── main.dart                 # App entry point
+```
+
+## Coding style
+
+### Imports và exports
+```dart
+// 1. Dart/Flutter core
+import 'dart:async';
+import 'package:flutter/material.dart';
+
+// 2. Third-party packages
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flame/game.dart';
+
+// 3. App imports
+import 'package:flutter_learning/core/services/audio_service.dart';
+```
+
+### Đặt tên
+- `camelCase` cho variables và methods
+- `PascalCase` cho classes và enums 
+- `snake_case` cho file names
+- `SCREAMING_SNAKE_CASE` cho constants
+- Thêm hậu tố `Component` cho Flame components
+- Thêm hậu tố `Manager` cho các service quản lý resources
+- Thêm hậu tố `Service` cho các service
+- Thêm hậu tố `Game` cho các game class
+- Thêm hậu tố `Screen` cho các màn hình
+- Thêm hậu tố `Repository` cho repositories
+- Thêm hậu tố `DataSource` cho data sources
+- Thêm hậu tố `UseCase` cho use cases
+
+### Documentation
+- Tất cả classes, methods, và public fields phải có docstring (///)
+- Tất cả files phải có file header mô tả mục đích
+- Các tham số phức tạp cần được mô tả chi tiết
+- Các logic phức tạp cần được giải thích bằng comments
+
+## Game Engine Rules
+
+### Resource Manager
+- @lib/games/engine/resource_manager.dart là trung tâm quản lý tài nguyên
+- Tất cả assets phải được preload thông qua ResourceManager
+- Không load assets trực tiếp, luôn sử dụng ResourceManager
+- Cấu trúc cache được tổ chức để tối ưu memory
+
+### Game State
+- @lib/games/engine/game_state_manager.dart quản lý tất cả trạng thái game
+- States chuẩn: loading, ready, playing, paused, gameOver
+- Mọi chuyển đổi state phải thông qua GameStateManager
+- Tối thiểu hóa sự phụ thuộc giữa các states
+
+### Components
+- @lib/games/components chứa các reusable components
+- Mỗi component phải có trách nhiệm rõ ràng, đơn giản
+- Tất cả components phải override onLoad(), update(), và onRemove()
+- Components phải tự quản lý lifecycle của mình
+
+### Performance
+- Sử dụng object pooling (@lib/games/engine/object_pool.dart) khi thích hợp
+- Tối ưu render bằng cách sử dụng priority và chỉ render khi cần
+- Cache các assets đã load để tránh loading lặp lại
+- Sử dụng Flame profiler để kiểm tra bottlenecks
+- Lazy loading cho danh sách truyện
+- Memory management cho game components
+
+## Feed the Shark Game
+
+### @lib/games/games/feed_the_shark
+- FeedTheSharkGame là entry point cho game
+- Dùng FishPool để quản lý cá
+- Xử lý logic game thông qua các methods rõ ràng
+- Sử dụng SharkComponent để quản lý cá mập
+
+### @lib/games/games/feed_the_shark/fish_pool.dart
+- Quản lý tạo và tái sử dụng fish components
+- Sử dụng ResourceManager để lấy và trả lại spine components
+- Không tự quản lý cache mà uỷ thác cho ResourceManager
+
+### @lib/games/components/loading_screen.dart
+- Hiển thị trạng thái loading với ResourceManager
+- Rotating tips và progress bar
+- Hỗ trợ error handling
+
+## Xử lý tài nguyên
+
+### Spine Animations
+- Tất cả Spine animations phải được lưu trong assets/Feed the Shark/{component_name}
+- Định dạng tệp skeleton.json và skeleton_hdr.atlas.txt
+- Animation mặc định là 'Idie' 
+- Scale mặc định là 0.25
+
+### Audio
+- Background music trong assets/Feed the Shark
+- Sound effects có prefix 'SFX'
+- Nhạc nền được quản lý bởi AudioService
+- Đường dẫn audio có prefix '../../assets'
+
+### Asset Organization
+- Tất cả assets phải được khai báo rõ ràng trong pubspec.yaml
+- Assets phải được tổ chức theo loại (images, audio, animations)
+- Assets phải được tối ưu kích thước trước khi đưa vào dự án
+- SVG được ưu tiên sử dụng cho images khi có thể
+
+## State Management
+
+### Game States
+- loading: Đang tải tài nguyên
+- ready: Đã tải xong, sẵn sàng để chơi
+- playing: Đang chơi game
+- paused: Game đang tạm dừng
+- gameOver: Game đã kết thúc
+
+### BLoC Pattern
+- Sử dụng BLoC pattern cho state management của UI
+- Mỗi feature có BLoC riêng biệt
+- Tất cả business logic được xử lý trong BLoC, không trong UI
+- Events và States phải được định nghĩa rõ ràng cho mỗi BLoC
+
+### Error Handling
+- Bọc tất cả async code trong try-catch
+- Log chi tiết lỗi
+- Hiển thị thông báo lỗi thân thiện với người dùng
+- Có recovery path cho các lỗi không nghiêm trọng
+
+## Screen Rules
+
+### Onboarding
+- Màn hình onboarding phải đơn giản và trực quan
+- Tối đa 3-4 màn hình
+- Có thể bỏ qua (skip)
+- Tự động lưu trạng thái đã xem onboarding
+
+### Home Screen (List Story)
+- Hiển thị danh sách truyện dưới dạng carousel
+- Tối ưu cho landscape mode
+- Lazy loading cho danh sách truyện
+- Hỗ trợ tìm kiếm và filter
+
+### Read Story Screen
+- Hỗ trợ phóng to, thu nhỏ
+- Hỗ trợ Text-to-Speech
+- Hiển thị tiến độ đọc
+- Tự động lưu vị trí đọc để tiếp tục sau
+
+### Multi Post-Story Games
+- Các game phải dựa trên nội dung truyện vừa đọc
+- Giao diện game đơn giản và phù hợp với trẻ em
+- Tất cả game đều sử dụng ResourceManager
+- Tất cả game đều sử dụng GameStateManager
+
+### Login/Signup Screen
+- Đăng nhập/đăng ký bằng số điện thoại
+- Xác thực OTP đơn giản
+- Lưu trạng thái đăng nhập
+- Hỗ trợ chế độ bảo mật cho phụ huynh
+
+### Parent Dashboard
+- Chỉ phụ huynh mới có quyền truy cập
+- Hiển thị báo cáo hoạt động của trẻ
+- Cài đặt kiểm soát của phụ huynh
+- Xuất báo cáo theo định dạng PDF
+
+## Flame Engine Conventions
+
+### Update Method
+```dart
+@override
+void update(double dt) {
+  super.update(dt);
+  
+  // Kiểm tra trạng thái game trước khi update
+  if (!_stateManager.isRunning || _gameEnded) return;
+  
+  // Update logic ở đây
+}
+```
+
+### Component Creation
+```dart
+// Tạo component mới
+final component = await _resourceManager.getSpineComponent(
+  'key',
+  skeletonFile: 'path_to_skeleton.json',
+  atlasFile: 'path_to_atlas.txt',
+  defaultAnimation: 'Idie',
+  loop: true,
+  scale: Vector2(0.25, 0.25),
+);
+
+// Thiết lập properties
+component.position = Vector2(x, y);
+
+// Add component vào game
+add(component);
+```
+
+### Component Cleanup
+```dart
+@override
+void onRemove() {
+  // Cleanup resources
+  _resourceManager.releaseSpineComponent('key', _spineComponent);
+  super.onRemove();
+}
+```
+
+## Multilingual Support
+
+### Internationalization
+- Tất cả chuỗi hiển thị phải sử dụng i18n
+- Chuỗi được định nghĩa trong @lib/l10n/
+- Sử dụng context.l10n để truy cập chuỗi đã dịch
+- Không hardcode chuỗi hiển thị trong UI
+
+### Localization Setup
+```dart
+// Trong MaterialApp
+return MaterialApp(
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  supportedLocales: AppLocalizations.supportedLocales,
+  // ...
+);
+
+// Sử dụng
+Text(context.l10n.welcomeMessage),
+```
+
+### Supported Languages
+- Tiếng Việt (mặc định)
+- Tiếng Anh
+- Các ngôn ngữ khác được thêm vào khi cần
+
+## UI/UX Guidelines
+
+### Target Users
+- **Trẻ nhỏ**: Giao diện đơn giản, hình ảnh sống động, thao tác dễ thực hiện
+- **Phụ huynh**: Giao diện chức năng, tập trung vào quản lý và theo dõi
+
+### Responsive Design
+- Tối ưu cho landscape mode (chế độ ngang)
+- Sử dụng flutter_screenutil để đảm bảo UI hiển thị tốt trên nhiều kích thước màn hình
+- Kiểm tra trên cả tablet và điện thoại
+
+### Accessibility
+- Hỗ trợ Text-to-Speech cho người dùng nhỏ tuổi
+- Đủ contrast cho text
+- Hỗ trợ dynamic font size
+- Âm thanh có thể tắt/bật dễ dàng
+
+## Testing Guidelines
+
+### Unit Tests
+- Tất cả repositories và use cases phải có unit tests
+- Sử dụng bloc_test để test BLoC
+- Mock dependencies sử dụng mockito
+
+### Widget Tests
+- Test các widget quan trọng
+- Tập trung vào các widget có tương tác phức tạp
+
+### Integration Tests
+- Test luồng chính của app
+- Test các tính năng quan trọng end-to-end
+
+### Test Documentation
+- Mỗi test phải có mô tả rõ ràng
+- Tổ chức tests theo cấu trúc phù hợp với cấu trúc code
+
+## CI/CD Guidelines
+
+### Development Workflow
+- Sử dụng Git flow
+- Feature branches từ develop
+- Pull requests để merge vào develop
+
+### CI Pipeline
+- Chạy tất cả tests
+- Kiểm tra linting và formatting
+- Static analysis
+- Code coverage reports
+
+### CD Pipeline
+- Automated builds cho staging và production
+- Firebase App Distribution cho internal testing
+- Semantic versioning cho app versions
+
+## Dependency Management
+
+### Package Versions
+- Luôn chỉ định phiên bản cụ thể cho dependencies
+- Cập nhật dependencies định kỳ
+- Kiểm tra compatibility giữa các packages
+
+### Essential Dependencies
+- flutter_bloc: State management
+- go_router: Routing
+- flame: Game engine
+- flame_audio: Audio cho game
+- flutter_screenutil: Responsive UI
+- shared_preferences: Local storage
+
+### Version Constraints
+```yaml
+dependencies:
+  flutter_bloc: ^8.1.2
+  flame: ^1.7.3
+  # ...
+```
+
+## Security Guidelines
+
+### User Data
+- Không lưu thông tin nhạy cảm trên device
+- Sử dụng secure storage cho tokens
+- Không log thông tin nhạy cảm
+
+### Parental Controls
+- Bảo vệ màn hình parent dashboard bằng PIN
+- Giới hạn các tính năng dựa trên user role
+- Không cho phép trẻ em truy cập vào chức năng quản lý của phụ huynh
+
+### In-App Purchases
+- Luôn yêu cầu xác thực phụ huynh trước khi mua hàng
+- Hiển thị thông tin giá rõ ràng
+- Tuân thủ chính sách của app stores về in-app purchases

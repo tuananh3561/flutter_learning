@@ -3,14 +3,16 @@ import 'dart:math';
 
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
-import 'package:flame_spine/flame_spine.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_learning/games/components/horizontal_line.dart';
+import 'package:flutter_learning/games/components/loading_screen.dart';
 
 import '../../components/fish_component.dart';
 import '../../components/shark_component.dart';
 import '../../engine/game_engine.dart';
-import '../../../core/services/audio_service.dart';
+import '../../engine/game_state_manager.dart';
+import '../../engine/resource_manager.dart';
 import '../../components/background_components.dart';
+import 'fish_pool.dart';
 
 /// The Feed the Shark game
 class FeedTheSharkGame extends BaseGame {
@@ -32,30 +34,33 @@ class FeedTheSharkGame extends BaseGame {
   /// Background and decorations component
   late BackgroundComponents _backgroundComponents;
 
-  /// Spine data
-  final Map<String, SpineComponent> _spineComponents = {};
-
-  /// Whether the game is currently waiting for the shark animation to complete
-  bool _isWaitingForShark = false;
-
   /// Whether the game has ended
   bool _gameEnded = false;
 
-  /// Audio service instance
-  final AudioService _audioService = AudioService();
+  /// Loading screen component
+  LoadingScreen? _loadingScreen;
+
+  /// Resource manager
+  final ResourceManager _resourceManager = ResourceManager();
+
+  /// State manager
+  final GameStateManager _stateManager = GameStateManager();
+
+  /// Fish pool
+  final FishPool _fishPool = FishPool();
 
   /// All possible words to use in the game
   final List<Map<String, dynamic>> _wordPool = [
-    {'text': 'bird bird', 'audio': '../../assets/audio/word/bird.mp3'},
+    {'text': 'bird', 'audio': '../../assets/audio/word/bird.mp3'},
     {'text': 'cat', 'audio': '../../assets/audio/word/cat.mp3'},
     {'text': 'dog', 'audio': '../../assets/audio/word/dog.mp3'},
-    // {'text': 'bird', 'audio': 'bird.mp3'},
-    // {'text': 'duck', 'audio': 'duck.mp3'},
-    // {'text': 'pig', 'audio': 'pig.mp3'},
-    // {'text': 'cow', 'audio': 'cow.mp3'},
-    // {'text': 'sheep', 'audio': 'sheep.mp3'},
-    // {'text': 'horse', 'audio': 'horse.mp3'},
-    // {'text': 'frog', 'audio': 'frog.mp3'},
+    {'text': 'bird', 'audio': '../../assets/audio/word/bird.mp3'},
+    {'text': 'duck', 'audio': '../../assets/audio/word/duck.mp3'},
+    {'text': 'pig', 'audio': '../../assets/audio/word/pig.mp3'},
+    {'text': 'cow', 'audio': '../../assets/audio/word/cow.mp3'},
+    {'text': 'sheep', 'audio': '../../assets/audio/word/sheep.mp3'},
+    {'text': 'horse', 'audio': '../../assets/audio/word/horse.mp3'},
+    {'text': 'frog', 'audio': '../../assets/audio/word/frog.mp3'},
   ];
 
   /// The current word that needs to be found
@@ -76,6 +81,9 @@ class FeedTheSharkGame extends BaseGame {
   /// Path to the background config file
   final String backgroundConfigPath;
 
+  /// Con cá hiện tại đang bị ăn
+  FishComponent? _currentEatenFish;
+
   /// Constructor
   FeedTheSharkGame({
     required Vector2 gameSize,
@@ -85,15 +93,108 @@ class FeedTheSharkGame extends BaseGame {
     this.onWrongWord,
     this.onSetTargetWord,
     this.backgroundConfigPath = 'assets/Feed the Shark/background_config.json',
-  }) : super(gameSize: gameSize);
+  }) : super(gameSize: gameSize) {
+    // Thiết lập callbacks cho state manager
+    _setupStateCallbacks();
+  }
+
+  /// Thiết lập callbacks cho state manager
+  void _setupStateCallbacks() {
+    // Khi trạng thái chuyển sang playing
+    _stateManager.addStateCallback(GameState.playing, () {
+      if (!_resourceManager.isLoaded) return;
+
+      // Phát nhạc nền
+      _resourceManager
+          .playBackgroundMusic('../../assets/Feed the Shark/Nhạc BG.mp3');
+    });
+
+    // Khi trạng thái chuyển sang paused
+    _stateManager.addStateCallback(GameState.paused, () {
+      // Tạm dừng nhạc nền
+      _resourceManager.pauseBackgroundMusic();
+    });
+
+    // Khi trạng thái chuyển sang ready
+    _stateManager.addStateCallback(GameState.ready, () {
+      // Dừng nhạc nền
+      _resourceManager.stopBackgroundMusic();
+    });
+
+    // Khi trạng thái chuyển sang gameOver
+    _stateManager.addStateCallback(GameState.gameOver, () {
+      // Phát âm thanh chiến thắng
+      _resourceManager
+          .playSoundEffect('../../assets/Feed the Shark/SFX Win.mp3');
+
+      // Dừng nhạc nền
+      _resourceManager.stopBackgroundMusic();
+
+      // Gọi callback kết thúc game
+      if (onGameComplete != null) {
+        Future.delayed(Duration(seconds: 2), () {
+          onGameComplete!();
+        });
+      }
+    });
+  }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // Set camera viewport to be 3 times the game size for camera zoom
+    // Set camera viewport
     camera.viewport = FixedResolutionViewport(resolution: gameSize);
 
+    // Đặt trạng thái loading
+    _stateManager.changeState(GameState.loading);
+
+    // Hiển thị màn hình loading
+    _showLoadingScreen();
+
+    // Tải tài nguyên
+    _loadGameAssets();
+  }
+
+  /// Hiển thị màn hình loading
+  void _showLoadingScreen() {
+    _loadingScreen = LoadingScreen(
+      size: gameSize,
+      onLoadingComplete: _onLoadingComplete,
+    );
+    add(_loadingScreen!);
+  }
+
+  /// Tải tài nguyên game
+  Future<void> _loadGameAssets() async {
+    try {
+      // Khởi tạo FishPool với danh sách từ vựng
+      _fishPool.initialize(_wordPool);
+
+      // Tải tài nguyên qua ResourceManager
+      await _resourceManager.loadResources('feedtheshark');
+    } catch (e) {
+      print('Error loading game assets: $e');
+    }
+  }
+
+  /// Xử lý khi tải tài nguyên hoàn tất
+  void _onLoadingComplete() {
+    // Xóa màn hình loading
+    if (_loadingScreen != null && _loadingScreen!.isMounted) {
+      _loadingScreen!.removeFromParent();
+      _loadingScreen = null;
+    }
+
+    // Chuyển sang trạng thái ready
+    _stateManager.changeState(GameState.ready);
+
+    // Bắt đầu game
+    _startGame();
+  }
+
+  /// Bắt đầu game sau khi tải xong tài nguyên
+  Future<void> _startGame() async {
     // Initialize background and decorations component
     _backgroundComponents = BackgroundComponents(
       configFilePath: backgroundConfigPath,
@@ -101,131 +202,49 @@ class FeedTheSharkGame extends BaseGame {
     );
     add(_backgroundComponents);
 
-    // Initialize Spine - this is simulated for now since proper spine assets are required
-    await _initializeSpineComponents();
-
-    // Create shark (initially hidden)
+    // Create shark
     _shark = await _createSharkComponent();
     add(_shark);
 
-    // Start background music
-    _audioService
-        .playBackgroundMusic('../../assets/Feed the Shark/Nhạc BG.mp3');
+    // Chuyển sang trạng thái playing
+    _stateManager.changeState(GameState.playing);
 
     // Set the first target word and spawn initial fish
     _setNewTargetWord();
     _spawnInitialFish();
   }
 
-  /// Initialize Spine components for the game
-  Future<void> _initializeSpineComponents() async {
-    try {
-      // In a real implementation, we would load Spine components here
-      // But since we don't have the actual Spine assets, we'll create placeholders
-      await _createPlaceholderSpineComponents();
-    } catch (e) {
-      print('Error initializing Spine components: $e');
-    }
-  }
-
-  /// Create placeholder Spine components for testing
-  Future<void> _createPlaceholderSpineComponents() async {
-    // These are simple placeholders until real Spine assets are available
-
-    // Create shark placeholder
-    _spineComponents['shark'] = await SpineComponent.fromAssets(
-      atlasFile: 'assets/Feed the Shark/shark/skeleton_hdr.atlas.txt',
-      skeletonFile: 'assets/Feed the Shark/shark/skeleton.json',
-      scale: Vector2(0.1, 0.1),
-      anchor: Anchor.center,
-      position: Vector2.zero(),
-    );
-
-    // // Create fish placeholders
-    // for (int i = 1; i <= 3; i++) {
-    //   _spineComponents['ca_nho_$i'] = await SpineComponent.fromAssets(
-    //     atlasFile: 'assets/Feed the Shark/ca nho $i/skeleton_hdr.atlas.txt',
-    //     skeletonFile: 'assets/Feed the Shark/ca nho $i/skeleton.json',
-    //     scale: Vector2(0.1, 0.1),
-    //     anchor: Anchor.center,
-    //     position: Vector2.zero(),
-    //   );
-
-    //   _spineComponents['ca_to_$i'] = await SpineComponent.fromAssets(
-    //     atlasFile: 'assets/Feed the Shark/ca to $i/skeleton_hdr.atlas.txt',
-    //     skeletonFile: 'assets/Feed the Shark/ca to $i/skeleton.json',
-    //     scale: Vector2(0.1, 0.1),
-    //     anchor: Anchor.center,
-    //     position: Vector2.zero(),
-    //   );
-    // }
-  }
-
-  /// Get a clone of a spine component
-  SpineComponent _getSpineComponent(String type) {
-    if (!_spineComponents.containsKey(type)) {
-      throw Exception('Spine component not found for type: $type');
-    }
-
-    // Clone the component to avoid sharing the same component across multiple entities
-    // return _spineComponents[type]!.clone();
-    return _spineComponents[type]!;
-  }
-
   /// Create the shark component
   Future<SharkComponent> _createSharkComponent() async {
     try {
-      SpineComponent spineComponent;
+      // Lấy SpineComponent từ ResourceManager
+      final spineComponent = await _resourceManager.getSpineComponent(
+        'shark',
+        skeletonFile: 'assets/Feed the Shark/shark/skeleton.json',
+        atlasFile: 'assets/Feed the Shark/shark/skeleton_hdr.atlas.txt',
+        defaultAnimation: 'Idie',
+      );
 
-      if (_spineComponents.containsKey('shark')) {
-        spineComponent = _getSpineComponent('shark');
-      } else {
-        // Create a placeholder if spine component is not available
-        spineComponent = await SpineComponent.fromAssets(
-          atlasFile: 'assets/Feed the Shark/shark/skeleton_hdr.atlas.txt',
-          skeletonFile: 'assets/Feed the Shark/shark/skeleton.json',
-          scale: Vector2(0.1, 0.1),
-          anchor: Anchor.center,
-          position: Vector2.zero(),
-        );
-      }
-      spineComponent.animationState.setAnimationByName(0, 'Idie', true);
+      spineComponent.scale = Vector2(0.25, 0.25);
 
-      final sharkComponentFinished = SharkComponent(
+      final sharkComponent = SharkComponent(
         speed: 400,
         eatSoundEffect: '../../assets/Feed the Shark/SFX cá mập.mp3',
-        eatingDuration: Duration(milliseconds: 800),
-        swimmingDuration: Duration(milliseconds: 600),
+        eatingDuration: const Duration(milliseconds: 800),
+        swimmingDuration: const Duration(milliseconds: 600),
         position: Vector2(-300, gameSize.y / 2),
         size: spineComponent.size * 0.25,
         spineComponent: spineComponent,
+        gameSize: gameSize,
+        onFishEaten: _onFishEaten,
       )..onAnimationFinished = _onSharkAnimationFinished;
 
-      spineComponent.position = sharkComponentFinished.size / 2;
+      spineComponent.position = sharkComponent.size / 2;
 
-      return sharkComponentFinished;
+      return sharkComponent;
     } catch (e) {
       print('Error creating shark component: $e');
-
-      // Return a placeholder shark component if Spine loading fails
-      // final placeholderSpineComponent = await _createPlaceholderComponent();
-      final placeholderSpineComponent = _getSpineComponent('shark');
-      placeholderSpineComponent.scale = Vector2(0.25, 0.25);
-      placeholderSpineComponent.animationState
-          .setAnimationByName(0, 'Idie', true);
-
-      final sharkComponentFinished = SharkComponent(
-        speed: 400,
-        eatSoundEffect: '../../assets/Feed the Shark/SFX cá mập.mp3',
-        eatingDuration: Duration(milliseconds: 800),
-        swimmingDuration: Duration(milliseconds: 600),
-        position: Vector2(-300, gameSize.y / 2),
-        size: placeholderSpineComponent.size * 0.25,
-        spineComponent: placeholderSpineComponent,
-      )..onAnimationFinished = _onSharkAnimationFinished;
-      placeholderSpineComponent.position = sharkComponentFinished.size / 2;
-
-      return sharkComponentFinished;
+      rethrow;
     }
   }
 
@@ -233,7 +252,8 @@ class FeedTheSharkGame extends BaseGame {
   void update(double dt) {
     super.update(dt);
 
-    if (_gameEnded) return;
+    // Không update game logic khi đang không chơi hoặc đã kết thúc
+    if (!_stateManager.isRunning || _gameEnded) return;
 
     // Check for fish that have gone off screen
     for (int i = _activeFish.length - 1; i >= 0; i--) {
@@ -254,11 +274,11 @@ class FeedTheSharkGame extends BaseGame {
     }
 
     // Play audio guiding
-    _audioService
+    _resourceManager
         .playSoundEffect('../../assets/Feed the Shark/SFX guiding.mp3')
         .then((_) {
       // After guiding sound, play the target word sound
-      _audioService.playSoundEffect('${wordData['audio']}');
+      _resourceManager.playWordSound('${wordData['audio']}');
     });
   }
 
@@ -273,174 +293,32 @@ class FeedTheSharkGame extends BaseGame {
   /// Spawn a fish in a specific lane
   Future<void> _spawnFishInLane(int lane) async {
     try {
-      // Calculate lane Y position (divide screen height into 4 sections)
-      final laneY = (lane + 0.5) * (gameSize.y / 4);
-
-      // Randomly decide direction (left to right or right to left)
-      final direction = _random.nextBool() ? 1 : -1;
-
-      // Position based on direction (start offscreen)
-      final startX = direction < 0 ? gameSize.x + 50.0 : -150.0;
-
-      // Choose a random word from the pool
-      final wordData = _wordPool[_random.nextInt(_wordPool.length)];
-
-      // Decide if this fish should be correct answer (only one correct fish at a time)
-      final bool isCorrect = wordData['text'] == _currentTargetWord &&
-          !_activeFish.any((fish) => fish.isCorrectAnswer);
-
-      // Select fish type randomly
-      final fishType = _random.nextInt(3) + 1; // 1, 2, or 3
-
-      // Chọn loại cá dựa trên độ dài của text
-      // Nếu text > 8 ký tự thì chọn cá to, ngược lại chọn cá nhỏ
-      final fishSize = wordData['text'].length > 8
-          ? 'to'
-          : _random.nextBool()
-              ? 'nho'
-              : 'to';
-
-      final spineKey = 'ca_${fishSize}_$fishType';
-
-      // Create the spine component
-      final spineComponent = _getSpineComponent(spineKey);
-      spineComponent.animationState.setAnimationByName(0, 'Idie', true);
-      final skinsAvailable = spineComponent.skeleton.getData()?.getSkins();
-      final skinsName = skinsAvailable?.map((skin) => skin.getName()).toList();
-
-      if (skinsName != null && skinsName.isNotEmpty) {
-        // Create Random object
-        final random = Random();
-        // Create a new list excluding the first element (index 0)
-        final skinsExcludingFirst = skinsName.sublist(1);
-        // Randomly get an index within the range of the list
-        final randomIndex = random.nextInt(skinsExcludingFirst.length);
-        // Get skin name at random position
-        final randomSkinName = skinsExcludingFirst[randomIndex];
-        // Áp dụng skin này
-        spineComponent.skeleton.setSkinByName(randomSkinName);
-        spineComponent.skeleton.setSlotsToSetupPose();
-      }
-
-      // Create the fish component
-      final fish = FishComponent(
-        text: wordData['text'],
-        audioFile: '${wordData['audio']}',
-        direction: direction,
+      // Sử dụng FishPool để tạo cá ngẫu nhiên
+      final fish = await _fishPool.createRandomFish(
         lane: lane,
-        speed: 50 + _random.nextDouble() * 50, // Random speed between 50-100
-        isCorrectAnswer: isCorrect,
+        gameSize: gameSize,
+        targetWord: _currentTargetWord,
+        canBeCorrect: !_activeFish.any((fish) => fish.isCorrectAnswer),
         onTap: _onFishTapped,
-        position: Vector2(startX, laneY),
-        size: Vector2(
-          150,
-          100,
-        ), // Kích thước ban đầu, sẽ được điều chỉnh trong FishComponent
-        spineComponent: spineComponent,
       );
 
-      // Thiết lập vị trí của spine component
-      spineComponent.position = fish.size / 2;
+      // Thêm lane visualizer nếu cần
+      add(HorizontalLine(y: (lane + 0.5) * (gameSize.y / 5)));
 
       // Add fish to game and track it
       add(fish);
       _activeFish.add(fish);
     } catch (e) {
       print('Error spawning fish in lane $lane: $e');
-      // We'll create a simple rectangle as a fish if spine loading fails
-      _spawnSimpleFish(lane);
     }
-  }
-
-  /// Spawn a simple fish as a fallback
-  Future<void> _spawnSimpleFish(int lane) async {
-    // Calculate lane Y position
-    final laneY = (lane + 0.5) * (gameSize.y / 4);
-
-    // Randomly decide direction (left to right or right to left)
-    final direction = _random.nextBool() ? 1 : -1;
-
-    // Position based on direction (start offscreen)
-    final startX = direction < 0 ? gameSize.x + 50.0 : -150.0;
-
-    // Choose a random word from the pool
-    final wordData = _wordPool[_random.nextInt(_wordPool.length)];
-
-    // Decide if this fish should be correct answer
-    final bool isCorrect = wordData['text'] == _currentTargetWord &&
-        !_activeFish.any((fish) => fish.isCorrectAnswer);
-
-    // Create a placeholder component
-    final placeholderComponent = RectangleComponent(
-      position: Vector2.zero(),
-      size: Vector2(150, 50),
-      paint: Paint()..color = isCorrect ? Colors.green : Colors.blue,
-    );
-
-    // Chọn loại cá dựa trên độ dài của text
-    final fishSize = wordData['text'].length > 8
-        ? 'to'
-        : _random.nextBool()
-            ? 'nho'
-            : 'to';
-    final fishType =
-        _random.nextInt(3) + 1; // Chọn ngẫu nhiên 1 trong 3 loại cá
-
-    // Sử dụng đường dẫn spine assets phù hợp với loại cá
-    final placeholderSpine = await SpineComponent.fromAssets(
-      atlasFile:
-          'assets/Feed the Shark/ca $fishSize $fishType/skeleton_hdr.atlas.txt',
-      skeletonFile:
-          'assets/Feed the Shark/ca $fishSize $fishType/skeleton.json',
-      scale: Vector2(0.1, 0.1),
-      anchor: Anchor.center,
-      position: Vector2.zero(),
-    );
-
-    placeholderSpine.animationState.setAnimationByName(0, 'Idie', true);
-    final skinsAvailable = placeholderSpine.skeleton.getData()?.getSkins();
-    final skinsName = skinsAvailable?.map((skin) => skin.getName()).toList();
-    if (skinsName != null && skinsName.isNotEmpty) {
-      // Create Random object
-      final random = Random();
-      // Create a new list excluding the first element (index 0)
-      final skinsExcludingFirst = skinsName.sublist(1);
-      // Randomly get an index within the range of the list
-      final randomIndex = random.nextInt(skinsExcludingFirst.length);
-      // Get skin name at random position
-      final randomSkinName = skinsExcludingFirst[randomIndex];
-      // Áp dụng skin này
-      placeholderSpine.skeleton.setSkinByName(randomSkinName);
-      placeholderSpine.skeleton.setSlotsToSetupPose();
-    }
-
-    // Create fish component
-    final fish = FishComponent(
-      text: wordData['text'],
-      audioFile: '${wordData['audio']}',
-      direction: direction,
-      lane: lane,
-      speed: 50 + _random.nextDouble() * 50,
-      isCorrectAnswer: isCorrect,
-      onTap: _onFishTapped,
-      position: Vector2(startX, laneY),
-      size: Vector2(150,
-          100), // Kích thước ban đầu, sẽ được điều chỉnh trong FishComponent
-      spineComponent: placeholderSpine,
-    );
-
-    // Thiết lập vị trí của spine component
-    placeholderSpine.position = fish.size / 2;
-
-    // Add fish to game and track it
-    add(fish);
-    _activeFish.add(fish);
   }
 
   /// Replace a fish that went off screen
   void _replaceFish(FishComponent oldFish) {
-    // Remove the old fish
-    oldFish.removeFromParent();
+    // Kiểm tra cá đã được mount chưa trước khi remove
+    if (oldFish.isMounted) {
+      oldFish.removeFromParent();
+    }
     _activeFish.remove(oldFish);
 
     // Spawn a new fish in the same lane
@@ -449,7 +327,11 @@ class FeedTheSharkGame extends BaseGame {
 
   /// Handle fish tap
   void _onFishTapped(FishComponent fish) {
-    if (_isWaitingForShark || _gameEnded) return;
+    // Nếu game không ở trạng thái playing hoặc đã kết thúc, không xử lý tap
+    if (!_stateManager.isRunning || _gameEnded) return;
+
+    // Đảm bảo fish vẫn còn mounted
+    if (!fish.isMounted) return;
 
     if (fish.isCorrectAnswer) {
       _handleCorrectTap(fish);
@@ -460,24 +342,41 @@ class FeedTheSharkGame extends BaseGame {
 
   /// Handle correct fish tap
   void _handleCorrectTap(FishComponent fish) {
-    _isWaitingForShark = true;
-
     // Gọi callback khi chọn từ đúng
     if (onCorrectWord != null) {
       onCorrectWord!(fish.text);
     }
 
     // Play correct sound
-    _audioService.playSoundEffect('../../assets/Feed the Shark/SFX đúng.mp3');
+    _resourceManager
+        .playSoundEffect('../../assets/Feed the Shark/SFX đúng.mp3');
 
     // Stun the fish
     fish.stun();
 
-    // Send shark to eat the fish
-    _shark.attack(fish.position);
+    // Lưu lại con cá hiện tại đang bị ăn
+    _currentEatenFish = fish;
 
-    // // Start fish "being eaten" animation
-    // fish.startEatingAnimation();
+    // Xác định hướng tấn công của cá mập dựa vào vị trí của con cá
+    int attackDirection;
+    final fishDistanceFromLeft = fish.position.x;
+    final fishDistanceFromRight = gameSize.x - fish.position.x;
+
+    // Nếu cá ở gần cạnh phải hơn, cá mập sẽ tấn công từ bên phải
+    // Nếu cá ở gần cạnh trái hơn, cá mập sẽ tấn công từ bên trái
+    if (fishDistanceFromLeft > fishDistanceFromRight) {
+      // Cá ở gần cạnh phải hơn, cá mập tấn công từ phải sang
+      attackDirection = -1;
+    } else {
+      // Cá ở gần cạnh trái hơn, cá mập tấn công từ trái sang
+      attackDirection = 1;
+    }
+
+    // Send shark to eat the fish with the specified attack direction
+    _shark.attack(fish.position, attackDirection: attackDirection);
+
+    // Start fish "being eaten" animation
+    fish.startEatingAnimation();
 
     // Increment correct answers
     _correctAnswersCount++;
@@ -486,7 +385,6 @@ class FeedTheSharkGame extends BaseGame {
     if (_correctAnswersCount >= requiredCorrectAnswers) {
       _endGame();
     }
-    _isWaitingForShark = false;
   }
 
   /// Handle incorrect fish tap
@@ -497,7 +395,7 @@ class FeedTheSharkGame extends BaseGame {
     }
 
     // Play incorrect sound
-    _audioService.playSoundEffect('../../assets/Feed the Shark/SFX sai.mp3');
+    _resourceManager.playSoundEffect('../../assets/Feed the Shark/SFX sai.mp3');
 
     // Make fish shake and play its audio
     fish.shake();
@@ -520,15 +418,15 @@ class FeedTheSharkGame extends BaseGame {
   void _onSharkAnimationFinished() {
     if (_gameEnded) return;
 
-    _isWaitingForShark = false;
-
     // Remove all fish and spawn new ones
     for (var fish in List.from(_activeFish)) {
-      fish.removeFromParent();
+      if (fish.isMounted) {
+        fish.removeFromParent();
+      }
       _activeFish.remove(fish);
     }
 
-    // Set new target word and spawn new fish
+    // Set new target word and spawn initial fish
     _setNewTargetWord();
     _spawnInitialFish();
   }
@@ -537,21 +435,8 @@ class FeedTheSharkGame extends BaseGame {
   void _endGame() {
     _gameEnded = true;
 
-    // Play win sound
-    _audioService.playSoundEffect('../../assets/Feed the Shark/SFX Win.mp3');
-
-    // Stop background music
-    _audioService.stopBackgroundMusic();
-
-    // Call game complete callback
-    if (onGameComplete != null) {
-      Future.delayed(Duration(seconds: 2), () {
-        onGameComplete!();
-      });
-    }
-
-    // Additional end game animations or effects could be added here
-    onGameEnd();
+    // Chuyển sang trạng thái game over
+    _stateManager.changeState(GameState.gameOver);
   }
 
   @override
@@ -560,24 +445,79 @@ class FeedTheSharkGame extends BaseGame {
     _correctAnswersCount = 0;
     _gameEnded = false;
 
-    // Start background music
-    _audioService
-        .playBackgroundMusic('../../assets/Feed the Shark/Nhạc BG.mp3');
+    // Đảm bảo tài nguyên đã được tải
+    if (_stateManager.currentState == GameState.loading) {
+      // Hiển thị màn hình loading nếu cần
+      if (_loadingScreen == null) {
+        _showLoadingScreen();
+      }
 
-    // Set the first target word and spawn initial fish
-    _setNewTargetWord();
-    _spawnInitialFish();
+      // Nếu chưa tải xong, đợi tải
+      if (!_resourceManager.isLoaded) {
+        // Đăng ký callback khi tải xong
+        _resourceManager.addOnCompleteCallback(() {
+          // Bắt đầu game khi tải xong
+          _onLoadingComplete();
+        });
+      }
+    } else {
+      // Bắt đầu game mới nếu đã tải xong
+      _stateManager.changeState(GameState.playing);
+
+      // Start background music
+      _resourceManager
+          .playBackgroundMusic('../../assets/Feed the Shark/Nhạc BG.mp3');
+
+      // Set the first target word and spawn initial fish
+      _setNewTargetWord();
+      _spawnInitialFish();
+    }
   }
 
   @override
   Future<void> onGameEnd() async {
-    // Clean up resources when game ends
-    _audioService.stopBackgroundMusic();
+    // Đã xử lý trong state manager callback
   }
 
   @override
   void onRemove() {
+    // Đảm bảo dừng hoàn toàn các hoạt động trong game
+    _gameEnded = true;
+
+    // Chuyển sang trạng thái kết thúc
+    _stateManager.changeState(GameState.gameOver);
+
+    // Dừng âm thanh
+    _resourceManager.stopBackgroundMusic();
+
     super.onRemove();
-    _audioService.stopBackgroundMusic();
   }
+
+  /// Xử lý sự kiện khi cá bị ăn
+  void _onFishEaten() {
+    // Xóa con cá đã bị ăn khỏi game
+    if (_currentEatenFish != null) {
+      if (_currentEatenFish!.isMounted) {
+        _currentEatenFish!.removeFromParent();
+      }
+      _activeFish.remove(_currentEatenFish);
+      _currentEatenFish = null;
+    }
+  }
+
+  /// Tạm dừng game
+  void pauseGame() {
+    _stateManager.pauseGame();
+  }
+
+  /// Tiếp tục game
+  void resumeGame() {
+    _stateManager.resumeGame();
+  }
+
+  /// Trạng thái hiện tại của game
+  GameState get gameState => _stateManager.currentState;
+
+  /// Tiến độ tải tài nguyên
+  double get loadingProgress => _resourceManager.loadingProgress;
 }

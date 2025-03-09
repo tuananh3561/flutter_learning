@@ -28,6 +28,18 @@ class AudioService {
   /// Tên file nhạc nền hiện tại
   String? _currentBackgroundMusic;
 
+  /// Danh sách các file nhạc nền đã preload
+  final Set<String> _preloadedBackgroundTracks = {};
+
+  /// Danh sách các hiệu ứng âm thanh đã preload
+  final Set<String> _preloadedSoundEffects = {};
+
+  /// Danh sách các file âm thanh từ vựng đã preload
+  final Set<String> _preloadedWordSounds = {};
+
+  /// Trạng thái preload hoàn tất
+  bool _isPreloadComplete = false;
+
   /// Khởi tạo dịch vụ âm thanh
   Future<void> initialize() async {
     // Preload các âm thanh phổ biến
@@ -49,6 +61,79 @@ class AudioService {
     }
   }
 
+  /// Preload nhạc nền
+  Future<void> preloadBackgroundMusic(List<String> fileNames) async {
+    try {
+      for (final fileName in fileNames) {
+        if (!_preloadedBackgroundTracks.contains(fileName)) {
+          await FlameAudio.audioCache.load(fileName);
+          _preloadedBackgroundTracks.add(fileName);
+          print('Preloaded background music: $fileName');
+        }
+      }
+    } catch (e) {
+      print('Error preloading background music: $e');
+    }
+  }
+
+  /// Preload hiệu ứng âm thanh
+  Future<void> preloadSoundEffects(List<String> fileNames) async {
+    try {
+      for (final fileName in fileNames) {
+        if (!_preloadedSoundEffects.contains(fileName)) {
+          await FlameAudio.audioCache.load(fileName);
+          _preloadedSoundEffects.add(fileName);
+          print('Preloaded sound effect: $fileName');
+        }
+      }
+    } catch (e) {
+      print('Error preloading sound effects: $e');
+    }
+  }
+
+  /// Preload âm thanh từ vựng
+  Future<void> preloadWordSounds(List<String> fileNames) async {
+    try {
+      for (final fileName in fileNames) {
+        if (!_preloadedWordSounds.contains(fileName)) {
+          await FlameAudio.audioCache.load(fileName);
+          _preloadedWordSounds.add(fileName);
+          print('Preloaded word sound: $fileName');
+        }
+      }
+    } catch (e) {
+      print('Error preloading word sounds: $e');
+    }
+  }
+
+  /// Preload tất cả âm thanh cho một game cụ thể
+  Future<void> preloadGameAudio({
+    List<String> backgroundTracks = const [],
+    List<String> soundEffects = const [],
+    List<String> wordSounds = const [],
+  }) async {
+    try {
+      print('Starting audio preload...');
+
+      // Preload từng loại âm thanh
+      await preloadBackgroundMusic(backgroundTracks);
+      await preloadSoundEffects(soundEffects);
+      await preloadWordSounds(wordSounds);
+
+      _isPreloadComplete = true;
+      print('Audio preload complete!');
+    } catch (e) {
+      print('Error during game audio preload: $e');
+    }
+  }
+
+  /// Kiểm tra xem âm thanh đã được preload chưa
+  bool isAudioPreloaded(String fileName) {
+    return _preloadedBackgroundTracks.contains(fileName) ||
+        _preloadedSoundEffects.contains(fileName) ||
+        _preloadedWordSounds.contains(fileName);
+  }
+
   /// Phát nhạc nền
   Future<void> playBackgroundMusic(String fileName) async {
     if (!_isMusicEnabled) return;
@@ -62,6 +147,13 @@ class AudioService {
       // Dừng nhạc nền hiện tại nếu có
       if (FlameAudio.bgm.isPlaying) {
         await stopBackgroundMusic();
+      }
+
+      // Preload nếu chưa được preload
+      if (!_preloadedBackgroundTracks.contains(fileName)) {
+        print(
+            'Warning: Background music $fileName not preloaded. Loading now...');
+        await preloadBackgroundMusic([fileName]);
       }
 
       // Phát nhạc mới
@@ -113,9 +205,32 @@ class AudioService {
     if (!_isSoundEnabled) return;
 
     try {
+      // Preload nếu chưa được preload
+      if (!_preloadedSoundEffects.contains(fileName)) {
+        print('Warning: Sound effect $fileName not preloaded. Loading now...');
+        await preloadSoundEffects([fileName]);
+      }
+
       await FlameAudio.play(fileName, volume: _soundVolume);
     } catch (e) {
       print('Error playing sound effect: $e');
+    }
+  }
+
+  /// Phát âm thanh từ vựng
+  Future<void> playWordSound(String fileName) async {
+    if (!_isSoundEnabled) return;
+
+    try {
+      // Preload nếu chưa được preload
+      if (!_preloadedWordSounds.contains(fileName)) {
+        print('Warning: Word sound $fileName not preloaded. Loading now...');
+        await preloadWordSounds([fileName]);
+      }
+
+      await FlameAudio.play(fileName, volume: _soundVolume);
+    } catch (e) {
+      print('Error playing word sound: $e');
     }
   }
 
@@ -150,6 +265,22 @@ class AudioService {
     _soundVolume = volume.clamp(0.0, 1.0);
   }
 
+  /// Giải phóng tài nguyên âm thanh
+  Future<void> dispose() async {
+    try {
+      await stopBackgroundMusic();
+
+      // Xóa các tập tin âm thanh đã preload
+      _preloadedBackgroundTracks.clear();
+      _preloadedSoundEffects.clear();
+      _preloadedWordSounds.clear();
+
+      _isPreloadComplete = false;
+    } catch (e) {
+      print('Error disposing audio service: $e');
+    }
+  }
+
   /// Lấy trạng thái âm lượng của nhạc nền
   bool get isMusicEnabled => _isMusicEnabled;
 
@@ -161,4 +292,7 @@ class AudioService {
 
   /// Lấy âm lượng hiệu ứng âm thanh
   double get soundVolume => _soundVolume;
+
+  /// Kiểm tra trạng thái preload
+  bool get isPreloadComplete => _isPreloadComplete;
 }
