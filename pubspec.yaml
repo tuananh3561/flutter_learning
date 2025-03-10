@@ -130,9 +130,19 @@ flutter:
     - assets/Feed the Shark/star/
     - assets/images/Feed the Shark/
     - assets/Feed the Shark/spine/
+
+    # Multiple Choice game assets
+    - assets/Multiple Choice/
+    - assets/Multiple Choice/May bay/
+    - assets/Multiple Choice/Max len may bay/
+    
+    # Audio assets
     - assets/audio/
     - assets/audio/word/
+
+    # Image assets
     - assets/images/
+    - assets/images/word/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

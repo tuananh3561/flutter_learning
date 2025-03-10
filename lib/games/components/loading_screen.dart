@@ -75,7 +75,7 @@ class LoadingScreen extends PositionComponent {
     final fullScreenBackground = RectangleComponent(
       size: size,
       position: Vector2.zero(),
-      paint: Paint()..color = Color(0xCC000000),
+      paint: Paint()..color = const Color(0xCC000000),
     );
     add(fullScreenBackground);
 
@@ -102,7 +102,7 @@ class LoadingScreen extends PositionComponent {
     final titleText = TextComponent(
       text: 'Chuẩn bị cho game Feed the Shark',
       textRenderer: TextPaint(
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 24,
           fontWeight: FontWeight.bold,
@@ -119,7 +119,7 @@ class LoadingScreen extends PositionComponent {
 
     // Add progress bar background
     final progressBarWidth = size.x * 0.8;
-    final progressBarHeight = 30.0;
+    const progressBarHeight = 30.0;
     final progressBarX = (size.x - progressBarWidth) / 2;
     final progressBarY = size.y / 2;
 
@@ -202,7 +202,7 @@ class LoadingScreen extends PositionComponent {
     if (_resourceManager.isLoaded && !_isCompleteHandled) {
       _isCompleteHandled = true;
       // Delay a bit to show 100% before removing
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         onLoadingComplete();
       });
     }

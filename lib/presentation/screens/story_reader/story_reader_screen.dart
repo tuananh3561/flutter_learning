@@ -66,7 +66,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
   Future<StoryData> _loadStory(String storyId) async {
     // Extract the story folder ID from the storyId parameter
     // For now, we're using a hardcoded path for the demo
-    final String storyFolderPath = 'assets/story/4063_1_3927';
+    const String storyFolderPath = 'assets/story/4063_1_3927';
 
     // Load the root.json file
     final String rootJsonString =
@@ -137,7 +137,10 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
   void _navigateToFeedTheSharkGame() {
     if (mounted) {
       // Use GoRouter for navigation
-      context.pushNamed('feed_the_shark_direct');
+      // context.pushNamed('feed_the_shark_direct');
+      // context.pushNamed('multiple_choice_direct');
+
+      context.pushNamed('games', pathParameters: {'storyId': widget.storyId});
 
       // Reset the flags after a moment to ensure we can navigate again if needed
       Future.delayed(const Duration(milliseconds: 300), () {
@@ -174,7 +177,7 @@ class _StoryReaderScreenState extends State<StoryReaderScreen> {
                       snapshot.data!.pages.isEmpty) {
                     return Center(
                       child: Text(
-                        AppLocalizations.of(context)?.noStoryData ??
+                        AppLocalizations.of(context).noStoryData ??
                             'No story data available',
                         style: const TextStyle(color: Colors.white),
                       ),

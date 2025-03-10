@@ -403,8 +403,8 @@ class FeedTheSharkWrapper extends StatelessWidget {
                   onGameComplete!();
                 }
               },
-              child: const Text('Trở Về Menu'),
               style: TextButton.styleFrom(foregroundColor: Colors.white),
+              child: const Text('Trở Về Menu'),
             ),
           ],
         ),

@@ -22,12 +22,14 @@ class StoryRepositoryImpl implements StoryRepository {
   });
 
   @override
-  Future<Either<Failure, List<StoryEntity>>> getStories({int page = 1, int limit = 10}) async {
+  Future<Either<Failure, List<StoryEntity>>> getStories(
+      {int page = 1, int limit = 10}) async {
     try {
-      final stories = await remoteDataSource.getStories(page: page, limit: limit);
+      final stories =
+          await remoteDataSource.getStories(page: page, limit: limit);
       await localDataSource.cacheStories(stories);
       return Right(stories);
-    } on ServerException catch (e) {
+    } on ServerException {
       try {
         final localStories = await localDataSource.getStories();
         return Right(localStories);
@@ -45,7 +47,7 @@ class StoryRepositoryImpl implements StoryRepository {
       final story = await remoteDataSource.getStoryById(id);
       await localDataSource.cacheStory(story);
       return Right(story);
-    } on ServerException catch (e) {
+    } on ServerException {
       try {
         final localStory = await localDataSource.getStoryById(id);
         return Right(localStory);
@@ -78,7 +80,8 @@ class StoryRepositoryImpl implements StoryRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateLastRead(String id, DateTime timestamp) async {
+  Future<Either<Failure, bool>> updateLastRead(
+      String id, DateTime timestamp) async {
     try {
       final success = await localDataSource.updateLastRead(id, timestamp);
       return Right(success);

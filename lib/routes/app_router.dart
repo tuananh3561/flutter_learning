@@ -4,6 +4,8 @@ import 'package:flutter_learning/presentation/screens/onboarding/onboarding_scre
 import 'package:flutter_learning/presentation/screens/home/home_screen.dart';
 import 'package:flutter_learning/presentation/screens/story_reader/story_reader_screen.dart';
 import 'package:flutter_learning/games/games/feed_the_shark/feed_the_shark_screen.dart';
+import 'package:flutter_learning/games/games/multiple_choice /multiple_choice_game_screen.dart';
+import 'package:flutter_learning/presentation/screens/games/games_menu_screen.dart';
 
 /// Main router configuration for the Story Nighty Night app
 class AppRouter {
@@ -45,20 +47,24 @@ class AppRouter {
             },
           ),
 
-          // Games
+          // Games menu
           GoRoute(
             path: 'games/:storyId',
             name: 'games',
             builder: (context, state) {
-              final storyId = state.pathParameters['storyId'];
-              return Placeholder(
-                  color: Colors.red, child: Text('Games for story: $storyId'));
+              final storyId = state.pathParameters['storyId']!;
+              return GamesMenuScreen(storyId: storyId);
             },
             routes: [
               GoRoute(
                 path: 'feed-the-shark',
                 name: 'feed_the_shark',
                 builder: (context, state) => const FeedTheSharkGameScreen(),
+              ),
+              GoRoute(
+                path: 'multiple-choice',
+                name: 'multiple_choice',
+                builder: (context, state) => const MultipleChoiceGameScreen(),
               ),
             ],
           ),
@@ -68,6 +74,11 @@ class AppRouter {
             path: 'feed-the-shark',
             name: 'feed_the_shark_direct',
             builder: (context, state) => const FeedTheSharkGameScreen(),
+          ),
+          GoRoute(
+            path: 'multiple-choice',
+            name: 'multiple_choice_direct',
+            builder: (context, state) => const MultipleChoiceGameScreen(),
           ),
 
           // Authentication

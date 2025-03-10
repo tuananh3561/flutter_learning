@@ -1,0 +1,10 @@
+{
+  "background_color": "#87CEEB",
+  "background_image": {
+    "image": "../../assets/Multiple Choice/background.png",
+    "width": 1024,
+    "height": 576
+  },
+  "decoration": [
+  ]
+} 

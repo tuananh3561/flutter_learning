@@ -55,12 +55,12 @@ class FeedTheSharkGame extends BaseGame {
     {'text': 'cat', 'audio': '../../assets/audio/word/cat.mp3'},
     {'text': 'dog', 'audio': '../../assets/audio/word/dog.mp3'},
     {'text': 'bird', 'audio': '../../assets/audio/word/bird.mp3'},
-    {'text': 'duck', 'audio': '../../assets/audio/word/duck.mp3'},
-    {'text': 'pig', 'audio': '../../assets/audio/word/pig.mp3'},
-    {'text': 'cow', 'audio': '../../assets/audio/word/cow.mp3'},
-    {'text': 'sheep', 'audio': '../../assets/audio/word/sheep.mp3'},
-    {'text': 'horse', 'audio': '../../assets/audio/word/horse.mp3'},
-    {'text': 'frog', 'audio': '../../assets/audio/word/frog.mp3'},
+    // {'text': 'duck', 'audio': '../../assets/audio/word/duck.mp3'},
+    // {'text': 'pig', 'audio': '../../assets/audio/word/pig.mp3'},
+    // {'text': 'cow', 'audio': '../../assets/audio/word/cow.mp3'},
+    // {'text': 'sheep', 'audio': '../../assets/audio/word/sheep.mp3'},
+    // {'text': 'horse', 'audio': '../../assets/audio/word/horse.mp3'},
+    // {'text': 'frog', 'audio': '../../assets/audio/word/frog.mp3'},
   ];
 
   /// The current word that needs to be found
@@ -132,7 +132,7 @@ class FeedTheSharkGame extends BaseGame {
 
       // Gọi callback kết thúc game
       if (onGameComplete != null) {
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 2), () {
           onGameComplete!();
         });
       }
@@ -142,9 +142,6 @@ class FeedTheSharkGame extends BaseGame {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    // Set camera viewport
-    camera.viewport = FixedResolutionViewport(resolution: gameSize);
 
     // Đặt trạng thái loading
     _stateManager.changeState(GameState.loading);

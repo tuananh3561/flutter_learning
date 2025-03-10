@@ -55,7 +55,7 @@ class FishPool {
             ? 'nho'
             : 'to';
     final fishType = _random.nextInt(3) + 1;
-    final spineKey = 'ca ${fishSize} $fishType';
+    final spineKey = 'ca $fishSize $fishType';
 
     // Lấy SpineComponent từ ResourceManager
     final spineComponent = await _resourceManager.getSpineComponent(

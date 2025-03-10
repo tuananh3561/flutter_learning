@@ -77,7 +77,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<ToggleFavorite>(_onToggleFavorite);
   }
 
-  Future<void> _onLoadStories(LoadStories event, Emitter<HomeState> emit) async {
+  Future<void> _onLoadStories(
+      LoadStories event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
     try {
       // TODO: Implement actual story loading logic
@@ -89,13 +90,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           thumbnailUrl: 'https://placeholder.com/300x400',
         ),
       );
-      emit(HomeLoaded(stories: stories, favoriteStoryIds: []));
+      emit(HomeLoaded(stories: stories, favoriteStoryIds: const []));
     } catch (e) {
-      emit(HomeError('Failed to load stories'));
+      emit(const HomeError('Failed to load stories'));
     }
   }
 
-  Future<void> _onToggleFavorite(ToggleFavorite event, Emitter<HomeState> emit) async {
+  Future<void> _onToggleFavorite(
+      ToggleFavorite event, Emitter<HomeState> emit) async {
     final currentState = state;
     if (currentState is HomeLoaded) {
       final updatedFavorites = List<int>.from(currentState.favoriteStoryIds);

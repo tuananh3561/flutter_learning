@@ -57,7 +57,7 @@ class ObjectPool<T> {
   void release(T object) {
     if (_inUse.remove(object)) {
       if (_reset != null) {
-        _reset!(object);
+        _reset(object);
       }
       _available.add(object);
     }
@@ -76,7 +76,7 @@ class ObjectPool<T> {
   void clear() {
     if (_dispose != null) {
       for (final object in [..._available, ..._inUse]) {
-        _dispose!(object);
+        _dispose(object);
       }
     }
     _available.clear();

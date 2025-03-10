@@ -1,0 +1,175 @@
+Multiple choice_Max len may bay_hdr.png
+size:2048,1737
+filter:Linear,Linear
+Ban_chan
+bounds:1050,1582,183,99
+Banh xe 1
+bounds:255,879,243,242
+offsets:14,13,270,270
+Banh xe 2
+bounds:500,879,243,242
+offsets:14,13,270,270
+Bong_mat
+bounds:1170,1684,51,52
+rotate:90
+Canh nho
+bounds:2,571,306,371
+offsets:12,14,330,400
+rotate:90
+Canh quat chua quay
+bounds:2,1123,159,892
+offsets:36,44,230,980
+rotate:90
+Canh quat quay
+bounds:896,1033,168,905
+offsets:36,38,230,980
+rotate:90
+Canh_tay
+bounds:601,1594,226,97
+Con_nguoi_a
+bounds:218,1497,114,135
+rotate:90
+Con_nguoi_b
+bounds:944,1689,95,46
+Con_nguoi_c
+bounds:1792,1656,126,79
+Con_nguoi_d
+bounds:1920,1656,126,79
+Con_nguoi_e
+bounds:1235,1578,102,119
+rotate:90
+Con_nguoi_f
+bounds:1041,1688,47,56
+rotate:90
+Dau may bay
+bounds:484,1470,117,494
+offsets:17,17,150,530
+rotate:90
+Dui
+bounds:1356,1568,109,210
+rotate:90
+Duoi
+bounds:443,1693,499,42
+offsets:1,0,500,42
+Duoi may bay
+bounds:375,449,352,428
+offsets:15,15,380,460
+Duoi_1
+bounds:247,1315,420,153
+Duoi_2
+bounds:1534,1400,461,149
+Duoi_3
+bounds:1568,1551,447,103
+Khoang_bung
+bounds:1336,1409,157,196
+rotate:90
+Khung kinh
+bounds:1154,779,526,252
+offsets:17,13,560,280
+Khuon_mat
+bounds:1018,2,498,441
+Khuyu_chan
+bounds:2,1506,109,214
+offsets:0,1,109,215
+rotate:90
+Khuyu_tay
+bounds:829,1589,219,97
+offsets:0,0,220,97
+Long_may
+bounds:2,1726,84,9
+Ma_a
+bounds:120,1617,114,83
+offsets:0,0,114,84
+Ma_b
+bounds:2,1639,116,80
+offsets:0,0,116,81
+Mat
+bounds:1178,1420,156,156
+Mat kinh
+bounds:1155,1229,444,169
+offsets:58,55,560,280
+Mi_mat
+bounds:956,1242,197,197
+Mieng_1
+bounds:288,1701,94,34
+Mieng_10
+bounds:1099,1687,69,48
+offsets:1,0,70,49
+Mieng_11
+bounds:1224,1683,91,52
+offsets:0,0,91,53
+Mieng_12
+bounds:144,1702,55,33
+offsets:0,0,55,34
+Mieng_2
+bounds:1317,1682,91,53
+Mieng_3
+bounds:1590,1664,100,71
+Mieng_4
+bounds:236,1613,120,86
+Mieng_5
+bounds:980,1441,196,139
+Mieng_6
+bounds:355,1477,127,126
+Mieng_7
+bounds:1410,1679,178,56
+Mieng_8
+bounds:1692,1657,78,98
+rotate:90
+Mieng_9
+bounds:358,1605,144,86
+Mo_hoi
+bounds:384,1697,38,57
+rotate:90
+Mui
+bounds:88,1721,54,14
+Nuoc_mat
+bounds:201,1702,85,33
+Set 1.1
+bounds:669,1284,285,184
+offsets:21,12,325,210
+Set 1.2
+bounds:729,445,795,332
+offsets:44,39,883,411
+Set 1.3
+bounds:2,107,600,340
+offsets:32,26,663,392
+Set 1.4
+bounds:604,36,407,412
+offsets:20,9,445,432
+rotate:90
+Set 2.1
+bounds:2,1323,243,172
+offsets:19,13,280,200
+Set 2.2
+bounds:1526,257,453,341
+offsets:24,19,500,380
+Set 2.3
+bounds:745,780,407,251
+offsets:27,19,460,290
+Set 2.4
+bounds:1601,1203,240,195
+offsets:20,17,280,230
+Tai_a
+bounds:2,884,251,237
+Tai_b
+bounds:1803,968,233,237
+rotate:90
+Than
+bounds:1682,600,292,366
+Toc
+bounds:504,1600,91,95
+rotate:90
+
+Multiple choice_Max len may bay_hdr_2.png
+size:1612,1421
+filter:Linear,Linear
+Canh to
+bounds:2,2,642,777
+offsets:29,31,700,840
+rotate:90
+Dau
+bounds:781,55,580,589
+Than may bay
+bounds:2,646,1608,773
+offsets:32,23,1670,820

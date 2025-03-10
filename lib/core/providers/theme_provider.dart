@@ -53,11 +53,10 @@ class ThemeProvider extends ChangeNotifier {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: ThemeConstants.primaryPurple,
         secondary: ThemeConstants.accentYellow,
         tertiary: ThemeConstants.accentPink,
-        background: ThemeConstants.backgroundLight,
         surface: ThemeConstants.cardLight,
         error: ThemeConstants.error,
       ),
@@ -65,7 +64,7 @@ class ThemeProvider extends ChangeNotifier {
       cardColor: ThemeConstants.cardLight,
       textTheme: _buildTextTheme(
           ThemeConstants.textDark, ThemeConstants.textSecondaryDark),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: ThemeConstants.backgroundLight,
         foregroundColor: ThemeConstants.textDark,
         elevation: ThemeConstants.elevationSm,
@@ -74,7 +73,7 @@ class ThemeProvider extends ChangeNotifier {
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeConstants.primaryPurple,
           foregroundColor: ThemeConstants.textLight,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: ThemeConstants.spacingLg,
             vertical: ThemeConstants.spacingMd,
           ),
@@ -87,7 +86,7 @@ class ThemeProvider extends ChangeNotifier {
         style: OutlinedButton.styleFrom(
           foregroundColor: ThemeConstants.primaryPurple,
           side: const BorderSide(color: ThemeConstants.primaryPurple),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: ThemeConstants.spacingLg,
             vertical: ThemeConstants.spacingMd,
           ),
@@ -139,11 +138,10 @@ class ThemeProvider extends ChangeNotifier {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: ThemeConstants.primaryBlue,
         secondary: ThemeConstants.accentYellow,
         tertiary: ThemeConstants.accentPink,
-        background: ThemeConstants.backgroundDark,
         surface: ThemeConstants.cardDark,
         error: ThemeConstants.error,
       ),
@@ -151,7 +149,7 @@ class ThemeProvider extends ChangeNotifier {
       cardColor: ThemeConstants.cardDark,
       textTheme: _buildTextTheme(
           ThemeConstants.textLight, ThemeConstants.textSecondaryLight),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: ThemeConstants.backgroundDark,
         foregroundColor: ThemeConstants.textLight,
         elevation: ThemeConstants.elevationSm,
@@ -160,7 +158,7 @@ class ThemeProvider extends ChangeNotifier {
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeConstants.primaryBlue,
           foregroundColor: ThemeConstants.textLight,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: ThemeConstants.spacingLg,
             vertical: ThemeConstants.spacingMd,
           ),
@@ -173,7 +171,7 @@ class ThemeProvider extends ChangeNotifier {
         style: OutlinedButton.styleFrom(
           foregroundColor: ThemeConstants.accentYellow,
           side: const BorderSide(color: ThemeConstants.accentYellow),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: ThemeConstants.spacingLg,
             vertical: ThemeConstants.spacingMd,
           ),

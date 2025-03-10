@@ -152,6 +152,9 @@ class ResourceManager {
         case 'feedtheshark':
           await _loadFeedTheSharkResources();
           break;
+        case 'multiplechoice':
+          await _loadMultipleChoiceResources();
+          break;
         // Thêm các game khác ở đây
         default:
           throw Exception('Unknown game: $gameName');
@@ -258,7 +261,7 @@ class ResourceManager {
       }
 
       // Preload shark component
-      final key = 'shark';
+      const key = 'shark';
       await _spineFactory.getComponent(
         key,
         skeletonFile: 'assets/Feed the Shark/shark/skeleton.json',
@@ -272,6 +275,142 @@ class ResourceManager {
     } catch (e) {
       print('Error preloading shark spine component: $e');
       // Không ném ngoại lệ ra ngoài để tiếp tục preload các thành phần khác
+    }
+  }
+
+  /// Tải tài nguyên cho game Multiple Choice
+  Future<void> _loadMultipleChoiceResources() async {
+    try {
+      // Update loading progress
+      _loadingProgress = 0.1;
+
+      // Preload audio assets
+      await _preloadMultipleChoiceAudio();
+      _loadingProgress = 0.4;
+
+      // Preload spine component cho máy bay
+      await _preloadAirplaneSpineComponent();
+      _loadingProgress = 0.8;
+
+      // Preload image assets
+      await _preloadMultipleChoiceImages();
+      _loadingProgress = 1.0;
+    } catch (e) {
+      _loadingState = ResourceLoadingState.error;
+      _errorMessage = e.toString();
+      print('Error loading Multiple Choice resources: $e');
+      rethrow;
+    }
+  }
+
+  /// Preload audio cho game Multiple Choice
+  Future<void> _preloadMultipleChoiceAudio() async {
+    try {
+      // Preload background music
+      await _audioService.preloadBackgroundMusic(
+          ['../../assets/Multiple Choice/background_music.mp3']);
+
+      // Preload sound effects
+      await _audioService.preloadSoundEffects([
+        '../../assets/Multiple Choice/SFX click.wav',
+        '../../assets/Multiple Choice/SFX đúng.mp3',
+        '../../assets/Multiple Choice/SFX sai.wav',
+        '../../assets/Multiple Choice/SFX ghép bộ phận.wav',
+        '../../assets/Multiple Choice/SFX Max nhảy lên máy bay.mp3',
+        '../../assets/Multiple Choice/SFX máy bay bay đi.mp3',
+        '../../assets/Multiple Choice/SFX tia sét.mp3',
+        '../../assets/Multiple Choice/SFX yeah.mp3',
+      ]);
+
+      // Preload từ vựng audio
+      final wordSounds = [
+        '../../assets/audio/word/bird.mp3',
+        '../../assets/audio/word/cat.mp3',
+        '../../assets/audio/word/dog.mp3',
+        '../../assets/audio/word/duck.mp3',
+        '../../assets/audio/word/pig.mp3',
+        '../../assets/audio/word/cow.mp3',
+        '../../assets/audio/word/sheep.mp3',
+        '../../assets/audio/word/horse.mp3',
+        '../../assets/audio/word/frog.mp3',
+        // '../../assets/audio/word/lion.mp3',
+        // '../../assets/audio/word/tiger.mp3',
+        // '../../assets/audio/word/elephant.mp3',
+      ];
+      await _audioService.preloadWordSounds(wordSounds);
+    } catch (e) {
+      print('Error preloading Multiple Choice audio: $e');
+      // Continue loading other resources
+    }
+  }
+
+  /// Preload images cho game Multiple Choice
+  Future<void> _preloadMultipleChoiceImages() async {
+    try {
+      // Preload các hình ảnh cần thiết
+      // Lưu ý: Flame không có API chính thức cho preload sprite,
+      // nhưng Sprite.load sẽ cache hình ảnh trong bộ nhớ.
+
+      try {
+        // Preload icon images
+        await Sprite.load('../../assets/Multiple Choice/audio_icon.png');
+      } catch (e) {
+        print('Error loading audio_icon.png: $e');
+      }
+
+      // Preload từ vựng images
+      final words = [
+        'bird',
+        'cat',
+        'dog',
+        'duck',
+        'pig',
+        'cow',
+        'sheep',
+        'horse',
+        'frog',
+        'lion',
+        'tiger',
+        'elephant'
+      ];
+
+      for (final word in words) {
+        try {
+          await Sprite.load('../../assets/images/word/$word.png');
+        } catch (e) {
+          print('Error loading image for $word: $e');
+        }
+      }
+    } catch (e) {
+      print('Error preloading Multiple Choice images: $e');
+      // Continue loading other resources
+    }
+  }
+
+  /// Preload spine component cho máy bay (Multiple Choice)
+  Future<void> _preloadAirplaneSpineComponent() async {
+    try {
+      // Không preload lại nếu đã tải
+      if (_preloadedSpineComponents['airplane'] == true) {
+        return;
+      }
+
+      // Preload airplane component
+      const key = 'airplane';
+      await _spineFactory.getComponent(
+        key,
+        skeletonFile: 'assets/Multiple Choice/May bay/Multiple choice_v2.json',
+        atlasFile:
+            'assets/Multiple Choice/May bay/Multiple choice_v2_hdr.atlas.txt',
+        defaultAnimation: '1.0 - Lap canh to [Phone]',
+        loop: false,
+      );
+
+      // Đánh dấu đã preload
+      _preloadedSpineComponents['airplane'] = true;
+    } catch (e) {
+      print('Error preloading airplane spine component: $e');
+      // Continue loading other resources
     }
   }
 

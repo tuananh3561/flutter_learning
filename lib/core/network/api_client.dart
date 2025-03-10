@@ -7,10 +7,11 @@ import '../errors/exceptions.dart';
 class ApiClient {
   final Dio _dio;
 
-  ApiClient()
-      : _dio = Dio() {
-    _dio.options.connectTimeout = Duration(milliseconds: AppConstants.connectionTimeout);
-    _dio.options.receiveTimeout = Duration(milliseconds: AppConstants.receiveTimeout);
+  ApiClient() : _dio = Dio() {
+    _dio.options.connectTimeout =
+        const Duration(milliseconds: AppConstants.connectionTimeout);
+    _dio.options.receiveTimeout =
+        const Duration(milliseconds: AppConstants.receiveTimeout);
     _dio.interceptors.add(_createLoggingInterceptor());
   }
 
@@ -24,19 +25,22 @@ class ApiClient {
       },
       onResponse: (response, handler) {
         // Log response
-        print('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
+        print(
+            'RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
         return handler.next(response);
       },
       onError: (DioException e, handler) {
         // Log error
-        print('ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
+        print(
+            'ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
         return handler.next(e);
       },
     );
   }
 
   /// Perform a GET request
-  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> get(String path,
+      {Map<String, dynamic>? queryParameters}) async {
     try {
       final response = await _dio.get(path, queryParameters: queryParameters);
       return response.data;

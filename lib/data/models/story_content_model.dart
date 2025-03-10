@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Model class for the root.json file in a story
 class StoryRootModel {

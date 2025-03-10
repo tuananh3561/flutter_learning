@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
-import '../lib/data/models/game_config.dart';
+import 'package:flutter_learning/data/models/game_config.dart';
 
 void main() {
   group('BackgroundConfig', () {

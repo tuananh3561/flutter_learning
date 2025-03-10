@@ -64,7 +64,7 @@ class _FeedTheSharkGameScreenState extends State<FeedTheSharkGameScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
+              const CircularProgressIndicator(),
               SizedBox(height: 10.h),
               Text(
                 'Đang tải game...',
@@ -81,7 +81,7 @@ class _FeedTheSharkGameScreenState extends State<FeedTheSharkGameScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error, color: Colors.red, size: 50),
+              const Icon(Icons.error, color: Colors.red, size: 50),
               SizedBox(height: 10.h),
               Text(
                 'Có lỗi xảy ra: $error',
