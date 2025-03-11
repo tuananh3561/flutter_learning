@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../config_editor_panel.dart';
+import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
 
 /// Widget để cấu hình câu trả lời trong game
 class AnswerSection extends StatefulWidget {
@@ -344,47 +343,6 @@ class _AnswerSectionState extends State<AnswerSection> {
     }
   }
 
-  // Hiển thị color picker
-  Future<void> _showColorPicker(BuildContext context, Color initialColor,
-      Function(Color) onColorChanged) async {
-    final result = await showDialog<Color>(
-      context: context,
-      builder: (BuildContext context) {
-        Color selectedColor = initialColor;
-        return AlertDialog(
-          title: const Text('Chọn màu'),
-          content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: initialColor,
-              onColorChanged: (color) {
-                selectedColor = color;
-              },
-              pickerAreaHeightPercent: 0.8,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Hủy'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Chọn'),
-              onPressed: () {
-                Navigator.of(context).pop(selectedColor);
-              },
-            ),
-          ],
-        );
-      },
-    );
-
-    if (result != null) {
-      onColorChanged(result);
-    }
-  }
-
   // Hiển thị dialog đăng tải file
   Future<void> _showFileUploadDialog(
       String title, TextEditingController controller) async {
@@ -708,7 +666,7 @@ class _AnswerSectionState extends State<AnswerSection> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              await _showColorPicker(
+                              await ColorPickerDialog.show(
                                 context,
                                 _backgroundColor,
                                 (color) {
@@ -742,7 +700,7 @@ class _AnswerSectionState extends State<AnswerSection> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              await _showColorPicker(
+                              await ColorPickerDialog.show(
                                 context,
                                 _borderColor,
                                 (color) {
@@ -799,7 +757,7 @@ class _AnswerSectionState extends State<AnswerSection> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              await _showColorPicker(
+                              await ColorPickerDialog.show(
                                 context,
                                 _correctColor,
                                 (color) {
@@ -833,7 +791,7 @@ class _AnswerSectionState extends State<AnswerSection> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              await _showColorPicker(
+                              await ColorPickerDialog.show(
                                 context,
                                 _incorrectColor,
                                 (color) {

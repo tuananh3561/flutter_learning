@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'sections/game_settings_section.dart';
 import 'sections/question_section.dart';
 import 'sections/answer_section.dart';
@@ -8,6 +7,7 @@ import 'sections/sound_section.dart';
 import 'sections/vocabulary_section.dart';
 import 'sections/background_section.dart';
 import 'sections/anim_spine_section.dart';
+import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
 
 /// Widget to edit the game configuration
 class ConfigEditorPanel extends StatefulWidget {
@@ -472,7 +472,11 @@ class ConfigColorPicker extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              _showColorPicker(context);
+              ColorPickerDialog.show(
+                context,
+                color,
+                (newColor) => onChanged(newColor),
+              );
             },
             child: Container(
               width: 40,
@@ -486,42 +490,6 @@ class ConfigColorPicker extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  void _showColorPicker(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        Color pickedColor = color;
-        return AlertDialog(
-          title: const Text('Pick a color'),
-          content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: color,
-              onColorChanged: (color) {
-                pickedColor = color;
-              },
-              pickerAreaHeightPercent: 0.8,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                onChanged(pickedColor);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Select'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

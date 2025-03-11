@@ -6,10 +6,13 @@ import 'draggable_component_preview.dart';
 /// Widget to preview the game configuration
 class ConfigPreview extends StatefulWidget {
   final Map<String, dynamic> configData;
+  final Function(String, String?, String, Map<String, dynamic>)?
+      onComponentMoved;
 
   const ConfigPreview({
     Key? key,
     required this.configData,
+    this.onComponentMoved,
   }) : super(key: key);
 
   @override
@@ -29,6 +32,8 @@ class _ConfigPreviewState extends State<ConfigPreview>
 
   // Tracks the active component being dragged
   String? _activeDragComponent;
+  // Tracks the original position before drag to detect actual changes
+  Map<String, Offset> _originalPositions = {};
 
   @override
   void initState() {
@@ -65,6 +70,7 @@ class _ConfigPreviewState extends State<ConfigPreview>
 
   @override
   void dispose() {
+    _hideTooltip();
     _updateAnimationController.dispose();
     super.dispose();
   }
@@ -86,6 +92,67 @@ class _ConfigPreviewState extends State<ConfigPreview>
     if (configChanged) {
       _showUpdateEffect();
       _lastConfigData = Map.from(widget.configData);
+
+      // Cập nhật lại originalPositions khi có thay đổi cấu hình từ bên ngoài
+      _updateOriginalPositions();
+    }
+  }
+
+  // Cập nhật vị trí gốc của các phần tử khi cấu hình thay đổi
+  void _updateOriginalPositions() {
+    _originalPositions.clear();
+
+    try {
+      // Airplane
+      if (widget.configData['airplaneComponent'] != null) {
+        _originalPositions['airplane'] =
+            _getPositionFromConfig('airplaneComponent', null, 'position');
+      }
+
+      // Question
+      if (widget.configData['questionConfig'] != null) {
+        _originalPositions['questionBox'] =
+            _getPositionFromConfig('questionConfig', null, 'position');
+
+        // Target image if exists
+        if (widget.configData['questionConfig']['showTargetImage'] == true) {
+          _originalPositions['targetImage'] = _getPositionFromConfig(
+              'questionConfig', null, 'targetImagePosition');
+        }
+      }
+
+      // Answer buttons
+      if (widget.configData['answerConfig']?['audioButtons'] != null) {
+        final dynamic audioButtons =
+            widget.configData['answerConfig']['audioButtons'];
+        if (audioButtons is List) {
+          for (int i = 0; i < audioButtons.length; i++) {
+            try {
+              _originalPositions['audioButton_$i'] = _getPositionFromConfig(
+                  'answerConfig', 'audioButtons', '$i/position');
+            } catch (e) {
+              print('Error getting position for audioButton_$i: $e');
+            }
+          }
+        }
+      }
+
+      // Drop zones
+      if (widget.configData['dropZoneConfig']?['zones'] != null) {
+        final dynamic zones = widget.configData['dropZoneConfig']['zones'];
+        if (zones is List) {
+          for (int i = 0; i < zones.length; i++) {
+            try {
+              _originalPositions['dropZone_$i'] = _getPositionFromConfig(
+                  'dropZoneConfig', 'zones', '$i/position');
+            } catch (e) {
+              print('Error getting position for dropZone_$i: $e');
+            }
+          }
+        }
+      }
+    } catch (e) {
+      print('Error updating original positions: $e');
     }
   }
 
@@ -488,15 +555,48 @@ class _ConfigPreviewState extends State<ConfigPreview>
     required Offset initialPosition,
     required Size size,
     required Widget child,
+    String? section,
+    String? subsection,
+    String? positionKey,
   }) {
+    // Extract section, subsection and positionKey from component key if not provided
+    // Ensure section and positionKey are not null
+    final String sectionValue = section ?? _getSectionFromKey(key);
+    final String positionKeyValue = positionKey ?? 'position';
+
+    // Lưu vị trí ban đầu để có thể so sánh khi kéo thả
+    if (!_originalPositions.containsKey(key)) {
+      _originalPositions[key] = initialPosition;
+    }
+
     return DraggableComponentPreview(
-      key: ValueKey(key),
+      key: ValueKey('$key-${widget.configData.hashCode}'),
       initialPosition: initialPosition,
       size: size,
       isActive: _activeDragComponent == key,
       onPositionChanged: (Offset newPosition) {
-        // Here we would update the config with the new position
-        print('Position changed for $key: $newPosition');
+        // Convert offset to position map
+        final Map<String, dynamic> positionMap = {
+          'x': newPosition.dx.round().toDouble(),
+          'y': newPosition.dy.round().toDouble(),
+        };
+
+        // Hiển thị tooltip với vị trí hiện tại
+        _showPositionTooltip(key, positionMap);
+
+        // Chỉ cập nhật nếu vị trí thực sự thay đổi và có callback
+        final originalPosition = _originalPositions[key];
+        if (widget.onComponentMoved != null &&
+            (originalPosition == null ||
+                originalPosition.dx.round() != newPosition.dx.round() ||
+                originalPosition.dy.round() != newPosition.dy.round())) {
+          // Lưu vị trí mới vào originalPositions để tránh cập nhật liên tục
+          _originalPositions[key] = newPosition;
+
+          // Gọi callback để cập nhật cấu hình
+          widget.onComponentMoved!(
+              sectionValue, subsection, positionKeyValue, positionMap);
+        }
       },
       onDragStart: () {
         setState(() {
@@ -506,10 +606,97 @@ class _ConfigPreviewState extends State<ConfigPreview>
       onDragEnd: () {
         setState(() {
           _activeDragComponent = null;
+
+          // Giữ tooltip thêm 1 giây rồi ẩn
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              _hideTooltip();
+            }
+          });
         });
       },
       child: child,
     );
+  }
+
+  // Tooltip để hiển thị vị trí khi di chuyển
+  OverlayEntry? _tooltipOverlay;
+  void _showPositionTooltip(
+      String componentKey, Map<String, dynamic> position) {
+    _hideTooltip();
+
+    _tooltipOverlay = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 80,
+        right: 20,
+        child: Material(
+          elevation: 4.0,
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.black87,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Di chuyển: ${_getDisplayNameFromKey(componentKey)}',
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'X: ${position['x']}, Y: ${position['y']}',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_tooltipOverlay!);
+  }
+
+  // Lấy tên hiển thị đẹp hơn từ key
+  String _getDisplayNameFromKey(String key) {
+    if (key.startsWith('questionBox')) {
+      return 'Hộp câu hỏi';
+    } else if (key.startsWith('targetImage')) {
+      return 'Hình ảnh mục tiêu';
+    } else if (key.startsWith('audioButton')) {
+      final index = int.tryParse(key.split('_').last) ?? 0;
+      return 'Nút âm thanh ${index + 1}';
+    } else if (key.startsWith('dropZone')) {
+      final index = int.tryParse(key.split('_').last) ?? 0;
+      return 'Khu vực thả ${index + 1}';
+    } else if (key.startsWith('airplane')) {
+      return 'Máy bay';
+    } else {
+      return key;
+    }
+  }
+
+  void _hideTooltip() {
+    _tooltipOverlay?.remove();
+    _tooltipOverlay = null;
+  }
+
+  // Xác định section dựa trên key của component
+  String _getSectionFromKey(String key) {
+    if (key.startsWith('questionBox') || key.startsWith('targetImage')) {
+      return 'questionConfig';
+    } else if (key.startsWith('audioButton')) {
+      return 'answerConfig';
+    } else if (key.startsWith('dropZone')) {
+      return 'dropZoneConfig';
+    } else if (key.startsWith('airplane')) {
+      return 'airplaneComponent';
+    } else {
+      // Trả về một giá trị mặc định thay vì null
+      return 'otherComponents';
+    }
   }
 
   List<Widget> _buildAudioButtonPreviews() {
@@ -527,12 +714,38 @@ class _ConfigPreviewState extends State<ConfigPreview>
           final size = _getSizeFromConfig(
               'answerConfig', 'audioButtons', 'layout/buttonSize');
 
+          // Handle position values that might be expressions
+          double xPos, yPos;
+
+          try {
+            if (position['x'] is String &&
+                position['x'].toString().contains('gameSize')) {
+              xPos = _parseConfigValue(position['x'].toString());
+            } else {
+              xPos = position['x'].toDouble();
+            }
+
+            if (position['y'] is String &&
+                position['y'].toString().contains('gameSize')) {
+              yPos = _parseConfigValue(position['y'].toString());
+            } else {
+              yPos = position['y'].toDouble();
+            }
+          } catch (e) {
+            print('Error parsing button position: $e');
+            // Fallback position
+            xPos = 720.0;
+            yPos = 200.0 + i * 120.0;
+          }
+
           buttons.add(
             _buildDraggableComponent(
               key: 'audioButton_$i',
-              initialPosition:
-                  Offset(position['x'].toDouble(), position['y'].toDouble()),
+              initialPosition: Offset(xPos, yPos),
               size: size,
+              section: 'answerConfig',
+              subsection: 'audioButtons',
+              positionKey: 'layout/buttonPositions/$i',
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -570,6 +783,9 @@ class _ConfigPreviewState extends State<ConfigPreview>
               key: 'dropZone_$i',
               initialPosition: position,
               size: size,
+              section: 'dropZoneConfig',
+              subsection: 'zones',
+              positionKey: '$i/position',
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.blue.withOpacity(0.2),
@@ -597,11 +813,74 @@ class _ConfigPreviewState extends State<ConfigPreview>
   Offset _getPositionFromConfig(
       String section, String? subsection, String positionKey) {
     try {
-      Map<String, dynamic> position;
-      if (subsection != null) {
-        position = widget.configData[section][subsection][positionKey];
+      dynamic position;
+
+      if (positionKey.contains('/')) {
+        // Handle complex paths like '0/position' or 'layout/buttonPositions/0'
+        final parts = positionKey.split('/');
+        dynamic current = subsection != null
+            ? widget.configData[section][subsection]
+            : widget.configData[section];
+
+        // Navigate through the path
+        for (int i = 0; i < parts.length - 1; i++) {
+          final part = parts[i];
+
+          // If it's an array index
+          if (int.tryParse(part) != null) {
+            final index = int.parse(part);
+            if (current is List && index < current.length) {
+              current = current[index];
+            } else {
+              print(
+                  'Invalid path at index $part: $current is not a List or index out of bounds');
+              return Offset.zero;
+            }
+          } else {
+            // If it's a map key
+            if (current is Map) {
+              if (!current.containsKey(part)) {
+                print('Key not found: $part in $current');
+                return Offset.zero;
+              }
+              current = current[part];
+            } else {
+              print('Invalid path at key $part: $current is not a Map');
+              return Offset.zero;
+            }
+          }
+        }
+
+        // Get the final position
+        final lastKey = parts.last;
+        if (int.tryParse(lastKey) != null) {
+          final index = int.parse(lastKey);
+          if (current is List && index < current.length) {
+            position = current[index];
+          } else {
+            print(
+                'Invalid final index $lastKey: $current is not a List or index out of bounds');
+            return Offset.zero;
+          }
+        } else {
+          if (current is Map) {
+            if (!current.containsKey(lastKey)) {
+              print('Final key not found: $lastKey in $current');
+              return Offset.zero;
+            }
+            position = current[lastKey];
+          } else {
+            print('Invalid final key $lastKey: $current is not a Map');
+            return Offset.zero;
+          }
+        }
       } else {
-        position = widget.configData[section][positionKey];
+        // Simple path
+        if (subsection != null) {
+          position = widget.configData[section][subsection][positionKey];
+        } else {
+          position = widget.configData[section][positionKey];
+        }
       }
 
       return _getOffsetFromMap(position);
@@ -633,38 +912,166 @@ class _ConfigPreviewState extends State<ConfigPreview>
     }
   }
 
-  Offset _getOffsetFromMap(Map<String, dynamic> map) {
-    final x = _parseConfigValue(map['x'].toString());
-    final y = _parseConfigValue(map['y'].toString());
-    return Offset(x, y);
+  Offset _getOffsetFromMap(dynamic positionData) {
+    try {
+      // Handle null case
+      if (positionData == null) {
+        print('Position data is null');
+        return Offset.zero;
+      }
+
+      // Handle Map case
+      if (positionData is Map) {
+        final x = positionData['x'];
+        final y = positionData['y'];
+
+        if (x == null || y == null) {
+          print('Position data missing x or y: $positionData');
+          return Offset.zero;
+        }
+
+        return Offset(
+            _parseConfigValue(x.toString()), _parseConfigValue(y.toString()));
+      }
+
+      // Handle List case (some configs might use arrays)
+      if (positionData is List && positionData.length >= 2) {
+        return Offset(_parseConfigValue(positionData[0].toString()),
+            _parseConfigValue(positionData[1].toString()));
+      }
+
+      // Handle string case (might be formatted as "x,y")
+      if (positionData is String && positionData.contains(',')) {
+        final parts = positionData.split(',');
+        if (parts.length >= 2) {
+          return Offset(
+              _parseConfigValue(parts[0]), _parseConfigValue(parts[1]));
+        }
+      }
+
+      print('Unsupported position data format: $positionData');
+      return Offset.zero;
+    } catch (e) {
+      print('Error parsing position data: $e');
+      return Offset.zero;
+    }
   }
 
-  Size _getSizeFromMap(Map<String, dynamic> map) {
-    final width = _parseConfigValue(map['x'].toString());
-    final height = _parseConfigValue(map['y'].toString());
-    return Size(width, height);
+  Size _getSizeFromMap(dynamic sizeData) {
+    try {
+      // Handle null case
+      if (sizeData == null) {
+        print('Size data is null');
+        return const Size(50, 50); // Default size
+      }
+
+      // Handle Map case
+      if (sizeData is Map) {
+        // Some configs use width/height, others use x/y for size
+        final width = sizeData['width'] ?? sizeData['x'];
+        final height = sizeData['height'] ?? sizeData['y'];
+
+        if (width == null || height == null) {
+          print('Size data missing width/height or x/y: $sizeData');
+          return const Size(50, 50);
+        }
+
+        return Size(_parseConfigValue(width.toString()),
+            _parseConfigValue(height.toString()));
+      }
+
+      // Handle List case (some configs might use arrays)
+      if (sizeData is List && sizeData.length >= 2) {
+        return Size(_parseConfigValue(sizeData[0].toString()),
+            _parseConfigValue(sizeData[1].toString()));
+      }
+
+      // Handle string case (might be formatted as "width,height")
+      if (sizeData is String && sizeData.contains(',')) {
+        final parts = sizeData.split(',');
+        if (parts.length >= 2) {
+          return Size(_parseConfigValue(parts[0]), _parseConfigValue(parts[1]));
+        }
+      }
+
+      print('Unsupported size data format: $sizeData');
+      return const Size(50, 50);
+    } catch (e) {
+      print('Error parsing size data: $e');
+      return const Size(50, 50);
+    }
   }
 
   double _parseConfigValue(String value) {
     try {
-      // Simple expression parsing for "gameSize.x / 2 - 180" type expressions
-      if (value.contains('gameSize')) {
-        // For preview, just return a reasonable value based on the expression
-        if (value.contains('/') && value.contains('-')) {
-          // Assuming it's something like "gameSize.x / 2 - 180"
-          return _previewSize.width / 2 - 180;
-        } else if (value.contains('/')) {
-          // Assuming it's something like "gameSize.x / 2"
-          return _previewSize.width / 2;
-        } else {
-          // Just return a proportion of the preview size
-          return _previewSize.width * 0.5;
-        }
+      // Handle empty or null values
+      if (value.isEmpty) {
+        return 0.0;
       }
 
+      // Handle percentage values
+      if (value.endsWith('%')) {
+        final percentage = double.parse(value.substring(0, value.length - 1));
+        return _previewSize.width * (percentage / 100);
+      }
+
+      // Simple expression parsing for "gameSize.x / 2 - 180" type expressions
+      if (value.contains('gameSize')) {
+        // Extract the dimension (x or y)
+        final dimension = value.contains('gameSize.x') ? 'x' : 'y';
+        final baseSize =
+            dimension == 'x' ? _previewSize.width : _previewSize.height;
+
+        // Handle division
+        if (value.contains('/')) {
+          final divisionParts = value.split('/');
+          if (divisionParts.length >= 2) {
+            final divisor =
+                double.tryParse(divisionParts[1].trim().split(' ')[0]) ?? 2.0;
+            double result = baseSize / divisor;
+
+            // Handle subtraction after division
+            if (value.contains('-')) {
+              final subtractionParts = value.split('-');
+              if (subtractionParts.length >= 2) {
+                final subtrahend =
+                    double.tryParse(subtractionParts[1].trim()) ?? 0.0;
+                result -= subtrahend;
+              }
+            }
+
+            // Handle addition after division
+            if (value.contains('+')) {
+              final additionParts = value.split('+');
+              if (additionParts.length >= 2) {
+                final addend = double.tryParse(additionParts[1].trim()) ?? 0.0;
+                result += addend;
+              }
+            }
+
+            return result;
+          }
+        }
+
+        // Handle multiplication
+        if (value.contains('*')) {
+          final multiplicationParts = value.split('*');
+          if (multiplicationParts.length >= 2) {
+            final multiplier =
+                double.tryParse(multiplicationParts[1].trim().split(' ')[0]) ??
+                    1.0;
+            return baseSize * multiplier;
+          }
+        }
+
+        // Default case for gameSize references
+        return baseSize * 0.5;
+      }
+
+      // Try to parse as a simple number
       return double.parse(value);
     } catch (e) {
-      print('Error parsing config value: $e');
+      print('Error parsing config value "$value": $e');
       return 100; // Default fallback value
     }
   }
@@ -687,11 +1094,70 @@ class _ConfigPreviewState extends State<ConfigPreview>
         final spacing = layout['spacing'] ?? 20.0;
         final buttonSize = layout['buttonSize'];
 
+        // Get x and y values, handling expressions
+        dynamic xValue = startPosition['x'];
+        dynamic yValue = startPosition['y'];
+
+        // Keep the original values for the positions list
+        // The actual parsing will happen in _buildAudioButtonPreviews
+
         List<Map<String, dynamic>> positions = [];
         for (int i = 0; i < numberOfButtons; i++) {
+          // For y position, if it's a string expression, keep it as is
+          // Otherwise, calculate the offset based on index
+          dynamic yPos;
+          if (yValue is String && yValue.contains('gameSize')) {
+            // For expressions like "gameSize.y / 2 - 170.0", "gameSize.y / 2", "gameSize.y / 2 + 170.0"
+            if (i == 0) {
+              yPos = yValue; // First button uses the original expression
+            } else if (i == 1) {
+              // Middle button - remove any offset
+              if (yValue.contains('-')) {
+                yPos =
+                    yValue.split('-')[0].trim(); // Keep just "gameSize.y / 2"
+              } else if (yValue.contains('+')) {
+                yPos =
+                    yValue.split('+')[0].trim(); // Keep just "gameSize.y / 2"
+              } else {
+                yPos = yValue; // No offset to remove
+              }
+            } else {
+              // Last button - use opposite offset
+              if (yValue.contains('-')) {
+                final parts = yValue.split('-');
+                if (parts.length >= 2) {
+                  yPos =
+                      "${parts[0].trim()} + ${parts[1].trim()}"; // Change - to +
+                } else {
+                  yPos = yValue;
+                }
+              } else if (yValue.contains('+')) {
+                final parts = yValue.split('+');
+                if (parts.length >= 2) {
+                  yPos =
+                      "${parts[0].trim()} - ${parts[1].trim()}"; // Change + to -
+                } else {
+                  yPos = yValue;
+                }
+              } else {
+                // If no offset, add a default one
+                yPos = "$yValue + 170.0";
+              }
+            }
+          } else {
+            // Numeric value - calculate based on index and spacing
+            double baseY = (yValue is num) ? yValue.toDouble() : 200.0;
+            yPos = baseY +
+                i *
+                    ((buttonSize['y'] is num
+                            ? buttonSize['y'].toDouble()
+                            : 100.0) +
+                        spacing);
+          }
+
           positions.add({
-            'x': startPosition['x'],
-            'y': startPosition['y'] + i * (buttonSize['y'] + spacing),
+            'x': xValue,
+            'y': yPos,
           });
         }
         return positions;

@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 import '../config_editor_panel.dart';
+import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
 
 /// Widget để cấu hình hình nền
 class BackgroundSection extends StatefulWidget {
@@ -811,7 +808,12 @@ class ColorPickerField extends StatelessWidget {
             child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
           ),
           GestureDetector(
-            onTap: () => _showColorPicker(context),
+            onTap: () => ColorPickerDialog.show(
+              context,
+              color,
+              (newColor) => onColorChanged(newColor),
+              title: label,
+            ),
             child: Container(
               width: 40,
               height: 40,
@@ -827,79 +829,6 @@ class ColorPickerField extends StatelessWidget {
               '#${color.value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}'),
         ],
       ),
-    );
-  }
-
-  void _showColorPicker(BuildContext context) {
-    // Tạo một màu tạm để lưu trữ giá trị được chọn
-    Color pickedColor = color;
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(label),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Ở đây bạn có thể thêm widget ColorPicker từ thư viện flutter_colorpicker
-                // Đối với bản demo, tôi chỉ hiển thị một số màu đơn giản
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    Colors.red,
-                    Colors.pink,
-                    Colors.purple,
-                    Colors.deepPurple,
-                    Colors.indigo,
-                    Colors.blue,
-                    Colors.lightBlue,
-                    Colors.cyan,
-                    Colors.teal,
-                    Colors.green,
-                    Colors.lightGreen,
-                    Colors.lime,
-                    Colors.yellow,
-                    Colors.amber,
-                    Colors.orange,
-                    Colors.deepOrange,
-                    Colors.brown,
-                    Colors.grey,
-                    Colors.blueGrey,
-                    Colors.black,
-                    Colors.white,
-                  ].map((color) {
-                    return GestureDetector(
-                      onTap: () {
-                        pickedColor = color;
-                        Navigator.of(context).pop();
-                        onColorChanged(pickedColor);
-                      },
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: color,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Hủy'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

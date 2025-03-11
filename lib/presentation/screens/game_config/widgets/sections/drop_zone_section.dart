@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../config_editor_panel.dart';
+import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
 
 /// Widget để cấu hình các drop zone trong game
 class DropZoneSection extends StatefulWidget {
@@ -296,48 +295,6 @@ class _DropZoneSectionState extends State<DropZoneSection> {
     }
   }
 
-  // Hiển thị color picker
-  Future<void> _showColorPicker(BuildContext context, Color initialColor,
-      Function(Color) onColorChanged) async {
-    final result = await showDialog<Color>(
-      context: context,
-      builder: (BuildContext context) {
-        Color selectedColor = initialColor;
-        return AlertDialog(
-          title: const Text('Chọn màu'),
-          content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: initialColor,
-              onColorChanged: (color) {
-                selectedColor = color;
-              },
-              pickerAreaHeightPercent: 0.8,
-              enableAlpha: true,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Hủy'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Chọn'),
-              onPressed: () {
-                Navigator.of(context).pop(selectedColor);
-              },
-            ),
-          ],
-        );
-      },
-    );
-
-    if (result != null) {
-      onColorChanged(result);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -599,7 +556,7 @@ class _DropZoneSectionState extends State<DropZoneSection> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                await _showColorPicker(
+                                await ColorPickerDialog.show(
                                   context,
                                   _backgroundColor,
                                   (color) {
@@ -632,7 +589,7 @@ class _DropZoneSectionState extends State<DropZoneSection> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                await _showColorPicker(
+                                await ColorPickerDialog.show(
                                   context,
                                   _borderColor,
                                   (color) {
