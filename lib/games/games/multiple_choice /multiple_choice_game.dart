@@ -10,19 +10,28 @@ import '../../components/loading_screen.dart';
 import '../../engine/game_engine.dart';
 import '../../engine/game_state_manager.dart';
 import '../../engine/resource_manager.dart';
-import 'components/audio_button_component.dart';
-import 'components/image_card_component.dart';
+import '../../components/audio_button_component.dart';
+import '../../components/image_card_component.dart';
+import '../../components/drop_zone_component.dart';
+import '../../components/rounded_rect_painter_component.dart';
 import 'managers/vocabulary_repository.dart';
 import 'managers/audio_button_pool.dart';
 import 'managers/animation_controller.dart';
+import 'managers/game_config_manager.dart';
 
 /// Game Multiple Choice - Trò chơi nối từ vựng với hình ảnh thông qua âm thanh
 class MultipleChoiceGame extends BaseGame {
+  /// GameConfigManager - quản lý cấu hình game
+  final GameConfigManager _configManager = GameConfigManager();
+
   /// Số lượt chơi cần để hoàn thành game
-  final int requiredRounds;
+  late final int requiredRounds;
 
   /// Số lượng đáp án cho mỗi lượt chơi
-  final int numberOfChoices;
+  late final int numberOfChoices;
+
+  /// Loại game (Drop hoặc Tap)
+  late final String typeGame;
 
   /// Lượt chơi hiện tại
   int _currentRound = 0;
@@ -91,20 +100,46 @@ class MultipleChoiceGame extends BaseGame {
   final Function(String)? onWrongMatch;
 
   /// Path to the background config file
-  final String backgroundConfigPath;
+  late final String backgroundConfigPath;
 
   /// Constructor
   MultipleChoiceGame({
     required Vector2 gameSize,
-    this.requiredRounds = 5,
-    this.numberOfChoices = 3,
+    int? requiredRounds,
+    int? numberOfChoices,
+    String? typeGame,
     this.onGameComplete,
     this.onCorrectMatch,
     this.onWrongMatch,
-    this.backgroundConfigPath = 'assets/Multiple Choice/background_config.json',
+    String? backgroundConfigPath,
   }) : super(gameSize: gameSize) {
+    _loadConfig();
+
+    // Sử dụng giá trị từ tham số nếu được cung cấp, nếu không sử dụng giá trị từ cấu hình
+    this.requiredRounds =
+        requiredRounds ?? _configManager.gameSettings['requiredRounds'] ?? 5;
+    this.numberOfChoices =
+        numberOfChoices ?? _configManager.gameSettings['numberOfChoices'] ?? 3;
+    this.typeGame =
+        typeGame ?? _configManager.gameSettings['typeGame'] ?? 'Drop';
+    this.backgroundConfigPath = backgroundConfigPath ??
+        _configManager.gameSettings['backgroundConfigPath'] ??
+        'assets/Multiple Choice/background_config.json';
+
     _setupManagers();
     _setupStateCallbacks();
+  }
+
+  /// Tải cấu hình game
+  void _loadConfig() {
+    try {
+      if (!_configManager.isLoaded) {
+        // Tải đồng bộ trong constructor, trong thực tế nên tải bất đồng bộ
+        _configManager.loadConfig();
+      }
+    } catch (e) {
+      print('Error loading game config: $e');
+    }
   }
 
   /// Khởi tạo các managers
@@ -165,6 +200,7 @@ class MultipleChoiceGame extends BaseGame {
     try {
       await _resourceManager.loadResources('multiplechoice');
       await _vocabularyRepository.initialize();
+      await _audioButtonPool.initialize(gameSize, numberOfChoices);
       await _airplaneAnimationController.initialize();
       _resourcesLoaded = true;
     } catch (e) {
@@ -322,15 +358,24 @@ class MultipleChoiceGame extends BaseGame {
   }
 
   void _createBoxQuestion() {
+    final boxConfig = _configManager.questionConfig['boxQuestion'];
+    final position = _configManager.getVector2(
+        'boxQuestion', 'position', boxConfig['position'], gameSize);
+    final size = _configManager.getVector2(
+        'boxQuestion', 'size', boxConfig['size'], gameSize);
+    final color = _configManager.getColor(
+        'boxQuestion', 'backgroundColor', boxConfig['backgroundColor']);
+    final borderRadius = boxConfig['borderRadius']?.toDouble() ?? 15.0;
+
     final roundedRectPainter = RoundedRectPainter(
-      color: Colors.white,
-      borderRadius: 15.0,
+      color: color,
+      borderRadius: borderRadius,
     );
 
     _boxQuestion = CustomPainterComponent(
       painter: roundedRectPainter,
-      position: Vector2(460.0, gameSize.y / 2 - 180.0),
-      size: Vector2(220.0, 360.0),
+      position: position,
+      size: size,
     );
 
     add(_boxQuestion!);
@@ -338,36 +383,44 @@ class MultipleChoiceGame extends BaseGame {
 
   /// Hiển thị hình ảnh từ vựng mục tiêu
   void _showTargetImage() {
+    final targetConfig = _configManager.questionConfig['targetImage'];
+    final imagePath = targetConfig['path']
+        .toString()
+        .replaceAll('{text}', _currentTarget!['text']);
+    final position = _configManager.getVector2(
+        'targetImage', 'position', targetConfig['position'], gameSize);
+    final size = _configManager.getVector2(
+        'targetImage', 'size', targetConfig['size'], gameSize);
+    final borderColor = _configManager.getColor(
+        'targetImage', 'borderColor', targetConfig['borderColor']);
+    final priority = targetConfig['priority'] ?? 80;
+
     _targetImageCard = ImageCardComponent(
-      imagePath: '../../assets/images/word/${_currentTarget!['text']}.png',
-      position: Vector2(500.0, gameSize.y / 2 - 150.0),
-      size: Vector2(150.0, 150.0),
+      imagePath: imagePath,
+      position: position,
+      size: size,
       text: '',
-      borderColor: Colors.grey.withOpacity(0.5),
+      borderColor: borderColor,
     );
 
-    _targetImageCard!.priority = 80;
+    _targetImageCard!.priority = priority;
     add(_targetImageCard!);
   }
 
   /// Tạo các nút audio
   void _createAudioButtons() {
-    const buttonWidth = 100.0;
-    const buttonHeight = 100.0;
-    final buttonSize = Vector2(buttonWidth, buttonHeight);
-    const startX = 500.0 + 200.0 + 20.0;
-    final buttonY = gameSize.y / 2 -
-        (numberOfChoices * buttonHeight + (numberOfChoices - 1) * 20.0) / 2;
+    final buttonConfig = _configManager.answerConfig['audioButtons'];
+    final buttonSize = _configManager.getVector2('audioButtons', 'buttonSize',
+        buttonConfig['layout']['buttonSize'], gameSize);
 
     for (int i = 0; i < _currentChoices.length; i++) {
       final choice = _currentChoices[i];
-      final buttonYI = buttonY + i * (buttonHeight + 20.0);
 
-      // Lấy button từ pool thay vì tạo mới
-      final audioButton = _audioButtonPool.get(
+      // Lấy button từ pool với index cụ thể
+      final audioButton = _audioButtonPool.getAtIndex(
+        index: i,
         text: choice['text'],
         audioFile: choice['audio'],
-        position: Vector2(startX, buttonYI),
         size: buttonSize,
         onDrop: _handleDrop,
         onTap: () => _resourceManager.playWordSound(choice['audio']),
@@ -380,14 +433,29 @@ class MultipleChoiceGame extends BaseGame {
 
   /// Tạo các ô drop
   void _createDropZones() {
-    final dropZone = DropZoneComponent(
-      id: 1,
-      position: Vector2(500.0 + 20.0, gameSize.y / 2 + 25.0),
-      size: Vector2(100.0, 100.0),
-    );
+    final dropConfig = _configManager.dropZoneConfig;
 
-    add(dropZone);
-    _dropZones.add(dropZone);
+    // Kiểm tra nếu drop zones được bật
+    if (dropConfig['enabled'] == true) {
+      final zones = dropConfig['zones'];
+
+      for (int i = 0; i < zones.length; i++) {
+        final zone = zones[i];
+        final position = _configManager.getVector2(
+            'dropZone_$i', 'position', zone['position'], gameSize);
+        final size = _configManager.getVector2(
+            'dropZone_$i', 'size', zone['size'], gameSize);
+
+        final dropZone = DropZoneComponent(
+          id: zone['id'],
+          position: position,
+          size: size,
+        );
+
+        add(dropZone);
+        _dropZones.add(dropZone);
+      }
+    }
   }
 
   /// Phát âm thanh từ vựng mục tiêu
@@ -432,8 +500,9 @@ class MultipleChoiceGame extends BaseGame {
 
   /// Phát âm thanh khi trả lời đúng
   void _playCorrectSound() {
-    _resourceManager
-        .playSoundEffect('../../assets/Multiple Choice/SFX đúng.mp3');
+    final soundConfig = _configManager.soundConfig;
+    final correctSound = soundConfig['effectSounds']['correct'];
+    _resourceManager.playSoundEffect(correctSound);
   }
 
   /// Thông báo khi trả lời đúng
@@ -485,8 +554,9 @@ class MultipleChoiceGame extends BaseGame {
 
   /// Phát âm thanh khi trả lời sai
   void _playWrongSound() {
-    _resourceManager
-        .playSoundEffect('../../assets/Multiple Choice/SFX sai.wav');
+    final soundConfig = _configManager.soundConfig;
+    final wrongSound = soundConfig['effectSounds']['wrong'];
+    _resourceManager.playSoundEffect(wrongSound);
   }
 
   /// Thông báo khi trả lời sai

@@ -6,12 +6,12 @@ import 'package:go_router/go_router.dart';
 class NavigationService {
   /// Navigate to the home screen
   static void navigateToHome(BuildContext context) {
-    GoRouter.of(context).goNamed('home');
+    GoRouter.of(context).go('/');
   }
 
   /// Navigate to the onboarding screen
   static void navigateToOnboarding(BuildContext context) {
-    GoRouter.of(context).goNamed('onboarding');
+    GoRouter.of(context).go('/onboarding');
   }
 
   /// Navigate to the stories list screen
@@ -21,8 +21,7 @@ class NavigationService {
 
   /// Navigate to a specific story reader screen
   static void navigateToStoryReader(BuildContext context, String storyId) {
-    GoRouter.of(context)
-        .goNamed('story_reader', pathParameters: {'id': storyId});
+    GoRouter.of(context).go('/story/$storyId');
   }
 
   /// Navigate to games for a specific story
@@ -32,17 +31,17 @@ class NavigationService {
 
   /// Navigate to the login screen
   static void navigateToLogin(BuildContext context) {
-    GoRouter.of(context).goNamed('login');
+    GoRouter.of(context).go('/auth/login');
   }
 
   /// Navigate to the signup screen
   static void navigateToSignup(BuildContext context) {
-    GoRouter.of(context).goNamed('signup');
+    GoRouter.of(context).go('/auth/signup');
   }
 
   /// Navigate to the parent dashboard
   static void navigateToParentDashboard(BuildContext context) {
-    GoRouter.of(context).goNamed('parent_dashboard');
+    GoRouter.of(context).go('/parent');
   }
 
   /// Navigate to the reports screen
@@ -53,6 +52,16 @@ class NavigationService {
   /// Navigate to the settings screen
   static void navigateToSettings(BuildContext context) {
     GoRouter.of(context).goNamed('settings');
+  }
+
+  /// Navigate to the game config editor
+  static void navigateToGameConfigEditor(BuildContext context,
+      {String? configPath}) {
+    if (configPath != null) {
+      GoRouter.of(context).go('/game-config?configPath=$configPath');
+    } else {
+      GoRouter.of(context).go('/game-config');
+    }
   }
 
   /// Navigate back to the previous screen

@@ -6,6 +6,7 @@ import 'package:flutter_learning/presentation/screens/story_reader/story_reader_
 import 'package:flutter_learning/games/games/feed_the_shark/feed_the_shark_screen.dart';
 import 'package:flutter_learning/games/games/multiple_choice /multiple_choice_game_screen.dart';
 import 'package:flutter_learning/presentation/screens/games/games_menu_screen.dart';
+import 'package:flutter_learning/presentation/screens/game_config/game_config_editor_screen.dart';
 
 /// Main router configuration for the Story Nighty Night app
 class AppRouter {
@@ -13,7 +14,7 @@ class AppRouter {
   static GoRouter get router => _router;
 
   static final _router = GoRouter(
-    initialLocation: '/onboarding',
+    initialLocation: '/game-config',
     debugLogDiagnostics: true,
     routes: [
       // Main app shell route
@@ -75,10 +76,21 @@ class AppRouter {
             name: 'feed_the_shark_direct',
             builder: (context, state) => const FeedTheSharkGameScreen(),
           ),
+
           GoRoute(
             path: 'multiple-choice',
             name: 'multiple_choice_direct',
             builder: (context, state) => const MultipleChoiceGameScreen(),
+          ),
+
+          // Game Config Editor
+          GoRoute(
+            path: 'game-config',
+            name: 'game_config_editor',
+            builder: (context, state) {
+              final configPath = state.uri.queryParameters['configPath'];
+              return GameConfigEditorScreen(configFilePath: configPath);
+            },
           ),
 
           // Authentication

@@ -145,7 +145,7 @@ class _GamesMenuScreenState extends State<GamesMenuScreen> {
     return InkWell(
       onTap: () {
         // Phát âm thanh khi chọn
-        AudioService().playSoundEffect('../../assets/audio/click.mp3');
+        // AudioService().playSoundEffect('../../assets/audio/click.mp3');
         onTap();
       },
       borderRadius: BorderRadius.circular(16),

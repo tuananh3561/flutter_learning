@@ -1,0 +1,292 @@
+{
+  "gameInfo": {
+    "name": "Multiple Choice",
+    "description": "Trò chơi nối từ vựng với hình ảnh thông qua âm thanh",
+    "version": "1.0.0"
+  },
+  "gameSettings": {
+    "requiredRounds": 5,
+    "numberOfChoices": 3,
+    "typeGame": "Drop",
+    "backgroundConfigPath": "assets/Multiple Choice/background_config.json",
+    "timeLimit": 0,
+    "scorePerCorrectAnswer": 10
+  },
+  "airplaneComponent": {
+    "skeletonFile": "assets/Multiple Choice/May bay/Multiple choice_v2.json",
+    "atlasFile": "assets/Multiple Choice/May bay/Multiple choice_v2_hdr.atlas.txt",
+    "defaultAnimation": "1.0 - Lap canh to [Phone]",
+    "position": {
+      "x": "gameSize.x / 2 + 30",
+      "y": "gameSize.y / 2 - 10"
+    },
+    "scale": {
+      "x": 0.18,
+      "y": 0.18
+    },
+    "animations": [
+      {
+        "name": "1.0 - Lap canh to [Phone]",
+        "duration": 3,
+        "loop": false,
+        "soundEffect": "../../assets/Multiple Choice/SFX_ghep_bo_phan.wav"
+      },
+      {
+        "name": "2.0 - Lap canh nho va duoi [Phone]",
+        "duration": 3,
+        "loop": false,
+        "soundEffect": "../../assets/Multiple Choice/SFX_ghep_bo_phan.wav"
+      },
+      {
+        "name": "3.0 - Lap canh quat [Phone]",
+        "duration": 3,
+        "loop": false,
+        "soundEffect": "../../assets/Multiple Choice/SFX_ghep_bo_phan.wav"
+      },
+      {
+        "name": "4.0 - Max len may bay [Phone]",
+        "duration": 5,
+        "loop": false,
+        "soundEffect": "../../assets/Multiple Choice/SFX Max nhảy lên máy bay.mp3"
+      }
+    ],
+    "roundAnimationMapping": {
+      "intro": "1.0 - Lap canh to [Phone]",
+      "round1": "1.0 - Lap canh to [Phone]",
+      "round2": "2.0 - Lap canh nho va duoi [Phone]",
+      "round3": "3.0 - Lap canh quat [Phone]",
+      "round4": "2.0 - Lap canh nho va duoi [Phone]",
+      "round5": "3.0 - Lap canh quat [Phone]",
+      "ending": "4.0 - Max len may bay [Phone]"
+    },
+    "endingAnimation": {
+      "sequence": [
+        {
+          "soundEffect": "../../assets/Multiple Choice/SFX tia sét.mp3",
+          "delay": 0.5
+        },
+        {
+          "soundEffect": "../../assets/Multiple Choice/SFX máy bay bay đi.mp3",
+          "delay": 1.0
+        },
+        {
+          "soundEffect": "../../assets/Multiple Choice/SFX yeah.mp3",
+          "delay": 1.0
+        }
+      ]
+    }
+  },
+  "questionConfig": {
+    "boxQuestion": {
+      "position": {
+        "x": 460.0,
+        "y": "gameSize.y / 2 - 180.0"
+      },
+      "size": {
+        "x": 220.0,
+        "y": 360.0
+      },
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 15.0
+    },
+    "targetImage": {
+      "type": "image",
+      "path": "../../assets/images/word/{text}.png",
+      "position": {
+        "x": 500.0,
+        "y": "gameSize.y / 2 - 150.0"
+      },
+      "size": {
+        "x": 150.0,
+        "y": 150.0
+      },
+      "borderColor": "#CCCCCC80",
+      "priority": 80,
+      "showTextOnCorrect": true,
+      "textStyle": {
+        "color": "#4CAF50",
+        "fontSize": 24,
+        "fontWeight": "bold"
+      }
+    }
+  },
+  "answerConfig": {
+    "audioButtons": {
+      "layout": {
+        "useIndividualPositions": true,
+        "startPosition": {
+          "x": 720.0,
+          "y": "gameSize.y / 2 - 170.0"
+        },
+        "buttonSize": {
+          "x": 100.0,
+          "y": 100.0
+        },
+        "spacing": 20.0,
+        "buttonPositions": [
+          {
+            "x": 720.0,
+            "y": "gameSize.y / 2 - 170.0"
+          },
+          {
+            "x": 720.0,
+            "y": "gameSize.y / 2"
+          },
+          {
+            "x": 720.0, 
+            "y": "gameSize.y / 2 + 170.0"
+          }
+        ]
+      },
+      "style": {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "#2196F3",
+        "borderWidth": 2.0,
+        "borderRadius": 15.0,
+        "correctColor": "#4CAF50",
+        "incorrectColor": "#F44336"
+      },
+      "iconSettings": {
+        "path": "../../assets/Multiple Choice/audio_icon.png",
+        "size": {
+          "x": 40.0,
+          "y": 40.0
+        },
+        "position": "center",
+        "animateOnHover": true
+      },
+      "soundEffects": {
+        "click": "../../assets/Multiple Choice/SFX click.wav",
+        "correct": "../../assets/Multiple Choice/SFX đúng.mp3",
+        "wrong": "../../assets/Multiple Choice/SFX sai.wav"
+      }
+    }
+  },
+  "dropZoneConfig": {
+    "enabled": true,
+    "zones": [
+      {
+        "id": 1,
+        "position": {
+          "x": 520.0,
+          "y": "gameSize.y / 2 + 25.0"
+        },
+        "size": {
+          "x": 100.0,
+          "y": 100.0
+        },
+        "style": {
+          "backgroundColor": "#E3F2FD50",
+          "borderColor": "#2196F3",
+          "borderRadius": 15.0,
+          "borderDashed": true
+        }
+      }
+    ]
+  },
+  "soundConfig": {
+    "backgroundMusic": "../../assets/Multiple Choice/background_music.mp3",
+    "effectSounds": {
+      "click": "../../assets/Multiple Choice/SFX click.wav",
+      "correct": "../../assets/Multiple Choice/SFX đúng.mp3",
+      "wrong": "../../assets/Multiple Choice/SFX sai.wav",
+      "match": "../../assets/Multiple Choice/SFX_ghep_bo_phan.wav",
+      "lightning": "../../assets/Multiple Choice/SFX tia sét.mp3",
+      "planeLeave": "../../assets/Multiple Choice/SFX máy bay bay đi.mp3",
+      "yeah": "../../assets/Multiple Choice/SFX yeah.mp3",
+      "maxJump": "../../assets/Multiple Choice/SFX Max nhảy lên máy bay.mp3"
+    },
+    "wordSounds": "../../assets/audio/word/{text}.mp3"
+  },
+  "ui": {
+    "progressBar": {
+      "position": {
+        "x": 20.0,
+        "y": 20.0
+      },
+      "size": {
+        "x": 200.0,
+        "y": 20.0
+      },
+      "backgroundColor": "#E0E0E0",
+      "fillColor": "#4CAF50",
+      "borderRadius": 10.0
+    },
+    "scoreDisplay": {
+      "position": {
+        "x": "gameSize.x - 100.0",
+        "y": 20.0
+      },
+      "textStyle": {
+        "color": "#333333",
+        "fontSize": 24,
+        "fontWeight": "bold"
+      }
+    },
+    "feedbackMessages": {
+      "correct": "Đúng rồi!",
+      "wrong": "Sai rồi, thử lại nhé!",
+      "complete": "Hoàn thành!"
+    }
+  },
+  "vocabulary": {
+    "source": "internal",
+    "data": [
+      {
+        "text": "bird",
+        "audio": "../../assets/audio/word/bird.mp3",
+        "image": "../../assets/images/word/bird.png"
+      },
+      {
+        "text": "cat",
+        "audio": "../../assets/audio/word/cat.mp3",
+        "image": "../../assets/images/word/cat.png"
+      },
+      {
+        "text": "dog",
+        "audio": "../../assets/audio/word/dog.mp3",
+        "image": "../../assets/images/word/dog.png"
+      },
+      {
+        "text": "duck",
+        "audio": "../../assets/audio/word/duck.mp3",
+        "image": "../../assets/images/word/duck.png"
+      },
+      {
+        "text": "pig",
+        "audio": "../../assets/audio/word/pig.mp3",
+        "image": "../../assets/images/word/pig.png"
+      },
+      {
+        "text": "cow",
+        "audio": "../../assets/audio/word/cow.mp3",
+        "image": "../../assets/images/word/cow.png"
+      },
+      {
+        "text": "sheep",
+        "audio": "../../assets/audio/word/sheep.mp3",
+        "image": "../../assets/images/word/sheep.png"
+      },
+      {
+        "text": "horse",
+        "audio": "../../assets/audio/word/horse.mp3",
+        "image": "../../assets/images/word/horse.png"
+      },
+      {
+        "text": "frog",
+        "audio": "../../assets/audio/word/frog.mp3",
+        "image": "../../assets/images/word/frog.png"
+      }
+    ]
+  },
+  "accessibility": {
+    "textToSpeech": true,
+    "highContrast": false,
+    "largeText": false
+  },
+  "analytics": {
+    "trackEvents": true,
+    "trackProgress": true,
+    "trackErrors": true
+  }
+} 

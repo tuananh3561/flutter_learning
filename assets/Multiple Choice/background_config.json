@@ -1,10 +1,83 @@
 {
   "background_color": "#87CEEB",
   "background_image": {
-    "image": "../../assets/Multiple Choice/background.png",
+    "image": "assets/Multiple Choice/backgrounds/blue_sky.png",
     "width": 1024,
-    "height": 576
+    "height": 576,
+    "fit": "cover"
   },
   "decoration": [
+    {
+      "id": "clouds_overlay",
+      "type": "image",
+      "image": "assets/Multiple Choice/backgrounds/clouds.png",
+      "scale": 1.0,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "x": "gameSize.x",
+        "y": "gameSize.y * 0.3"
+      },
+      "opacity": 0.7,
+      "parallax_factor": 0.2
+    },
+    {
+      "id": "mountains_overlay",
+      "type": "image",
+      "image": "assets/Multiple Choice/backgrounds/mountains.png",
+      "scale": 1.0,
+      "position": {
+        "x": 0,
+        "y": "gameSize.y * 0.7"
+      },
+      "size": {
+        "x": "gameSize.x",
+        "y": "gameSize.y * 0.3"
+      },
+      "opacity": 1.0,
+      "parallax_factor": 0.8
+    },
+    {
+      "id": "cloud_animation_1",
+      "type": "animation",
+      "animation_type": "Cloud",
+      "speed": 10,
+      "direction": "leftToRight",
+      "looping": true,
+      "auto_start": true,
+      "image": "assets/Multiple Choice/backgrounds/cloud1.png",
+      "scale": 1.0,
+      "position": {
+        "x": -100,
+        "y": 50
+      },
+      "size": {
+        "x": 120,
+        "y": 80
+      },
+      "rotation": 0
+    },
+    {
+      "id": "cloud_animation_2",
+      "type": "animation",
+      "animation_type": "Cloud",
+      "speed": 10,
+      "direction": "leftToRight",
+      "looping": true,
+      "auto_start": true,
+      "image": "assets/Multiple Choice/backgrounds/cloud2.png",
+      "scale": 1.0,
+      "position": {
+        "x": -200,
+        "y": 120
+      },
+      "size": {
+        "x": 150,
+        "y": 100
+      },
+      "rotation": 0
+    }
   ]
-} 
+}

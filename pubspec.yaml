@@ -20,6 +20,7 @@ dependencies:
   lottie: ^2.3.2                # Animation support
   flutter_screenutil: ^5.7.0    # Responsive UI
   cupertino_icons: ^1.0.2
+  flutter_colorpicker: ^1.0.3   # Color picker for game config editor
 
   # State Management
   flutter_bloc: ^8.1.4          # BLoC pattern implementation
@@ -62,6 +63,9 @@ dependencies:
   dartz: ^0.10.1
   provider: ^6.1.2
   page_flip: ^0.2.1
+
+  file_picker: ^5.0.0
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:
@@ -135,6 +139,9 @@ flutter:
     - assets/Multiple Choice/
     - assets/Multiple Choice/May bay/
     - assets/Multiple Choice/Max len may bay/
+    - assets/Multiple Choice/game_config.json
+    - assets/Multiple Choice/background_config.json
+    - assets/Multiple Choice/backgrounds/
     
     # Audio assets
     - assets/audio/

@@ -1,7 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import 'audio_button_component.dart';
+import 'rounded_rect_border_painter_component.dart';
+import 'rounded_rect_painter_component.dart';
 
 /// Component hiển thị hình ảnh và từ vựng
 class ImageCardComponent extends PositionComponent {

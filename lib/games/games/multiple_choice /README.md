@@ -95,7 +95,7 @@
 *   **Âm thanh:**
     *   `assets/Multiple Choice/SFX click.wav`: SFX click.
     *   `assets/Multiple Choice/SFX đúng.mp3`: SFX đúng.
-    *   `assets/Multiple Choice/SFX ghép bộ phận.wav`: SFX ghép các bộ phân máy bay.
+    *   `assets/Multiple Choice/SFX_ghep_bo_phan.wav`: SFX ghép các bộ phân máy bay.
     *   `assets/Multiple Choice/SFX Max nhảy lên máy bay.mp3`: SFX max nhảy lên máy bay.
     *   `assets/Multiple Choice/SFX máy bay bay đi.mp3`: SFX máy bay bay đi.
     *   `assets/Multiple Choice/SFX popup.mp3`: SFX popup.

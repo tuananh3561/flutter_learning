@@ -92,6 +92,16 @@ class HomeScreen extends StatelessWidget {
               // TODO: Implement categories functionality
             },
           ),
+          SizedBox(width: 16.w),
+          _buildActionButton(
+            'Config Editor',
+            Icons.settings,
+            const Color(0xFFFFAA00),
+            () {
+              // Navigate to the game config editor
+              NavigationService.navigateToGameConfigEditor(context);
+            },
+          ),
           const Spacer(),
           Container(
             decoration: BoxDecoration(

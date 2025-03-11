@@ -315,7 +315,7 @@ class ResourceManager {
         '../../assets/Multiple Choice/SFX click.wav',
         '../../assets/Multiple Choice/SFX đúng.mp3',
         '../../assets/Multiple Choice/SFX sai.wav',
-        '../../assets/Multiple Choice/SFX ghép bộ phận.wav',
+        '../../assets/Multiple Choice/SFX_ghep_bo_phan.wav',
         '../../assets/Multiple Choice/SFX Max nhảy lên máy bay.mp3',
         '../../assets/Multiple Choice/SFX máy bay bay đi.mp3',
         '../../assets/Multiple Choice/SFX tia sét.mp3',
