@@ -4,7 +4,6 @@ import '../../domain/repositories/story_repository.dart';
 import '../../core/errors/failures.dart';
 import '../../core/errors/exceptions.dart';
 import '../../core/network/api_client.dart';
-import '../models/story_model.dart';
 import '../datasources/local/story_local_datasource.dart';
 import '../datasources/remote/story_remote_datasource.dart';
 

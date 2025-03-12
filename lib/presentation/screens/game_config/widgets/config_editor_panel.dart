@@ -7,6 +7,7 @@ import 'sections/sound_section.dart';
 import 'sections/vocabulary_section.dart';
 import 'sections/background_section.dart';
 import 'sections/anim_spine_section.dart';
+import 'sections/asset_manager_section.dart';
 import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
 
 /// Widget to edit the game configuration
@@ -238,11 +239,12 @@ class _ConfigEditorPanelState extends State<ConfigEditorPanel>
               SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: VocabularySection(
-                    vocabularyConfig: _editedData['vocabulary'],
-                    onVocabularyConfigChanged: (data) =>
-                        _updateSectionWithRefresh('vocabulary', data),
-                  ),
+                  // child: VocabularySection(
+                  //   vocabularyConfig: _editedData['vocabulary'],
+                  //   onVocabularyConfigChanged: (data) =>
+                  //       _updateSectionWithRefresh('vocabulary', data),
+                  // ),
+                  child: AssetManagerSection(),
                 ),
               ),
             ],

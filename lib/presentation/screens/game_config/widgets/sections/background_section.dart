@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../config_editor_panel.dart';
 import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
+import 'package:flutter_learning/presentation/screens/game_config/utils/color_utils.dart';
 
 /// Widget để cấu hình hình nền
 class BackgroundSection extends StatefulWidget {
@@ -363,7 +364,7 @@ class _BackgroundSectionState extends State<BackgroundSection> {
               // Background Color
               ColorPickerField(
                 label: 'Màu background',
-                color: _getColorFromConfig(
+                color: ColorUtils.fromHex(
                     _loadedBackgroundConfig['background_color'] ?? '#87CEEB'),
                 onColorChanged: (color) {
                   setState(() {
@@ -808,7 +809,7 @@ class ColorPickerField extends StatelessWidget {
             child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
           ),
           GestureDetector(
-            onTap: () => ColorPickerDialog.show(
+            onTap: () => ColorPickerDialog.showBlockPicker(
               context,
               color,
               (newColor) => onColorChanged(newColor),

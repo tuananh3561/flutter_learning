@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import '../config_editor_panel.dart';
 import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
+import 'package:flutter_learning/presentation/screens/game_config/utils/color_utils.dart';
 
 /// Widget để cấu hình câu hỏi trong game
 class QuestionSection extends StatefulWidget {
@@ -106,7 +107,7 @@ class _QuestionSectionState extends State<QuestionSection> {
         if (boxQuestion.containsKey('backgroundColor')) {
           final colorStr = boxQuestion['backgroundColor'] as String;
           if (colorStr.startsWith('#')) {
-            _boxBackgroundColor = _colorFromHex(colorStr);
+            _boxBackgroundColor = ColorUtils.fromHex(colorStr);
           }
         }
 
@@ -149,7 +150,7 @@ class _QuestionSectionState extends State<QuestionSection> {
         if (targetImage.containsKey('borderColor')) {
           final colorStr = targetImage['borderColor'] as String;
           if (colorStr.startsWith('#')) {
-            _targetBorderColor = _colorFromHex(colorStr);
+            _targetBorderColor = ColorUtils.fromHex(colorStr);
           }
         }
 
@@ -170,7 +171,7 @@ class _QuestionSectionState extends State<QuestionSection> {
           if (textStyle.containsKey('color')) {
             final colorStr = textStyle['color'] as String;
             if (colorStr.startsWith('#')) {
-              _textColor = _colorFromHex(colorStr);
+              _textColor = ColorUtils.fromHex(colorStr);
             }
           }
 
@@ -202,29 +203,6 @@ class _QuestionSectionState extends State<QuestionSection> {
     }
   }
 
-  // Chuyển đổi từ màu hex sang Color
-  Color _colorFromHex(String hexString) {
-    final buffer = StringBuffer();
-    if (hexString.length == 7 || hexString.length == 9) {
-      buffer.write('ff');
-      buffer.write(hexString.replaceFirst('#', ''));
-      return Color(int.parse(buffer.toString(), radix: 16));
-    } else if (hexString.length == 8) {
-      buffer.write(hexString.replaceFirst('#', ''));
-      return Color(int.parse(buffer.toString(), radix: 16));
-    }
-    return Colors.black;
-  }
-
-  // Chuyển đổi từ Color sang hex string
-  String _colorToHex(Color color, {bool withAlpha = true}) {
-    if (withAlpha) {
-      return '#${color.value.toRadixString(16).padLeft(8, '0')}';
-    } else {
-      return '#${color.value.toRadixString(16).substring(2).padLeft(6, '0')}';
-    }
-  }
-
   void _updateQuestionConfig() {
     // Xây dựng cấu hình boxQuestion
     final boxQuestion = {
@@ -238,7 +216,7 @@ class _QuestionSectionState extends State<QuestionSection> {
         'x': double.tryParse(_boxSizeXController.text) ?? 220.0,
         'y': double.tryParse(_boxSizeYController.text) ?? 360.0,
       },
-      'backgroundColor': _colorToHex(_boxBackgroundColor),
+      'backgroundColor': ColorUtils.toHex(_boxBackgroundColor),
       'borderRadius': double.tryParse(_boxBorderRadiusController.text) ?? 15.0,
     };
 
@@ -256,11 +234,11 @@ class _QuestionSectionState extends State<QuestionSection> {
         'x': double.tryParse(_targetSizeXController.text) ?? 150.0,
         'y': double.tryParse(_targetSizeYController.text) ?? 150.0,
       },
-      'borderColor': _colorToHex(_targetBorderColor),
+      'borderColor': ColorUtils.toHex(_targetBorderColor),
       'priority': int.tryParse(_targetPriorityController.text) ?? 80,
       'showTextOnCorrect': _showTextOnCorrect,
       'textStyle': {
-        'color': _colorToHex(_textColor),
+        'color': ColorUtils.toHex(_textColor),
         'fontSize': int.tryParse(_textFontSizeController.text) ?? 24,
         'fontWeight': _textFontWeight,
       },

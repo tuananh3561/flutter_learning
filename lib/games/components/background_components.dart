@@ -165,7 +165,7 @@ class BackgroundComponents extends PositionComponent {
 
     try {
       // Create spine component
-      final spineComponent = await SpineComponent.fromAssets(
+      final spineComponent = await SpineComponent.fromHttps(
         atlasFile: config.atlas!,
         skeletonFile: config.skeleton!,
         scale: Vector2.all(config.scale ?? 0.1),

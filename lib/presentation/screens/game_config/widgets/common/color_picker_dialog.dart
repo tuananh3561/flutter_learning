@@ -1,50 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-/// Tiện ích đa dụng để chọn màu sắc với dialog
-/// Được thiết kế để tái sử dụng trong các section khác nhau của GameConfigEditor
+/// Dialog hiển thị bộ chọn màu sắc
 class ColorPickerDialog {
-  /// Hiển thị dialog chọn màu và trả về màu đã chọn thông qua callback
+  /// Hiển thị dialog chọn màu sắc
   ///
-  /// [context] - BuildContext để hiển thị dialog
-  /// [initialColor] - Màu ban đầu được chọn
-  /// [onColorChanged] - Callback được gọi khi người dùng chọn một màu
-  /// [title] - Tiêu đề của dialog, mặc định là 'Chọn màu'
-  /// [showOpacitySelector] - Có hiển thị thanh chọn độ trong suốt hay không
-  /// [width] - Chiều rộng của color picker (nếu null, sẽ tự điều chỉnh)
-  /// [height] - Chiều cao của color picker (nếu null, sẽ tự điều chỉnh)
+  /// [context] Context để hiển thị dialog
+  /// [initialColor] Màu ban đầu
+  /// [onColorChanged] Callback khi màu được chọn
   static Future<void> show(
     BuildContext context,
     Color initialColor,
-    Function(Color) onColorChanged, {
-    String title = 'Chọn màu',
-    bool showOpacitySelector = false,
-    double? width,
-    double? height,
-  }) async {
-    final result = await showDialog<Color>(
+    Function(Color) onColorChanged,
+  ) async {
+    Color pickerColor = initialColor;
+
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
-        Color selectedColor = initialColor;
         return AlertDialog(
-          title: Text(title),
+          title: const Text('Chọn màu'),
           content: SingleChildScrollView(
-            child: SizedBox(
-              width: width,
-              height: height,
-              child: ColorPicker(
-                pickerColor: initialColor,
-                onColorChanged: (color) {
-                  selectedColor = color;
-                },
-                pickerAreaHeightPercent: 0.8,
-                enableAlpha: showOpacitySelector,
-                labelTypes: const [
-                  ColorLabelType.rgb,
-                  ColorLabelType.hex,
-                ],
-                displayThumbColor: true,
-              ),
+            child: ColorPicker(
+              pickerColor: pickerColor,
+              onColorChanged: (Color color) {
+                pickerColor = color;
+              },
+              pickerAreaHeightPercent: 0.8,
+              enableAlpha: true,
+              displayThumbColor: true,
+              paletteType: PaletteType.hsv,
+              showLabel: true,
+              pickerAreaBorderRadius:
+                  const BorderRadius.all(Radius.circular(10)),
             ),
           ),
           actions: <Widget>[
@@ -54,20 +42,17 @@ class ColorPickerDialog {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
+            ElevatedButton(
               child: const Text('Chọn'),
               onPressed: () {
-                Navigator.of(context).pop(selectedColor);
+                onColorChanged(pickerColor);
+                Navigator.of(context).pop();
               },
             ),
           ],
         );
       },
     );
-
-    if (result != null) {
-      onColorChanged(result);
-    }
   }
 
   /// Hiển thị dialog chọn màu đơn giản với chỉ các màu cơ bản

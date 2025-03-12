@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import '../config_editor_panel.dart';
 import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
+import 'package:flutter_learning/presentation/screens/game_config/utils/color_utils.dart';
 
 /// Widget để cấu hình câu trả lời trong game
 class AnswerSection extends StatefulWidget {
@@ -136,14 +137,14 @@ class _AnswerSectionState extends State<AnswerSection> {
           if (style.containsKey('backgroundColor')) {
             final colorStr = style['backgroundColor'] as String;
             if (colorStr.startsWith('#')) {
-              _backgroundColor = _colorFromHex(colorStr);
+              _backgroundColor = ColorUtils.fromHex(colorStr);
             }
           }
 
           if (style.containsKey('borderColor')) {
             final colorStr = style['borderColor'] as String;
             if (colorStr.startsWith('#')) {
-              _borderColor = _colorFromHex(colorStr);
+              _borderColor = ColorUtils.fromHex(colorStr);
             }
           }
 
@@ -158,14 +159,14 @@ class _AnswerSectionState extends State<AnswerSection> {
           if (style.containsKey('correctColor')) {
             final colorStr = style['correctColor'] as String;
             if (colorStr.startsWith('#')) {
-              _correctColor = _colorFromHex(colorStr);
+              _correctColor = ColorUtils.fromHex(colorStr);
             }
           }
 
           if (style.containsKey('incorrectColor')) {
             final colorStr = style['incorrectColor'] as String;
             if (colorStr.startsWith('#')) {
-              _incorrectColor = _colorFromHex(colorStr);
+              _incorrectColor = ColorUtils.fromHex(colorStr);
             }
           }
         }
