@@ -1,10 +1,11 @@
-/// Asset Repository Implementation - Thực thi interface repository cho Asset
-/// Cung cấp các phương thức để thao tác với assets
+/// Asset Repository Implementation
+/// Triển khai repository cho asset management, sử dụng AssetLocalDataSource
 
 import 'dart:io';
-import 'package:flutter_learning/data/datasources/local/asset_local_datasource.dart';
-import 'package:flutter_learning/data/models/asset_model.dart';
-import 'package:flutter_learning/domain/repositories/asset_repository.dart';
+import 'dart:typed_data';
+import '../datasources/local/asset_local_datasource.dart';
+import '../../domain/repositories/asset_repository.dart';
+import '../models/asset_model.dart';
 
 class AssetRepositoryImpl implements AssetRepository {
   final AssetLocalDataSource _localDataSource;
@@ -12,7 +13,7 @@ class AssetRepositoryImpl implements AssetRepository {
   AssetRepositoryImpl(this._localDataSource);
 
   @override
-  Future<void> initialize() async {
+  Future<void> init() async {
     await _localDataSource.init();
   }
 
@@ -37,41 +38,57 @@ class AssetRepositoryImpl implements AssetRepository {
   }
 
   @override
-  Future<void> deleteAsset(String id) async {
-    await _localDataSource.deleteAsset(id);
+  Future<AssetModel?> uploadSpineAsset(List<File> files,
+      {String? customName}) async {
+    return _localDataSource.uploadSpineAsset(files, customName: customName);
+  }
+
+  @override
+  Future<AssetModel?> uploadSpineAssetWeb(Map<String, Uint8List> files,
+      {String? customName}) async {
+    return _localDataSource.uploadSpineAssetWeb(files, customName: customName);
+  }
+
+  @override
+  Future<AssetModel?> uploadAudioAsset(File file,
+      {String? customName, bool isMusic = false}) async {
+    return _localDataSource.uploadAudioAsset(file,
+        customName: customName, isMusic: isMusic);
+  }
+
+  @override
+  Future<AssetModel?> uploadAudioAssetWeb(Uint8List bytes, String fileName,
+      {String? customName, bool isMusic = false}) async {
+    return _localDataSource.uploadAudioAssetWeb(bytes, fileName,
+        customName: customName, isMusic: isMusic);
+  }
+
+  @override
+  Future<AssetModel?> uploadImageAsset(File file,
+      {String? customName, Map<String, dynamic>? dimensions}) async {
+    return _localDataSource.uploadImageAsset(file,
+        customName: customName, dimensions: dimensions);
+  }
+
+  @override
+  Future<AssetModel?> uploadImageAssetWeb(Uint8List bytes, String fileName,
+      {String? customName, Map<String, dynamic>? dimensions}) async {
+    return _localDataSource.uploadImageAssetWeb(bytes, fileName,
+        customName: customName, dimensions: dimensions);
+  }
+
+  @override
+  Future<bool> deleteAsset(String id) async {
+    try {
+      await _localDataSource.deleteAsset(id);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   @override
   Future<List<AssetModel>> scanAllAssets() async {
-    return await _localDataSource.scanAllAssets();
-  }
-
-  @override
-  Future<AssetModel?> uploadSpineAsset(List<File> files, String targetDir,
-      {String? customName}) async {
-    return await _localDataSource.uploadSpineAsset(files, targetDir,
-        customName: customName);
-  }
-
-  @override
-  Future<AssetModel?> uploadAudioAsset(File file, String targetDir,
-      {String? customName, bool isMusic = false}) async {
-    return await _localDataSource.uploadAudioAsset(
-      file,
-      targetDir,
-      customName: customName,
-      isMusic: isMusic,
-    );
-  }
-
-  @override
-  Future<AssetModel?> uploadImageAsset(File file, String targetDir,
-      {String? customName, Map<String, dynamic>? dimensions}) async {
-    return await _localDataSource.uploadImageAsset(
-      file,
-      targetDir,
-      customName: customName,
-      dimensions: dimensions,
-    );
+    return _localDataSource.scanAllAssets();
   }
 }

@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_learning/data/models/asset_model.dart';
+import 'package:flutter_learning/domain/repositories/asset_repository.dart';
+import 'package:flutter_learning/presentation/screens/game_config/widgets/sections/sound_section/index.dart';
+import 'package:provider/provider.dart';
 
 /// Widget để cấu hình âm thanh trong game
 class SoundSection extends StatefulWidget {
@@ -28,13 +32,12 @@ class _SoundSectionState extends State<SoundSection> {
 
   // Background music settings
   bool _bgmEnabled = true;
-  final TextEditingController _bgmPathController = TextEditingController();
+  String _bgmPath = '';
   double _bgmVolume = 1.0;
   bool _bgmLoop = true;
   double _bgmFadeInDuration = 2.0;
   double _bgmFadeOutDuration = 2.0;
   int _selectedBgmPreset = 0;
-  bool _showBgmInfo = false;
   bool _randomizePlaylist = false;
 
   // Danh sách preset nhạc nền
@@ -49,18 +52,14 @@ class _SoundSectionState extends State<SoundSection> {
   // Sound effects list
   List<Map<String, dynamic>> _soundEffects = [];
 
-  // Current editing sound effect state
-  int _currentEditingIndex = -1;
-  final TextEditingController _effectNameController = TextEditingController();
-  final TextEditingController _effectPathController = TextEditingController();
-  double _effectVolume = 1.0;
-  bool _effectLoop = false;
-
   // Word sounds settings
   bool _wordSoundsEnabled = true;
-  final TextEditingController _wordSoundPathTemplateController =
-      TextEditingController();
+  String _wordSoundPathTemplate = '';
   double _wordSoundVolume = 1.0;
+
+  // Asset Manager
+  AssetModel? _selectedBgmAsset;
+  List<AssetModel?> _soundEffectAssets = [];
 
   @override
   void initState() {
@@ -73,104 +72,90 @@ class _SoundSectionState extends State<SoundSection> {
 
   @override
   void dispose() {
-    _bgmPathController.dispose();
-    _effectNameController.dispose();
-    _effectPathController.dispose();
-    _wordSoundPathTemplateController.dispose();
     super.dispose();
   }
 
-  void _loadSoundConfig() {
+  /// Tải cấu hình âm thanh từ props
+  Future<void> _loadSoundConfig() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
-      _currentSoundConfig = Map<String, dynamic>.from(widget.soundConfig);
     });
 
     try {
-      // Parse global settings
-      if (_currentSoundConfig.containsKey('enabled')) {
-        _soundEnabled = _currentSoundConfig['enabled'];
+      if (widget.soundConfig.isEmpty) {
+        _isLoading = false;
+        return;
       }
 
-      if (_currentSoundConfig.containsKey('masterVolume')) {
-        _masterVolume = _currentSoundConfig['masterVolume'].toDouble();
+      // Tải cài đặt chung
+      _soundEnabled = widget.soundConfig['enabled'] ?? true;
+      _masterVolume = widget.soundConfig['masterVolume']?.toDouble() ?? 1.0;
+
+      // Tải cài đặt nhạc nền
+      final bgmData = widget.soundConfig['backgroundMusic'];
+      if (bgmData is String) {
+        // Nếu backgroundMusic là string (định dạng cũ), coi như đó là đường dẫn
+        _bgmPath = bgmData;
+      } else {
+        // Nếu là Map hoặc null
+        final bgm = bgmData as Map<String, dynamic>? ?? {};
+        _bgmEnabled = bgm['enabled'] ?? true;
+        _bgmPath = bgm['path'] ?? '';
+        _bgmVolume = bgm['volume']?.toDouble() ?? 1.0;
+        _bgmLoop = bgm['loop'] ?? true;
+        _bgmFadeInDuration = bgm['fadeInDuration']?.toDouble() ?? 2.0;
+        _bgmFadeOutDuration = bgm['fadeOutDuration']?.toDouble() ?? 2.0;
+        _randomizePlaylist = bgm['randomizePlaylist'] ?? false;
       }
 
-      // Parse background music settings
-      if (_currentSoundConfig.containsKey('backgroundMusic')) {
-        final bgm = _currentSoundConfig['backgroundMusic'];
-
-        // Xử lý trường hợp bgm là chuỗi đường dẫn (định dạng cũ)
-        if (bgm is String) {
-          _bgmPathController.text = bgm;
-          _checkAndSetBgmPreset(bgm);
-        }
-        // Xử lý trường hợp bgm là Map (định dạng mới)
-        else if (bgm is Map) {
-          if (bgm.containsKey('enabled')) {
-            _bgmEnabled = bgm['enabled'];
-          }
-          if (bgm.containsKey('path')) {
-            _bgmPathController.text = bgm['path'];
-            _checkAndSetBgmPreset(bgm['path']);
-          }
-          if (bgm.containsKey('volume')) {
-            _bgmVolume = bgm['volume'].toDouble();
-          }
-          if (bgm.containsKey('loop')) {
-            _bgmLoop = bgm['loop'];
-          }
-          if (bgm.containsKey('fadeInDuration')) {
-            _bgmFadeInDuration = bgm['fadeInDuration'].toDouble();
-          }
-          if (bgm.containsKey('fadeOutDuration')) {
-            _bgmFadeOutDuration = bgm['fadeOutDuration'].toDouble();
-          }
-          if (bgm.containsKey('randomizePlaylist')) {
-            _randomizePlaylist = bgm['randomizePlaylist'];
-          }
-        }
+      // Kiểm tra và thiết lập preset dựa trên đường dẫn
+      int presetIndex =
+          _bgmPresets.indexWhere((preset) => preset['path'] == _bgmPath);
+      if (presetIndex > 0) {
+        _selectedBgmPreset = presetIndex;
+      } else {
+        _selectedBgmPreset = 0; // Tùy chỉnh
       }
 
-      // Parse sound effects
-      if (_currentSoundConfig.containsKey('soundEffects')) {
-        final effects = _currentSoundConfig['soundEffects'];
-        if (effects is List) {
-          _soundEffects = List<Map<String, dynamic>>.from(effects);
-        } else {
-          _soundEffects = [];
-        }
+      // Tải hiệu ứng âm thanh
+      final effectsData = widget.soundConfig['soundEffects'];
+      if (effectsData is List) {
+        _soundEffects = effectsData
+            .where((e) => e is Map)
+            .map((e) => Map<String, dynamic>.from(e as Map))
+            .toList();
       } else {
         _soundEffects = [];
       }
 
-      // Parse word sounds settings
-      if (_currentSoundConfig.containsKey('wordSounds')) {
-        final wordSounds = _currentSoundConfig['wordSounds'];
-        if (wordSounds is Map) {
-          if (wordSounds.containsKey('enabled')) {
-            _wordSoundsEnabled = wordSounds['enabled'];
-          }
-          if (wordSounds.containsKey('pathTemplate')) {
-            _wordSoundPathTemplateController.text = wordSounds['pathTemplate'];
-          }
-          if (wordSounds.containsKey('volume')) {
-            _wordSoundVolume = wordSounds['volume'].toDouble();
-          }
-        } else if (wordSounds is String) {
-          // Nếu wordSounds là chuỗi, giả sử đó là template path
-          _wordSoundPathTemplateController.text = wordSounds;
-        }
+      // Tải cài đặt âm thanh từ vựng
+      final wordSoundsData = widget.soundConfig['wordSounds'];
+      if (wordSoundsData is String) {
+        // Nếu wordSounds là chuỗi, giả sử đó là template path
+        _wordSoundPathTemplate = wordSoundsData;
+        _wordSoundsEnabled = true;
+        _wordSoundVolume = 1.0;
+      } else if (wordSoundsData is Map) {
+        // Nếu wordSounds là Map
+        final wordSounds = wordSoundsData as Map<String, dynamic>;
+        _wordSoundsEnabled = wordSounds['enabled'] ?? true;
+        _wordSoundPathTemplate = wordSounds['pathTemplate'] ?? '';
+        _wordSoundVolume = wordSounds['volume']?.toDouble() ?? 1.0;
+      } else {
+        // Mặc định nếu không có dữ liệu
+        _wordSoundsEnabled = true;
+        _wordSoundPathTemplate = '';
+        _wordSoundVolume = 1.0;
       }
-
-      // Reset editing form
-      _resetEditingForm();
 
       // Update UI
       setState(() {
         _isLoading = false;
       });
+
+      // Tải các asset từ đường dẫn
+      _loadAssetsFromPaths();
 
       // Cập nhật cấu hình sau khi frame hiện tại được render xong
       SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -185,14 +170,6 @@ class _SoundSectionState extends State<SoundSection> {
     }
   }
 
-  void _resetEditingForm() {
-    _effectNameController.text = '';
-    _effectPathController.text = '';
-    _effectVolume = 1.0;
-    _effectLoop = false;
-    _currentEditingIndex = -1;
-  }
-
   void _updateSoundConfig() {
     try {
       // Tạo cấu hình mới
@@ -201,7 +178,7 @@ class _SoundSectionState extends State<SoundSection> {
         'masterVolume': _masterVolume,
         'backgroundMusic': {
           'enabled': _bgmEnabled,
-          'path': _bgmPathController.text,
+          'path': _bgmPath,
           'volume': _bgmVolume,
           'loop': _bgmLoop,
           'fadeInDuration': _bgmFadeInDuration,
@@ -211,7 +188,7 @@ class _SoundSectionState extends State<SoundSection> {
         'soundEffects': _soundEffects,
         'wordSounds': {
           'enabled': _wordSoundsEnabled,
-          'pathTemplate': _wordSoundPathTemplateController.text,
+          'pathTemplate': _wordSoundPathTemplate,
           'volume': _wordSoundVolume,
         },
       };
@@ -226,187 +203,79 @@ class _SoundSectionState extends State<SoundSection> {
     }
   }
 
-  // Kiểm tra và thiết lập preset dựa trên đường dẫn
-  void _checkAndSetBgmPreset(String path) {
-    int presetIndex =
-        _bgmPresets.indexWhere((preset) => preset['path'] == path);
-    if (presetIndex > 0) {
-      _selectedBgmPreset = presetIndex;
-    } else {
-      _selectedBgmPreset = 0; // Tùy chỉnh
-    }
-  }
+  /// Tải các asset đã lưu từ đường dẫn
+  Future<void> _loadAssetsFromPaths() async {
+    try {
+      if (_currentSoundConfig.isEmpty) return;
 
-  // Áp dụng preset được chọn
-  void _applySelectedPreset() {
-    if (_selectedBgmPreset > 0) {
-      _bgmPathController.text = _bgmPresets[_selectedBgmPreset]['path'];
-      _updateSoundConfig();
-    }
-  }
+      final assetRepository =
+          Provider.of<AssetRepository>(context, listen: false);
+      final audioAssets =
+          await assetRepository.getAssetsByType(AssetType.audio);
 
-  // Trích xuất thông tin file nhạc (giả lập)
-  Map<String, String> _extractBgmFileInfo() {
-    final path = _bgmPathController.text;
-    if (path.isEmpty) {
-      return {
-        'fileName': 'Chưa chọn tệp',
-        'fileSize': 'N/A',
-        'duration': 'N/A',
-        'format': 'N/A',
-      };
-    }
-
-    // Giả lập thông tin file
-    final fileName = path.split('/').last;
-    final fileExt = fileName.split('.').last.toLowerCase();
-    String format;
-    switch (fileExt) {
-      case 'mp3':
-        format = 'MPEG Audio Layer III';
-        break;
-      case 'wav':
-        format = 'Waveform Audio';
-        break;
-      case 'ogg':
-        format = 'Ogg Vorbis';
-        break;
-      default:
-        format = fileExt.toUpperCase();
-    }
-
-    return {
-      'fileName': fileName,
-      'fileSize': '${(2 + fileName.length * 0.3).toStringAsFixed(2)}MB',
-      'duration': '${(30 + fileName.length * 2).toStringAsFixed(0)}s',
-      'format': format,
-    };
-  }
-
-  // Bắt đầu chỉnh sửa một sound effect
-  void _startEditingSoundEffect(int index) {
-    if (index < 0 || index >= _soundEffects.length) return;
-
-    final effect = _soundEffects[index];
-
-    setState(() {
-      _currentEditingIndex = index;
-      _effectNameController.text = effect['name'] ?? '';
-      _effectPathController.text = effect['path'] ?? '';
-      _effectVolume = effect['volume']?.toDouble() ?? 1.0;
-      _effectLoop = effect['loop'] ?? false;
-    });
-  }
-
-  // Lưu thông tin sound effect đang chỉnh sửa
-  void _saveEditingSoundEffect() {
-    if (_effectNameController.text.isEmpty ||
-        _effectPathController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Tên và đường dẫn không được để trống'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    final effect = {
-      'name': _effectNameController.text,
-      'path': _effectPathController.text,
-      'volume': _effectVolume,
-      'loop': _effectLoop,
-    };
-
-    setState(() {
-      if (_currentEditingIndex >= 0 &&
-          _currentEditingIndex < _soundEffects.length) {
-        // Cập nhật effect đã tồn tại
-        _soundEffects[_currentEditingIndex] = effect;
-      } else {
-        // Thêm effect mới
-        _soundEffects.add(effect);
+      // Tải nhạc nền
+      if (_bgmPath.isNotEmpty) {
+        for (var asset in audioAssets) {
+          if ((asset.url ?? '') == _bgmPath || asset.path == _bgmPath) {
+            _selectedBgmAsset = asset;
+            break;
+          }
+        }
       }
 
-      // Reset form
-      _resetEditingForm();
+      // Tải sound effects
+      _soundEffectAssets = List.filled(_soundEffects.length, null);
+      for (int i = 0; i < _soundEffects.length; i++) {
+        final effectPath = _soundEffects[i]['path'] as String? ?? '';
+        if (effectPath.isNotEmpty) {
+          for (var asset in audioAssets) {
+            if ((asset.url ?? '') == effectPath || asset.path == effectPath) {
+              _soundEffectAssets[i] = asset;
+              break;
+            }
+          }
+        }
+      }
 
+      if (mounted) {
+        setState(() {}); // Cập nhật UI với các asset đã tìm thấy
+      }
+    } catch (e) {
+      print('Không thể tải assets từ đường dẫn: $e');
+    }
+  }
+
+  // Handlers for sound effect operations
+  void _handleEffectUpdated(
+      Map<String, dynamic> effect, AssetModel? asset, int index) {
+    setState(() {
+      if (index >= 0 && index < _soundEffects.length) {
+        // Cập nhật effect đã tồn tại
+        _soundEffects[index] = effect;
+        _soundEffectAssets[index] = asset;
+      }
       // Cập nhật cấu hình
       _updateSoundConfig();
     });
   }
 
-  // Xóa một sound effect
-  void _deleteSoundEffect(int index) {
-    if (index < 0 || index >= _soundEffects.length) return;
-
+  void _handleEffectDeleted(int index) {
     setState(() {
       _soundEffects.removeAt(index);
-
-      // Nếu đang chỉnh sửa effect bị xóa, reset form
-      if (_currentEditingIndex == index) {
-        _resetEditingForm();
-      }
-      // Nếu đang chỉnh sửa effect sau effect bị xóa, cập nhật index
-      else if (_currentEditingIndex > index) {
-        _currentEditingIndex--;
-      }
-
+      _soundEffectAssets.removeAt(index);
       // Cập nhật cấu hình
       _updateSoundConfig();
     });
   }
 
-  // Hiển thị file picker giả lập
-  Future<void> _showFilePickerDialog(BuildContext context, String title,
-      TextEditingController controller) async {
-    final result = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        final TextEditingController dialogController =
-            TextEditingController(text: controller.text);
-        return AlertDialog(
-          title: Text(title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Nhập đường dẫn tới tệp âm thanh:'),
-              const SizedBox(height: 8),
-              TextField(
-                controller: dialogController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'assets/sounds/example.mp3',
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Ghi chú: Đây là một file picker giả lập. Trong ứng dụng thực tế, bạn sẽ có thể chọn tệp từ máy tính.',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Hủy'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Chọn'),
-              onPressed: () {
-                Navigator.of(context).pop(dialogController.text);
-              },
-            ),
-          ],
-        );
-      },
-    );
-
-    if (result != null) {
-      controller.text = result;
-    }
+  void _handleEffectAdded(Map<String, dynamic> effect, AssetModel? asset) {
+    setState(() {
+      // Thêm effect mới
+      _soundEffects.add(effect);
+      _soundEffectAssets.add(asset);
+      // Cập nhật cấu hình
+      _updateSoundConfig();
+    });
   }
 
   @override
@@ -429,862 +298,118 @@ class _SoundSectionState extends State<SoundSection> {
                 Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
           )
         else
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Global Settings
-              Card(
-                margin: const EdgeInsets.only(bottom: 16.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Cài đặt chung',
-                          style: Theme.of(context).textTheme.titleMedium),
-                      const SizedBox(height: 16),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            // Global Settings
+            GlobalSettingsSection(
+              soundEnabled: _soundEnabled,
+              masterVolume: _masterVolume,
+              onSoundEnabledChanged: (value) {
+                setState(() {
+                  _soundEnabled = value;
+                  _updateSoundConfig();
+                });
+              },
+              onMasterVolumeChanged: (value) {
+                setState(() {
+                  _masterVolume = value;
+                });
+              },
+            ),
 
-                      // Enable/disable sounds
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Kích hoạt Âm thanh',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall),
-                                const Text(
-                                  'Bật/tắt tất cả âm thanh trong game',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Switch(
-                            value: _soundEnabled,
-                            onChanged: (value) {
-                              setState(() {
-                                _soundEnabled = value;
-                                _updateSoundConfig();
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 16),
-                      // Master Volume
-                      Text('Âm lượng tổng',
-                          style: Theme.of(context).textTheme.titleSmall),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Slider(
-                              value: _masterVolume,
-                              min: 0.0,
-                              max: 1.0,
-                              divisions: 10,
-                              label: '${(_masterVolume * 100).round()}%',
-                              onChanged: _soundEnabled
-                                  ? (value) {
-                                      setState(() {
-                                        _masterVolume = value;
-                                      });
-                                    }
-                                  : null,
-                              onChangeEnd: (value) {
-                                _updateSoundConfig();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 50,
-                            child: Text('${(_masterVolume * 100).round()}%'),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+            if (_soundEnabled) ...[
+              // Background Music Settings
+              BackgroundMusicSection(
+                bgmEnabled: _bgmEnabled,
+                bgmPath: _bgmPath,
+                bgmVolume: _bgmVolume,
+                bgmLoop: _bgmLoop,
+                bgmFadeInDuration: _bgmFadeInDuration,
+                bgmFadeOutDuration: _bgmFadeOutDuration,
+                randomizePlaylist: _randomizePlaylist,
+                selectedBgmPreset: _selectedBgmPreset,
+                bgmPresets: _bgmPresets,
+                selectedBgmAsset: _selectedBgmAsset,
+                onBgmEnabledChanged: (value) {
+                  setState(() {
+                    _bgmEnabled = value;
+                    _updateSoundConfig();
+                  });
+                },
+                onBgmPathChanged: (value) {
+                  setState(() {
+                    _bgmPath = value;
+                  });
+                },
+                onBgmVolumeChanged: (value) {
+                  setState(() {
+                    _bgmVolume = value;
+                  });
+                },
+                onBgmLoopChanged: (value) {
+                  setState(() {
+                    _bgmLoop = value;
+                  });
+                },
+                onBgmFadeInDurationChanged: (value) {
+                  setState(() {
+                    _bgmFadeInDuration = value;
+                  });
+                },
+                onBgmFadeOutDurationChanged: (value) {
+                  setState(() {
+                    _bgmFadeOutDuration = value;
+                  });
+                },
+                onRandomizePlaylistChanged: (value) {
+                  setState(() {
+                    _randomizePlaylist = value;
+                  });
+                },
+                onSelectedBgmPresetChanged: (value) {
+                  setState(() {
+                    _selectedBgmPreset = value;
+                  });
+                },
+                onSelectedBgmAssetChanged: (asset) {
+                  setState(() {
+                    _selectedBgmAsset = asset;
+                  });
+                },
+                onUpdateSoundConfig: _updateSoundConfig,
               ),
 
-              if (_soundEnabled) ...[
-                // Background Music Settings
-                Card(
-                  margin: const EdgeInsets.only(bottom: 16.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Nhạc nền',
-                            style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: 16),
+              // Sound Effects
+              SoundEffectsSection(
+                soundEffects: _soundEffects,
+                soundEffectAssets: _soundEffectAssets,
+                onEffectUpdated: _handleEffectUpdated,
+                onEffectDeleted: _handleEffectDeleted,
+                onEffectAdded: _handleEffectAdded,
+              ),
 
-                        // Enable/disable BGM
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Kích hoạt Nhạc nền',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall),
-                                  const Text(
-                                    'Bật/tắt nhạc nền trong game',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Switch(
-                              value: _bgmEnabled,
-                              onChanged: (value) {
-                                setState(() {
-                                  _bgmEnabled = value;
-                                  _updateSoundConfig();
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-
-                        if (_bgmEnabled) ...[
-                          const SizedBox(height: 16),
-
-                          // BGM Preset selection
-                          Text('Chọn nhạc có sẵn',
-                              style: Theme.of(context).textTheme.titleSmall),
-                          const SizedBox(height: 8),
-                          DropdownButtonFormField<int>(
-                            value: _selectedBgmPreset,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                            ),
-                            items: List.generate(_bgmPresets.length, (index) {
-                              return DropdownMenuItem<int>(
-                                value: index,
-                                child: Text(_bgmPresets[index]['name']),
-                              );
-                            }),
-                            onChanged: (value) {
-                              if (value != null) {
-                                setState(() {
-                                  _selectedBgmPreset = value;
-                                  _applySelectedPreset();
-                                });
-                              }
-                            },
-                          ),
-
-                          const SizedBox(height: 16),
-                          // BGM File Path
-                          Text('Đường dẫn tệp nhạc nền',
-                              style: Theme.of(context).textTheme.titleSmall),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _bgmPathController,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'assets/sounds/background.mp3',
-                                    helperText:
-                                        'Đường dẫn tới tệp âm thanh (MP3, WAV, OGG)',
-                                  ),
-                                  onChanged: (value) {
-                                    _checkAndSetBgmPreset(value);
-                                  },
-                                  onEditingComplete: _updateSoundConfig,
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.folder_open),
-                                onPressed: () async {
-                                  await _showFilePickerDialog(context,
-                                      'Chọn tệp nhạc nền', _bgmPathController);
-                                  _checkAndSetBgmPreset(
-                                      _bgmPathController.text);
-                                  _updateSoundConfig();
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.info_outline),
-                                onPressed: () {
-                                  setState(() {
-                                    _showBgmInfo = !_showBgmInfo;
-                                  });
-                                },
-                                tooltip: 'Hiện thông tin tệp',
-                              ),
-                            ],
-                          ),
-
-                          // BGM File Info
-                          if (_showBgmInfo) ...[
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.grey.shade300),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Thông tin tệp nhạc:',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall),
-                                  const SizedBox(height: 8),
-                                  _bgmPathController.text.isEmpty
-                                      ? const Text('Chưa chọn tệp nhạc nền')
-                                      : Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ..._extractBgmFileInfo()
-                                                .entries
-                                                .map(
-                                                  (entry) => Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 4),
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        style:
-                                                            DefaultTextStyle.of(
-                                                                    context)
-                                                                .style,
-                                                        children: [
-                                                          TextSpan(
-                                                            text:
-                                                                '${entry.key}: ',
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          TextSpan(
-                                                              text:
-                                                                  entry.value),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                            const SizedBox(height: 8),
-                                            Row(
-                                              children: [
-                                                ElevatedButton.icon(
-                                                  icon: const Icon(
-                                                      Icons.play_arrow,
-                                                      size: 18),
-                                                  label: const Text('Phát thử'),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.green,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 12,
-                                                        vertical: 6),
-                                                  ),
-                                                  onPressed: () {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                            'Đang phát: ${_bgmPathController.text}'),
-                                                        duration:
-                                                            const Duration(
-                                                                seconds: 2),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                ],
-                              ),
-                            ),
-                          ],
-
-                          const SizedBox(height: 16),
-                          // BGM Volume
-                          Text('Âm lượng nhạc nền',
-                              style: Theme.of(context).textTheme.titleSmall),
-                          Row(
-                            children: [
-                              const Icon(Icons.volume_down, size: 20),
-                              Expanded(
-                                child: Slider(
-                                  value: _bgmVolume,
-                                  min: 0.0,
-                                  max: 1.0,
-                                  divisions: 20,
-                                  label: '${(_bgmVolume * 100).round()}%',
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _bgmVolume = value;
-                                    });
-                                  },
-                                  onChangeEnd: (value) {
-                                    _updateSoundConfig();
-                                  },
-                                ),
-                              ),
-                              const Icon(Icons.volume_up, size: 20),
-                              SizedBox(
-                                width: 50,
-                                child: Text('${(_bgmVolume * 100).round()}%'),
-                              )
-                            ],
-                          ),
-
-                          const SizedBox(height: 16),
-                          // Fade In/Out Duration
-                          Text('Hiệu ứng mờ dần',
-                              style: Theme.of(context).textTheme.titleSmall),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Thời gian mờ vào (giây):'),
-                                    const SizedBox(height: 4),
-                                    Slider(
-                                      value: _bgmFadeInDuration,
-                                      min: 0.0,
-                                      max: 5.0,
-                                      divisions: 10,
-                                      label:
-                                          _bgmFadeInDuration.toStringAsFixed(1),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _bgmFadeInDuration = value;
-                                        });
-                                      },
-                                      onChangeEnd: (value) {
-                                        _updateSoundConfig();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 40,
-                                child: Text(
-                                    '${_bgmFadeInDuration.toStringAsFixed(1)}s'),
-                              )
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Thời gian mờ ra (giây):'),
-                                    const SizedBox(height: 4),
-                                    Slider(
-                                      value: _bgmFadeOutDuration,
-                                      min: 0.0,
-                                      max: 5.0,
-                                      divisions: 10,
-                                      label: _bgmFadeOutDuration
-                                          .toStringAsFixed(1),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _bgmFadeOutDuration = value;
-                                        });
-                                      },
-                                      onChangeEnd: (value) {
-                                        _updateSoundConfig();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                width: 40,
-                                child: Text(
-                                    '${_bgmFadeOutDuration.toStringAsFixed(1)}s'),
-                              )
-                            ],
-                          ),
-
-                          const SizedBox(height: 16),
-                          // BGM Loop & Randomize
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _bgmLoop,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _bgmLoop = value ?? true;
-                                          _updateSoundConfig();
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('Lặp nhạc nền',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium),
-                                          const Text(
-                                            'Tự động phát lại khi kết thúc',
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _randomizePlaylist,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _randomizePlaylist = value ?? false;
-                                          _updateSoundConfig();
-                                        });
-                                      },
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('Phát ngẫu nhiên',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium),
-                                          const Text(
-                                            'Với nhiều tệp nhạc',
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Sound Effects
-                Card(
-                  margin: const EdgeInsets.only(bottom: 16.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Hiệu ứng âm thanh',
-                                style: Theme.of(context).textTheme.titleMedium),
-                            ElevatedButton.icon(
-                              icon: const Icon(Icons.add),
-                              label: const Text('Thêm hiệu ứng'),
-                              onPressed: () {
-                                _resetEditingForm();
-                              },
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        if (_soundEffects.isEmpty)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Text(
-                                  'Chưa có hiệu ứng âm thanh nào. Hãy thêm hiệu ứng mới.'),
-                            ),
-                          )
-                        else
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: _soundEffects.length,
-                            itemBuilder: (context, index) {
-                              final effect = _soundEffects[index];
-                              final isSelected = index == _currentEditingIndex;
-
-                              return Card(
-                                margin: const EdgeInsets.only(bottom: 8.0),
-                                color: isSelected ? Colors.blue.shade50 : null,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  side: isSelected
-                                      ? BorderSide(
-                                          color: Colors.blue.shade300, width: 2)
-                                      : BorderSide.none,
-                                ),
-                                child: ListTile(
-                                  title: Text(effect['name'] ?? 'Không có tên'),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Đường dẫn: ${effect['path']}'),
-                                      Text(
-                                          'Âm lượng: ${((effect['volume'] ?? 1.0) * 100).round()}%'),
-                                      Text(
-                                          'Lặp: ${(effect['loop'] ?? false) ? 'Có' : 'Không'}'),
-                                    ],
-                                  ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.play_arrow,
-                                            color: Colors.green),
-                                        onPressed: () {
-                                          // Giả lập phát âm thanh
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Đang phát: ${effect['name']}'),
-                                              duration:
-                                                  const Duration(seconds: 1),
-                                            ),
-                                          );
-                                        },
-                                        tooltip: 'Phát thử',
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.edit,
-                                            color: Colors.blue),
-                                        onPressed: () =>
-                                            _startEditingSoundEffect(index),
-                                        tooltip: 'Chỉnh sửa',
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            color: Colors.red),
-                                        onPressed: () =>
-                                            _deleteSoundEffect(index),
-                                        tooltip: 'Xóa',
-                                      ),
-                                    ],
-                                  ),
-                                  isThreeLine: true,
-                                ),
-                              );
-                            },
-                          ),
-
-                        const SizedBox(height: 16),
-                        // Sound Effect Editor
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.grey.shade300),
-                          ),
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  _currentEditingIndex >= 0
-                                      ? 'Chỉnh sửa hiệu ứng'
-                                      : 'Thêm hiệu ứng mới',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium),
-                              const SizedBox(height: 16),
-
-                              // Effect Name
-                              TextField(
-                                controller: _effectNameController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Tên hiệu ứng',
-                                  border: OutlineInputBorder(),
-                                  helperText:
-                                      'Ví dụ: click, correct, wrong, match, plane, ...',
-                                ),
-                              ),
-
-                              const SizedBox(height: 16),
-                              // Effect File Path
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _effectPathController,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Đường dẫn tệp âm thanh',
-                                        border: OutlineInputBorder(),
-                                        helperText:
-                                            'Đường dẫn tới tệp âm thanh (MP3, WAV)',
-                                      ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.folder_open),
-                                    onPressed: () async {
-                                      await _showFilePickerDialog(
-                                          context,
-                                          'Chọn tệp âm thanh',
-                                          _effectPathController);
-                                    },
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(height: 16),
-                              // Effect Volume
-                              Text('Âm lượng',
-                                  style:
-                                      Theme.of(context).textTheme.titleSmall),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Slider(
-                                      value: _effectVolume,
-                                      min: 0.0,
-                                      max: 1.0,
-                                      divisions: 10,
-                                      label:
-                                          '${(_effectVolume * 100).round()}%',
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _effectVolume = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 50,
-                                    child: Text(
-                                        '${(_effectVolume * 100).round()}%'),
-                                  )
-                                ],
-                              ),
-
-                              const SizedBox(height: 16),
-                              // Effect Loop
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Lặp hiệu ứng',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleSmall),
-                                        const Text(
-                                          'Tự động phát lại khi hiệu ứng kết thúc',
-                                          style: TextStyle(
-                                              color: Colors.grey, fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Switch(
-                                    value: _effectLoop,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _effectLoop = value;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(height: 24),
-                              // Action buttons
-                              Row(
-                                children: [
-                                  if (_currentEditingIndex >= 0)
-                                    Expanded(
-                                      child: OutlinedButton(
-                                        onPressed: _resetEditingForm,
-                                        style: OutlinedButton.styleFrom(
-                                          foregroundColor: Colors.blue,
-                                        ),
-                                        child: const Text('Hủy chỉnh sửa'),
-                                      ),
-                                    ),
-                                  if (_currentEditingIndex >= 0)
-                                    const SizedBox(width: 8),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: _saveEditingSoundEffect,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            _currentEditingIndex >= 0
-                                                ? Colors.orange
-                                                : Colors.blue,
-                                      ),
-                                      child: Text(_currentEditingIndex >= 0
-                                          ? 'Cập nhật'
-                                          : 'Thêm mới'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Word Sounds Settings
-                Card(
-                  margin: const EdgeInsets.only(bottom: 16.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Âm thanh từ vựng',
-                            style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: 16),
-
-                        // Enable/disable Word Sounds
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Kích hoạt Âm thanh từ vựng',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall),
-                                  const Text(
-                                    'Bật/tắt âm thanh cho từ vựng trong game',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Switch(
-                              value: _wordSoundsEnabled,
-                              onChanged: (value) {
-                                setState(() {
-                                  _wordSoundsEnabled = value;
-                                  _updateSoundConfig();
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-
-                        if (_wordSoundsEnabled) ...[
-                          const SizedBox(height: 16),
-                          // Word Sound Path Template
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _wordSoundPathTemplateController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Template đường dẫn âm thanh từ',
-                                    border: OutlineInputBorder(),
-                                    helperText:
-                                        'Sử dụng {word} để thay thế bằng từ cần phát (VD: assets/sounds/words/{word}.mp3)',
-                                  ),
-                                  onChanged: (value) {
-                                    // Không cập nhật config cho đến khi complete
-                                  },
-                                  onEditingComplete: _updateSoundConfig,
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.folder_open),
-                                onPressed: () async {
-                                  await _showFilePickerDialog(
-                                      context,
-                                      'Chọn thư mục chứa âm thanh từ vựng',
-                                      _wordSoundPathTemplateController);
-                                  _updateSoundConfig();
-                                },
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 16),
-                          // Word Sound Volume
-                          Text('Âm lượng phát âm từ vựng',
-                              style: Theme.of(context).textTheme.titleSmall),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Slider(
-                                  value: _wordSoundVolume,
-                                  min: 0.0,
-                                  max: 1.0,
-                                  divisions: 10,
-                                  label: '${(_wordSoundVolume * 100).round()}%',
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _wordSoundVolume = value;
-                                    });
-                                  },
-                                  onChangeEnd: (value) {
-                                    _updateSoundConfig();
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: 50,
-                                child: Text(
-                                    '${(_wordSoundVolume * 100).round()}%'),
-                              )
-                            ],
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              // Word Sounds Settings
+              WordSoundsSection(
+                wordSoundsEnabled: _wordSoundsEnabled,
+                wordSoundPathTemplate: _wordSoundPathTemplate,
+                wordSoundVolume: _wordSoundVolume,
+                onWordSoundsEnabledChanged: (value) {
+                  setState(() {
+                    _wordSoundsEnabled = value;
+                    _updateSoundConfig();
+                  });
+                },
+                onWordSoundPathTemplateChanged: (value) {
+                  setState(() {
+                    _wordSoundPathTemplate = value;
+                  });
+                },
+                onWordSoundVolumeChanged: (value) {
+                  setState(() {
+                    _wordSoundVolume = value;
+                  });
+                },
+                onUpdateSoundConfig: _updateSoundConfig,
+              ),
 
               // Update button
               ElevatedButton(
@@ -1295,7 +420,7 @@ class _SoundSectionState extends State<SoundSection> {
                 child: const Text('Cập nhật Preview'),
               ),
             ],
-          ),
+          ]),
       ],
     );
   }

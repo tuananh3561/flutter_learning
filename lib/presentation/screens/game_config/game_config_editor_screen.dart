@@ -290,13 +290,18 @@ class _GameConfigEditorScreenState extends State<GameConfigEditorScreen>
                             ),
                             child: ConfigPreview(
                               configData: state.configData,
-                              onComponentMoved: (section, subsection,
-                                  positionKey, newPosition) {
+                              onComponentMoved: (
+                                section,
+                                subsection,
+                                positionKey,
+                                newPosition,
+                              ) {
                                 // Hiển thị tooltip khi di chuyển
                                 _showPositionTooltip(
-                                    _getDisplayNameForComponent(
-                                        section, subsection, positionKey),
-                                    newPosition);
+                                  _getDisplayNameForComponent(
+                                      section, subsection, positionKey),
+                                  newPosition,
+                                );
 
                                 // Dispatch event để cập nhật vị trí
                                 context.read<GameConfigBloc>().add(

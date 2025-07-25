@@ -17,13 +17,13 @@ dependencies:
   flutter_svg: ^2.0.5          # SVG rendering
   cached_network_image: ^3.2.3  # Image caching
   carousel_slider: ^5.0.0       # Carousel for story list
-  lottie: ^2.3.2                # Animation support
+  lottie: ^3.3.1                # Animation support
   flutter_screenutil: ^5.7.0    # Responsive UI
   cupertino_icons: ^1.0.2
   flutter_colorpicker: ^1.0.3   # Color picker for game config editor
 
   # State Management
-  flutter_bloc: ^8.1.4          # BLoC pattern implementation
+  flutter_bloc: ^7.0.0          # BLoC pattern implementation
   equatable: ^2.0.5             # Value equality
 
   # Navigation
@@ -32,7 +32,7 @@ dependencies:
   # Storage
   shared_preferences: ^2.1.0    # Local storage
   sqflite: ^2.2.8+4             # SQLite database
-  path_provider: ^2.0.14        # File system access
+  path_provider: ^2.1.5        # File system access
 
   # Network
   dio: ^5.1.1                   # HTTP client
@@ -44,12 +44,9 @@ dependencies:
   flame_spine: ^0.2.2+6          # Spine 2D animation support
 
   # Authentication
-  # firebase_auth: ^4.4.2        # Phone authentication
-  # firebase_core: ^2.10.0       # Firebase core
-  
+
   # Analytics & Reporting
-  fl_chart: ^0.62.0             # Charts for reports
-  # firebase_analytics: ^10.2.1  # User analytics
+  fl_chart: ^0.69.0             # Charts for reports
 
   # Localization
   flutter_localizations:
@@ -69,12 +66,15 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   crypto: ^3.0.6
+  http: ^1.3.0
+  country_code_picker: ^3.3.0
+  collection: ^1.19.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
     
-  bloc_test: ^9.1.7             # BLoC testing
+  bloc_test: ^8.0.0             # BLoC testing
   mockito: ^5.4.5               # Mocking for tests
   flutter_lints: ^2.0.1         # Linting rules
   build_runner: ^2.4.15
@@ -152,8 +152,16 @@ flutter:
     - assets/audio/word/
 
     # Image assets
+    - assets/lottie/
     - assets/images/
     - assets/images/word/
+    - assets/images/splash/
+    - assets/images/intro/
+    - assets/images/onboarding/
+    - assets/images/auth/
+    - assets/images/profile/
+    - assets/images/parent/
+    - assets/images/home/
 
     # Spine assets
     - assets/spine/

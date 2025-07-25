@@ -1,8 +1,8 @@
-/// AudioAssetListWidget - Widget hiển thị danh sách Audio Assets
-/// Component này là một phần của AssetManagerSection
-
 import 'package:flutter/material.dart';
 import 'package:flutter_learning/data/models/asset_model.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'audio_upload_section.dart';
+import 'audio_asset_card.dart';
 
 /// Widget hiển thị danh sách các audio assets
 class AudioAssetListWidget extends StatefulWidget {
@@ -22,6 +22,10 @@ class AudioAssetListWidget extends StatefulWidget {
 class _AudioAssetListWidgetState extends State<AudioAssetListWidget> {
   String _searchQuery = '';
   List<AssetModel> _filteredAssets = [];
+  String? _playingAudioId;
+  bool _isPlaying = false;
+  double _currentPosition = 0;
+  double _duration = 1;
 
   @override
   void initState() {
@@ -52,6 +56,69 @@ class _AudioAssetListWidgetState extends State<AudioAssetListWidget> {
               asset.path.toLowerCase().contains(query);
         }).toList();
       });
+    }
+  }
+
+  /// Phát audio
+  void _playAudio(AssetModel asset) async {
+    // Dừng audio đang phát nếu có
+    _stopAudio();
+
+    setState(() {
+      _playingAudioId = asset.id;
+      _isPlaying = true;
+      _currentPosition = 0;
+      _duration = 5; // Giả sử thời lượng là 5 giây
+    });
+
+    try {
+      // Phát audio từ URL
+      FlameAudio.play(asset.url);
+
+      // Giả lập việc cập nhật tiến độ phát
+      for (int i = 0; i <= 50; i++) {
+        if (!mounted || _playingAudioId != asset.id) break;
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (mounted) {
+          setState(() {
+            _currentPosition = i / 10;
+          });
+        }
+      }
+
+      if (mounted && _playingAudioId == asset.id) {
+        setState(() {
+          _playingAudioId = null;
+          _isPlaying = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _playingAudioId = null;
+          _isPlaying = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Không thể phát audio: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Dừng audio đang phát
+  void _stopAudio() {
+    if (_isPlaying) {
+      setState(() {
+        _playingAudioId = null;
+        _isPlaying = false;
+        _currentPosition = 0;
+      });
+      // Lưu ý: FlameAudio mới không yêu cầu clearAll khi dừng audio
+      // FlameAudio.audioCache.clearAll();
     }
   }
 
@@ -90,6 +157,16 @@ class _AudioAssetListWidgetState extends State<AudioAssetListWidget> {
         ),
         const SizedBox(height: 16),
 
+        AudioUploadSection(
+          onUploadSuccess: (asset) {
+            setState(() {
+              widget.assets.add(asset);
+              _filterAssets();
+            });
+          },
+        ),
+        const SizedBox(height: 16),
+
         // Hiển thị danh sách
         if (_filteredAssets.isEmpty)
           const Center(
@@ -108,7 +185,16 @@ class _AudioAssetListWidgetState extends State<AudioAssetListWidget> {
               itemCount: _filteredAssets.length,
               itemBuilder: (context, index) {
                 final asset = _filteredAssets[index];
-                return _buildAudioAssetCard(asset);
+                final isPlaying = _playingAudioId == asset.id;
+                return AudioAssetCard(
+                  asset: asset,
+                  isPlaying: isPlaying,
+                  currentPosition: _currentPosition,
+                  duration: _duration,
+                  onPlay: () => _playAudio(asset),
+                  onStop: _stopAudio,
+                  onDelete: widget.onDeleteAsset,
+                );
               },
             ),
           ),
@@ -116,116 +202,9 @@ class _AudioAssetListWidgetState extends State<AudioAssetListWidget> {
     );
   }
 
-  /// Xây dựng card hiển thị thông tin audio asset
-  Widget _buildAudioAssetCard(AssetModel asset) {
-    final bool isMusic = asset.metadata['isMusic'] ?? false;
-    final double volume = asset.metadata['volume'] ?? 1.0;
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Thông tin cơ bản
-            Row(
-              children: [
-                // Icon và tên
-                Icon(
-                  isMusic ? Icons.music_note : Icons.volume_up,
-                  size: 24,
-                  color: isMusic ? Colors.purple : Colors.blue,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        asset.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        'ID: ${asset.id}',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Loại audio (Music hoặc SFX)
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color:
-                        isMusic ? Colors.purple.shade100 : Colors.blue.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    isMusic ? 'Music' : 'SFX',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: isMusic
-                          ? Colors.purple.shade800
-                          : Colors.blue.shade800,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 8),
-
-                // Nút xóa
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => widget.onDeleteAsset(asset),
-                  tooltip: 'Xóa audio',
-                ),
-              ],
-            ),
-            const Divider(),
-
-            // Thông tin chi tiết
-            Padding(
-              padding: const EdgeInsets.only(left: 32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Đường dẫn: ${asset.path}'),
-                  Text('Volume: ${(volume * 100).toStringAsFixed(0)}%'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            // Ngày thêm
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                'Thêm vào: ${_formatDate(asset.dateAdded)}',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Format DateTime thành chuỗi hiển thị
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}';
+  @override
+  void dispose() {
+    _stopAudio();
+    super.dispose();
   }
 }

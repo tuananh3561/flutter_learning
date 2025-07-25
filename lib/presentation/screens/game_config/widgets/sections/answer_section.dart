@@ -4,6 +4,11 @@ import 'package:flutter/scheduler.dart';
 import '../config_editor_panel.dart';
 import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
 import 'package:flutter_learning/presentation/screens/game_config/utils/color_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_learning/data/models/asset_model.dart';
+import 'package:flutter_learning/domain/repositories/asset_repository.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_learning/presentation/screens/game_config/widgets/sections/asset_manager_section/image_asset_selector.dart';
 
 /// Widget để cấu hình câu trả lời trong game
 class AnswerSection extends StatefulWidget {
@@ -57,6 +62,12 @@ class _AnswerSectionState extends State<AnswerSection> {
   final TextEditingController _clickSoundController = TextEditingController();
   final TextEditingController _correctSoundController = TextEditingController();
   final TextEditingController _wrongSoundController = TextEditingController();
+
+  // Asset Manager
+  AssetModel? _selectedIconAsset;
+  AssetModel? _selectedClickSoundAsset;
+  AssetModel? _selectedCorrectSoundAsset;
+  AssetModel? _selectedWrongSoundAsset;
 
   @override
   void initState() {
@@ -215,6 +226,9 @@ class _AnswerSectionState extends State<AnswerSection> {
       setState(() {
         _isLoading = false;
       });
+
+      // Tải các asset từ đường dẫn
+      _loadAssetsFromPaths();
 
       // Cập nhật cấu hình sau khi frame hiện tại được render xong
       SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -420,6 +434,224 @@ class _AnswerSectionState extends State<AnswerSection> {
       ];
     }
     return [];
+  }
+
+  /// Hiển thị dialog chọn icon asset
+  Future<void> _showIconAssetSelector() async {
+    try {
+      // Sử dụng widget ImageAssetSelectorDialog để chọn hình ảnh
+      final selected = await showImageAssetSelector(
+        context,
+        initialSelectedAsset: _selectedIconAsset,
+      );
+
+      if (selected != null) {
+        setState(() {
+          _selectedIconAsset = selected;
+          _iconPathController.text = selected.url ?? '';
+          _updateAnswerConfig();
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Không thể tải danh sách hình ảnh: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  /// Hiển thị dialog chọn audio asset
+  Future<void> _showAudioAssetSelector(
+      String title, TextEditingController controller,
+      {AssetModel? initialSelectedAsset,
+      Function(AssetModel)? onAssetSelected}) async {
+    try {
+      final assetRepository =
+          Provider.of<AssetRepository>(context, listen: false);
+      final audioAssets =
+          await assetRepository.getAssetsByType(AssetType.audio);
+
+      if (audioAssets.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Không có file âm thanh nào. Hãy upload trong Asset Manager'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+
+      // Hiển thị dialog để chọn audio
+      final result = await showDialog<AssetModel?>(
+        context: context,
+        builder: (context) => Dialog(
+          insetPadding: const EdgeInsets.all(16),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: MediaQuery.of(context).size.height * 0.7,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Chọn $title',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Search field
+                TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Tìm kiếm âm thanh...',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    // Filter functionality would be implemented here
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                // List of audio assets
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: audioAssets.length,
+                    itemBuilder: (context, index) {
+                      final asset = audioAssets[index];
+                      final isSelected = initialSelectedAsset?.id == asset.id;
+
+                      return ListTile(
+                        title: Text(asset.name),
+                        subtitle: Text(asset.path),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.play_arrow),
+                              onPressed: () {
+                                // Play audio preview (can be implemented later)
+                              },
+                            ),
+                            if (isSelected)
+                              const Icon(Icons.check, color: Colors.green),
+                          ],
+                        ),
+                        selected: isSelected,
+                        selectedTileColor: Colors.blue.withOpacity(0.1),
+                        onTap: () {
+                          Navigator.of(context).pop(asset);
+                        },
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Hủy'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      if (result != null) {
+        setState(() {
+          controller.text = result.url ?? '';
+          if (onAssetSelected != null) {
+            onAssetSelected(result);
+          }
+          _updateAnswerConfig();
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Không thể tải danh sách âm thanh: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  /// Tải các asset đã lưu từ đường dẫn
+  Future<void> _loadAssetsFromPaths() async {
+    try {
+      if (_currentAnswerConfig.isEmpty) return;
+
+      final assetRepository =
+          Provider.of<AssetRepository>(context, listen: false);
+
+      // Tải icon asset
+      if (_iconPathController.text.isNotEmpty) {
+        final imageAssets =
+            await assetRepository.getAssetsByType(AssetType.image);
+        for (var asset in imageAssets) {
+          if ((asset.url ?? '') == _iconPathController.text ||
+              asset.path == _iconPathController.text) {
+            _selectedIconAsset = asset;
+            break;
+          }
+        }
+      }
+
+      // Tải sound assets
+      final audioAssets =
+          await assetRepository.getAssetsByType(AssetType.audio);
+
+      // Click sound
+      if (_clickSoundController.text.isNotEmpty) {
+        for (var asset in audioAssets) {
+          if ((asset.url ?? '') == _clickSoundController.text ||
+              asset.path == _clickSoundController.text) {
+            _selectedClickSoundAsset = asset;
+            break;
+          }
+        }
+      }
+
+      // Correct sound
+      if (_correctSoundController.text.isNotEmpty) {
+        for (var asset in audioAssets) {
+          if ((asset.url ?? '') == _correctSoundController.text ||
+              asset.path == _correctSoundController.text) {
+            _selectedCorrectSoundAsset = asset;
+            break;
+          }
+        }
+      }
+
+      // Wrong sound
+      if (_wrongSoundController.text.isNotEmpty) {
+        for (var asset in audioAssets) {
+          if ((asset.url ?? '') == _wrongSoundController.text ||
+              asset.path == _wrongSoundController.text) {
+            _selectedWrongSoundAsset = asset;
+            break;
+          }
+        }
+      }
+
+      if (mounted) {
+        setState(() {}); // Cập nhật UI với các asset đã tìm thấy
+      }
+    } catch (e) {
+      print('Không thể tải assets từ đường dẫn: $e');
+    }
   }
 
   @override
@@ -848,15 +1080,52 @@ class _AnswerSectionState extends State<AnswerSection> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.upload_file),
-                            onPressed: () {
-                              _showFileUploadDialog(
-                                'Chọn Icon',
-                                _iconPathController,
-                              );
-                            },
+                            onPressed: _showIconAssetSelector,
                           ),
                         ],
                       ),
+
+                      // Hiển thị icon đã chọn
+                      if (_selectedIconAsset != null &&
+                          _iconPathController.text.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              const Text('Icon đã chọn:'),
+                              const SizedBox(width: 8),
+                              Container(
+                                width: 40,
+                                height: 40,
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: _selectedIconAsset!.url ?? '',
+                                  fit: BoxFit.contain,
+                                  placeholder: (context, url) => const Center(
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2),
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error, size: 20),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                _selectedIconAsset!.name,
+                                style: const TextStyle(
+                                    fontStyle: FontStyle.italic),
+                              ),
+                            ],
+                          ),
+                        ),
 
                       const SizedBox(height: 16),
                       // Icon Size
@@ -976,14 +1245,40 @@ class _AnswerSectionState extends State<AnswerSection> {
                           IconButton(
                             icon: const Icon(Icons.upload_file),
                             onPressed: () {
-                              _showFileUploadDialog(
+                              _showAudioAssetSelector(
                                 'Chọn Sound Effect',
                                 _clickSoundController,
+                                initialSelectedAsset: _selectedClickSoundAsset,
+                                onAssetSelected: (asset) {
+                                  _selectedClickSoundAsset = asset;
+                                },
                               );
                             },
                           ),
                         ],
                       ),
+
+                      // Hiển thị tên file âm thanh click đã chọn
+                      if (_selectedClickSoundAsset != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.audio_file, size: 16),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _selectedClickSoundAsset!.name,
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 12,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
 
                       // Correct Sound
                       Row(
@@ -1002,14 +1297,43 @@ class _AnswerSectionState extends State<AnswerSection> {
                           IconButton(
                             icon: const Icon(Icons.upload_file),
                             onPressed: () {
-                              _showFileUploadDialog(
+                              _showAudioAssetSelector(
                                 'Chọn Sound Effect',
                                 _correctSoundController,
+                                initialSelectedAsset:
+                                    _selectedCorrectSoundAsset,
+                                onAssetSelected: (asset) {
+                                  _selectedCorrectSoundAsset = asset;
+                                },
                               );
                             },
                           ),
                         ],
                       ),
+
+                      // Hiển thị tên file âm thanh đúng đã chọn
+                      if (_selectedCorrectSoundAsset != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.audio_file,
+                                  size: 16, color: Colors.green),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _selectedCorrectSoundAsset!.name,
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 12,
+                                    color: Colors.green,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
 
                       // Wrong Sound
                       Row(
@@ -1028,14 +1352,42 @@ class _AnswerSectionState extends State<AnswerSection> {
                           IconButton(
                             icon: const Icon(Icons.upload_file),
                             onPressed: () {
-                              _showFileUploadDialog(
+                              _showAudioAssetSelector(
                                 'Chọn Sound Effect',
                                 _wrongSoundController,
+                                initialSelectedAsset: _selectedWrongSoundAsset,
+                                onAssetSelected: (asset) {
+                                  _selectedWrongSoundAsset = asset;
+                                },
                               );
                             },
                           ),
                         ],
                       ),
+
+                      // Hiển thị tên file âm thanh sai đã chọn
+                      if (_selectedWrongSoundAsset != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.audio_file,
+                                  size: 16, color: Colors.red),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _selectedWrongSoundAsset!.name,
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                     ],
                   ),
                 ),

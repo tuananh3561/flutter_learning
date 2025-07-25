@@ -20,16 +20,19 @@ class AssetModelAdapter extends TypeAdapter<AssetModel> {
       id: fields[0] as String,
       name: fields[1] as String,
       path: fields[2] as String,
-      type: fields[3] as String,
-      metadata: (fields[4] as Map).cast<String, dynamic>(),
-      dateAdded: fields[5] as DateTime?,
+      url: fields[3] as String,
+      type: fields[4] as String,
+      metadata: (fields[5] as Map).cast<String, dynamic>(),
+      folderPath: fields[7] as String,
+      bucket: fields[8] as String,
+      dateAdded: fields[6] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, AssetModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -37,11 +40,17 @@ class AssetModelAdapter extends TypeAdapter<AssetModel> {
       ..writeByte(2)
       ..write(obj.path)
       ..writeByte(3)
-      ..write(obj.type)
+      ..write(obj.url)
       ..writeByte(4)
-      ..write(obj.metadata)
+      ..write(obj.type)
       ..writeByte(5)
-      ..write(obj.dateAdded);
+      ..write(obj.metadata)
+      ..writeByte(6)
+      ..write(obj.dateAdded)
+      ..writeByte(7)
+      ..write(obj.folderPath)
+      ..writeByte(8)
+      ..write(obj.bucket);
   }
 
   @override

@@ -1,9 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../config_editor_panel.dart';
 import 'package:flutter_learning/presentation/screens/game_config/widgets/common/color_picker_dialog.dart';
 import 'package:flutter_learning/presentation/screens/game_config/utils/color_utils.dart';
+import 'package:flutter_learning/domain/repositories/asset_repository.dart';
+import 'package:flutter_learning/data/models/asset_model.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_learning/presentation/screens/game_config/widgets/sections/asset_manager_section/image_asset_selector.dart';
 
 /// Widget để cấu hình câu hỏi trong game
 class QuestionSection extends StatefulWidget {
@@ -50,6 +58,9 @@ class _QuestionSectionState extends State<QuestionSection> {
   Color _textColor = Colors.green;
   final TextEditingController _textFontSizeController = TextEditingController();
   String _textFontWeight = 'bold';
+
+  // Asset Manager
+  AssetModel? _selectedImageAsset;
 
   @override
   void initState() {
@@ -130,6 +141,11 @@ class _QuestionSectionState extends State<QuestionSection> {
         // Path
         if (targetImage.containsKey('path')) {
           _targetPathController.text = targetImage['path'];
+
+          // Kiểm tra nếu đường dẫn là URL, tải asset tương ứng
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            _loadImageAssetFromPath(_targetPathController.text);
+          });
         }
 
         // Position
@@ -203,6 +219,30 @@ class _QuestionSectionState extends State<QuestionSection> {
     }
   }
 
+  /// Tìm kiếm asset image dựa vào đường dẫn
+  Future<void> _loadImageAssetFromPath(String path) async {
+    if (path.isEmpty) return;
+
+    try {
+      final assetRepository =
+          Provider.of<AssetRepository>(context, listen: false);
+      final imageAssets =
+          await assetRepository.getAssetsByType(AssetType.image);
+
+      for (var asset in imageAssets) {
+        // Kiểm tra đường dẫn chính xác hoặc URL
+        if ((asset.url ?? '') == path || asset.name == path) {
+          setState(() {
+            _selectedImageAsset = asset;
+          });
+          break;
+        }
+      }
+    } catch (e) {
+      print('Không thể tìm image asset: $e');
+    }
+  }
+
   void _updateQuestionConfig() {
     // Xây dựng cấu hình boxQuestion
     final boxQuestion = {
@@ -255,6 +295,187 @@ class _QuestionSectionState extends State<QuestionSection> {
 
     // In ra log để debug
     print('Question config updated: ${json.encode(_currentQuestionConfig)}');
+  }
+
+  /// Hiển thị dialog chọn image asset
+  Future<void> _showImageAssetSelector() async {
+    try {
+      // Sử dụng widget mới ImageAssetSelector để chọn hình ảnh
+      final selected = await showImageAssetSelector(
+        context,
+        initialSelectedAsset: _selectedImageAsset,
+      );
+
+      if (selected != null) {
+        setState(() {
+          _selectedImageAsset = selected;
+          _targetPathController.text = selected.url ?? '';
+          _updateQuestionConfig();
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Không thể tải danh sách hình ảnh: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  /// Upload hình ảnh mới
+  Future<void> _uploadNewImage() async {
+    try {
+      final assetRepository =
+          Provider.of<AssetRepository>(context, listen: false);
+
+      // Hiển thị dialog để lấy tên cho hình ảnh
+      final String? customName = await showDialog<String>(
+        context: context,
+        builder: (context) {
+          final TextEditingController nameController = TextEditingController();
+          return AlertDialog(
+            title: const Text('Tên hình ảnh'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Nhập tên cho hình ảnh này:',
+                  style: TextStyle(fontSize: 14),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Nhập tên...',
+                    border: OutlineInputBorder(),
+                  ),
+                  autofocus: true,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Hủy'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (nameController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Vui lòng nhập tên!'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                    return;
+                  }
+                  Navigator.pop(context, nameController.text);
+                },
+                child: const Text('Xác nhận'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (customName == null || customName.isEmpty) {
+        return;
+      }
+
+      // Mở file picker để chọn hình ảnh
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        return;
+      }
+
+      // Hiển thị indicator khi đang upload
+      _showUploadingDialog();
+
+      try {
+        AssetModel? uploadedAsset;
+
+        // Sử dụng phương thức phù hợp tùy thuộc vào nền tảng
+        if (kIsWeb) {
+          if (result.files.first.bytes != null) {
+            // Upload trên web
+            uploadedAsset = await assetRepository.uploadImageAssetWeb(
+              result.files.first.bytes!,
+              result.files.first.name,
+              customName: customName,
+            );
+          }
+        } else {
+          if (result.files.first.path != null) {
+            // Upload trên mobile/desktop
+            final file = File(result.files.first.path!);
+            uploadedAsset = await assetRepository.uploadImageAsset(
+              file,
+              customName: customName,
+            );
+          }
+        }
+
+        // Đóng dialog upload
+        Navigator.of(context, rootNavigator: true).pop();
+
+        if (uploadedAsset != null) {
+          setState(() {
+            _selectedImageAsset = uploadedAsset;
+            _targetPathController.text = uploadedAsset?.url ?? '';
+            _updateQuestionConfig();
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text('Tải lên hình ảnh "${uploadedAsset.name}" thành công!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Không thể tải lên hình ảnh. Vui lòng thử lại.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        // Đóng dialog upload nếu có lỗi
+        Navigator.of(context, rootNavigator: true).pop();
+        rethrow;
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Lỗi khi tải lên hình ảnh: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // Hiển thị dialog khi đang tải lên
+  Future<void> _showUploadingDialog() {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Đang tải lên hình ảnh...'),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -435,16 +656,64 @@ class _QuestionSectionState extends State<QuestionSection> {
                         helperText: 'Loại target hiển thị',
                       ),
 
-                      // Path
-                      ConfigTextField(
-                        label: 'Đường dẫn',
-                        value: _targetPathController.text,
-                        onChanged: (value) {
-                          _targetPathController.text = value;
-                          _updateQuestionConfig();
-                        },
-                        helperText:
-                            'Đường dẫn đến file hình ảnh, hỗ trợ template {text}',
+                      // Path with Asset Manager integration
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Đường dẫn / Hình ảnh'),
+                          const SizedBox(height: 8),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _targetPathController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Đường dẫn',
+                                    helperText:
+                                        'Đường dẫn hình ảnh hoặc chọn từ Asset Manager',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (value) {
+                                    _updateQuestionConfig();
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Column(
+                                children: [
+                                  ElevatedButton.icon(
+                                    icon: const Icon(Icons.image_search),
+                                    label: const Text('Chọn hình'),
+                                    onPressed: _showImageAssetSelector,
+                                  ),
+                                  if (_targetType == 'image' &&
+                                      _selectedImageAsset != null)
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 8),
+                                      width: 100,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            _selectedImageAsset!.url ?? '',
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
 
                       const SizedBox(height: 16),

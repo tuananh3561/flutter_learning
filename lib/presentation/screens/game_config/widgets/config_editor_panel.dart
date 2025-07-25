@@ -35,7 +35,7 @@ class _ConfigEditorPanelState extends State<ConfigEditorPanel>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 8, vsync: this);
+    _tabController = TabController(length: 9, vsync: this);
     _editedData = Map<String, dynamic>.from(widget.configData);
 
     // Khởi tạo cấu hình background hoặc dùng giá trị mặc định
@@ -126,6 +126,7 @@ class _ConfigEditorPanelState extends State<ConfigEditorPanel>
             Tab(text: 'Drop Zones'),
             Tab(text: 'Sound'),
             Tab(text: 'Vocabulary'),
+            Tab(text: 'Asset Manager'),
           ],
         ),
 
@@ -239,11 +240,18 @@ class _ConfigEditorPanelState extends State<ConfigEditorPanel>
               SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  // child: VocabularySection(
-                  //   vocabularyConfig: _editedData['vocabulary'],
-                  //   onVocabularyConfigChanged: (data) =>
-                  //       _updateSectionWithRefresh('vocabulary', data),
-                  // ),
+                  child: VocabularySection(
+                    vocabularyConfig: _editedData['vocabulary'],
+                    onVocabularyConfigChanged: (data) =>
+                        _updateSectionWithRefresh('vocabulary', data),
+                  ),
+                ),
+              ),
+
+              // Asset Manager Section
+              const SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
                   child: AssetManagerSection(),
                 ),
               ),

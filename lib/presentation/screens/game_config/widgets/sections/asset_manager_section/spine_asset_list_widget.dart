@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_learning/data/models/asset_model.dart';
+import 'spine_upload_section.dart';
+import 'spine_asset_card.dart';
 
 /// Widget hiển thị danh sách các spine animations
 class SpineAssetListWidget extends StatefulWidget {
@@ -60,7 +62,6 @@ class _SpineAssetListWidgetState extends State<SpineAssetListWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Tiêu đề và tổng số
         Row(
           children: [
             Text(
@@ -68,7 +69,6 @@ class _SpineAssetListWidgetState extends State<SpineAssetListWidget> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const Spacer(),
-            // Ô tìm kiếm
             SizedBox(
               width: 250,
               child: TextField(
@@ -89,8 +89,15 @@ class _SpineAssetListWidgetState extends State<SpineAssetListWidget> {
           ],
         ),
         const SizedBox(height: 16),
-
-        // Hiển thị danh sách
+        SpineUploadSection(
+          onUploadSuccess: (asset) {
+            setState(() {
+              widget.assets.add(asset);
+              _filterAssets();
+            });
+          },
+        ),
+        const SizedBox(height: 16),
         if (_filteredAssets.isEmpty)
           const Center(
             child: Padding(
@@ -103,108 +110,19 @@ class _SpineAssetListWidgetState extends State<SpineAssetListWidget> {
           )
         else
           SizedBox(
-            height: 400, // Chiều cao cố định cho danh sách
+            height: 400,
             child: ListView.builder(
               itemCount: _filteredAssets.length,
               itemBuilder: (context, index) {
                 final asset = _filteredAssets[index];
-                return _buildSpineAssetCard(asset);
+                return SpineAssetCard(
+                  asset: asset,
+                  onDelete: widget.onDeleteAsset,
+                );
               },
             ),
           ),
       ],
     );
-  }
-
-  /// Xây dựng card hiển thị thông tin spine asset
-  Widget _buildSpineAssetCard(AssetModel asset) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Thông tin cơ bản
-            Row(
-              children: [
-                // Icon và tên
-                const Icon(Icons.animation, size: 24),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        asset.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        'ID: ${asset.id}',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Nút xóa
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => widget.onDeleteAsset(asset),
-                  tooltip: 'Xóa animation',
-                ),
-              ],
-            ),
-            const Divider(),
-
-            // Thông tin chi tiết
-            Padding(
-              padding: const EdgeInsets.only(left: 32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Skeleton: ${asset.metadata['skeleton']}'),
-                  Text('Atlas: ${asset.metadata['atlas']}'),
-                  Text('Animation: ${asset.metadata['animation']}'),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Scale: X=${asset.metadata['scale']['x']}, Y=${asset.metadata['scale']['y']}',
-                  ),
-                  if (asset.metadata.containsKey('position'))
-                    Text(
-                      'Position: X=${asset.metadata['position']['x']}, Y=${asset.metadata['position']['y']}',
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            // Ngày thêm
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                'Thêm vào: ${_formatDate(asset.dateAdded)}',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Format DateTime thành chuỗi hiển thị
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}';
   }
 }

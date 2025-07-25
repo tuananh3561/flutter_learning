@@ -185,16 +185,16 @@
     ]
   },
   "soundConfig": {
-    "backgroundMusic": "../../assets/Multiple Choice/background_music.mp3",
+    "backgroundMusic": "",
     "effectSounds": {
-      "click": "../../assets/Multiple Choice/SFX click.wav",
-      "correct": "../../assets/Multiple Choice/SFX đúng.mp3",
-      "wrong": "../../assets/Multiple Choice/SFX sai.wav",
-      "match": "../../assets/Multiple Choice/SFX_ghep_bo_phan.wav",
-      "lightning": "../../assets/Multiple Choice/SFX tia sét.mp3",
-      "planeLeave": "../../assets/Multiple Choice/SFX máy bay bay đi.mp3",
-      "yeah": "../../assets/Multiple Choice/SFX yeah.mp3",
-      "maxJump": "../../assets/Multiple Choice/SFX Max nhảy lên máy bay.mp3"
+      "click": "",
+      "correct": "",
+      "wrong": "",
+      "match": "",
+      "lightning": "",
+      "planeLeave": "",
+      "yeah": "",
+      "maxJump": ""
     },
     "wordSounds": "../../assets/audio/word/{text}.mp3"
   },

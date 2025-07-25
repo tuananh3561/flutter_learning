@@ -4,6 +4,11 @@ import 'package:go_router/go_router.dart';
 /// Navigation service for the Story Nighty Night app
 /// Provides helper methods for navigation throughout the app
 class NavigationService {
+  /// Navigate to the splash screen
+  static void navigateToSplash(BuildContext context) {
+    GoRouter.of(context).go('/splash');
+  }
+
   /// Navigate to the home screen
   static void navigateToHome(BuildContext context) {
     GoRouter.of(context).go('/');
